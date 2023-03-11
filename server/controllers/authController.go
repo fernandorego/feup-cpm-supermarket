@@ -2,20 +2,17 @@ package controllers
 
 import "github.com/gin-gonic/gin"
 
-func Register() gin.HandlerFunc {
-	return func(context *gin.Context) {
-		//TODO
-	}
+func Register(context *gin.Context) {
+	//TODO
+	return
 }
 
-func Login() gin.HandlerFunc {
-	return func(context *gin.Context) {
-		//TODO
-	}
+func Login(context *gin.Context) {
+	//TODO
+	return
 }
 
-func Logout() gin.HandlerFunc {
-	return func(context *gin.Context) {
-		//TODO
-	}
+func Logout(context *gin.Context) {
+	//TODO
+	return
 }
