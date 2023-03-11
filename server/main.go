@@ -6,11 +6,11 @@ import (
 )
 
 func main() {
+	defer db.DisconnectDB()
 	port := "8000"
 
 	//Init database
-	client := db.InitDB()
-	defer db.DisconnectDB(client)
+	db.InitDB()
 
 	//Init router
 	router := routes.NewRouter()

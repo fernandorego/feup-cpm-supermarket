@@ -10,5 +10,8 @@ func NewRouter() *gin.Engine {
 	defaultRoutes := router.Group("default/")
 	addDefaultRoutes(defaultRoutes)
 
+	authRoutes := router.Group("/")
+	addAuthRoutes(authRoutes)
+
 	return router
 }
