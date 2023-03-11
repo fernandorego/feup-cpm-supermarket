@@ -4,8 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var db = make(map[string]string)
-
 func NewRouter() *gin.Engine {
 	router := gin.Default()
 
