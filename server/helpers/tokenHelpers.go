@@ -1,7 +1,6 @@
 package helpers
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -32,7 +31,6 @@ func ValidateToken(tokenString string) (*SignedDetails, string) {
 	token, err := jwt.ParseWithClaims(tokenString, &SignedDetails{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("SECRET_KEY")), nil
 	})
-	fmt.Println("cheguei0")
 	if err != nil {
 		return &SignedDetails{}, err.Error()
 	}
