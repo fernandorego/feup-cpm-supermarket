@@ -45,7 +45,7 @@ func Register(context *gin.Context) {
 	return
 }
 
-func Login(context *gin.Context) {
+func GenerateToken(context *gin.Context) {
 	database := db.GetDatabase()
 	usersCollection := database.Collection("users")
 
