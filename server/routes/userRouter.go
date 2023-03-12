@@ -6,5 +6,5 @@ import (
 )
 
 func addUserRoutes(rg *gin.RouterGroup) {
-	rg.GET("/:id", controllers.GetUser)
+	rg.GET("/ping", controllers.Ping)
 }
