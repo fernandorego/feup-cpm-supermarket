@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"errors"
 	"os"
 	"time"
 
@@ -23,19 +24,19 @@ func GenerateToken(userID primitive.ObjectID) (string, error) {
 	return jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(os.Getenv("SECRET_KEY")))
 }
 
-func ValidateToken(tokenString string) (*SignedDetails, string) {
+func ValidateToken(tokenString string) (*SignedDetails, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &SignedDetails{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("SECRET_KEY")), nil
 	})
 	if err != nil {
-		return &SignedDetails{}, err.Error()
+		return &SignedDetails{}, err
 	}
 	claims, ok := token.Claims.(*SignedDetails)
 	if !ok {
-		return &SignedDetails{}, "the token is invalid"
+		return &SignedDetails{}, errors.New("the token is invalid")
 	}
 	if claims.ExpiresAt < time.Now().Unix() {
-		return &SignedDetails{}, "the token is expired"
+		return &SignedDetails{}, errors.New("the token is expired")
 	}
-	return claims, ""
+	return claims, nil
 }

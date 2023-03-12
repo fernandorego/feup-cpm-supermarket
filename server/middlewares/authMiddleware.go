@@ -14,8 +14,8 @@ func AuthMiddleware(context *gin.Context) {
 		return
 	}
 	claims, err := helpers.ValidateToken(token)
-	if err != "" {
-		context.JSON(http.StatusUnauthorized, gin.H{"error": err})
+	if err != nil {
+		context.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
