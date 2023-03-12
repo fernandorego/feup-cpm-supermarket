@@ -9,17 +9,13 @@ import (
 )
 
 type SignedDetails struct {
-	CreatedAt  time.Time
-	Authorized bool
-	UserID     string
+	UserID string
 	jwt.StandardClaims
 }
 
 func GenerateToken(userID primitive.ObjectID) (string, error) {
 	claims := SignedDetails{
-		CreatedAt:  time.Now(),
-		Authorized: true,
-		UserID:     userID.Hex(),
+		UserID: userID.Hex(),
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 		},
