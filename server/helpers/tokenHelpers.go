@@ -29,14 +29,11 @@ func ValidateToken(tokenString string) (*SignedDetails, error) {
 		return []byte(os.Getenv("SECRET_KEY")), nil
 	})
 	if err != nil {
-		return &SignedDetails{}, err
+		return nil, err
 	}
-	claims, ok := token.Claims.(*SignedDetails)
-	if !ok {
-		return &SignedDetails{}, errors.New("the token is invalid")
+	if claims, ok := token.Claims.(*SignedDetails); !ok || !token.Valid {
+		return nil, errors.New("the token is invalid")
+	} else {
+		return claims, nil
 	}
-	if claims.ExpiresAt < time.Now().Unix() {
-		return &SignedDetails{}, errors.New("the token is expired")
-	}
-	return claims, nil
 }
