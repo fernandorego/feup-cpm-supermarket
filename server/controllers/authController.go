@@ -18,26 +18,23 @@ func Register(context *gin.Context) {
 	database := db.GetDatabase()
 	usersCollection := database.Collection("users")
 
-	doc := models.User{
-		Name:      context.PostForm("name"),
-		Email:     context.PostForm("email"),
-		Password:  context.PostForm("password"),
-		UserImg:   nil,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+	var doc models.User
+	if err := context.BindJSON(&doc); err != nil {
+		return
 	}
-
-	err := validator.New().Struct(doc)
-	if err != nil {
+	if err := validator.New().Struct(doc); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if !(helpers.CheckUnique(context, usersCollection, bson.M{"email": context.PostForm("email")}, "this email already exists")) {
+	if !(helpers.CheckUnique(context, usersCollection, bson.M{"email": doc.Email}, "this email already exists")) {
 		return
 	}
 
 	doc.Password = helpers.HashPassword(doc.Password)
+	doc.UserImg = nil
+	doc.CreatedAt = time.Now()
+	doc.UpdatedAt = time.Now()
 
 	res, err := usersCollection.InsertOne(context, doc)
 	if err != nil {
@@ -59,14 +56,23 @@ func GenerateToken(context *gin.Context) {
 	database := db.GetDatabase()
 	usersCollection := database.Collection("users")
 
+	var credentials models.UserCredentials
+	if err := context.BindJSON(&credentials); err != nil {
+		return
+	}
+	if err := validator.New().Struct(credentials); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	var user models.User
-	err := usersCollection.FindOne(context, bson.M{"email": context.PostForm("email")}).Decode(&user)
+	err := usersCollection.FindOne(context, bson.M{"email": credentials.Email}).Decode(&user)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "user with provided email does not exist"})
 		return
 	}
 
-	if !helpers.CheckPasswordHash(context.PostForm("password"), user.Password) {
+	if !helpers.CheckPasswordHash(credentials.Password, user.Password) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "incorrect password"})
 		return
 	}
