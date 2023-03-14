@@ -9,6 +9,7 @@ import (
 	"server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -17,17 +18,26 @@ func Register(context *gin.Context) {
 	database := db.GetDatabase()
 	usersCollection := database.Collection("users")
 
+	doc := models.User{
+		Name:      context.PostForm("name"),
+		Email:     context.PostForm("email"),
+		Password:  context.PostForm("password"),
+		UserImg:   nil,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	err := validator.New().Struct(doc)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	if !(helpers.CheckUnique(context, usersCollection, bson.M{"email": context.PostForm("email")}, "this email already exists")) {
 		return
 	}
 
-	doc := models.User{
-		Name:      context.PostForm("name"),
-		Email:     context.PostForm("email"),
-		Password:  helpers.HashPassword(context.PostForm("password")),
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	}
+	doc.Password = helpers.HashPassword(doc.Password)
 
 	res, err := usersCollection.InsertOne(context, doc)
 	if err != nil {
