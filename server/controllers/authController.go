@@ -2,14 +2,12 @@ package controllers
 
 import (
 	"net/http"
-	"time"
 
 	"server/db"
 	"server/helpers"
 	"server/models"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -18,37 +16,25 @@ func Register(context *gin.Context) {
 	database := db.GetDatabase()
 	usersCollection := database.Collection("users")
 
-	var doc models.User
-	if err := context.BindJSON(&doc); err != nil {
-		return
-	}
-	if err := validator.New().Struct(doc); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	doc, err := models.GetUserFromJSON(context)
+	if err != nil {
+		helpers.SetStatusBadRequest(context, err.Error())
 		return
 	}
 
-	if !(helpers.CheckUnique(context, usersCollection, bson.M{"email": doc.Email}, "this email already exists")) {
+	if !(helpers.IsUnique(context, usersCollection, bson.M{"email": doc.Email}, "this email already exists")) {
 		return
 	}
 
 	doc.Password = helpers.HashPassword(doc.Password)
-	doc.UserImg = nil
-	doc.CreatedAt = time.Now()
-	doc.UpdatedAt = time.Now()
 
 	res, err := usersCollection.InsertOne(context, doc)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error inserting user into collection"})
+		helpers.SetStatusInternalServerError(context, "error inserting user into collection")
 		return
 	}
 
-	token, err := helpers.GenerateToken(res.InsertedID.(primitive.ObjectID))
-	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error creating access token"})
-		return
-	}
-
-	context.JSON(http.StatusOK, gin.H{"access_token": token})
+	provideToken(context, res.InsertedID.(primitive.ObjectID))
 	return
 }
 
@@ -56,30 +42,31 @@ func GenerateToken(context *gin.Context) {
 	database := db.GetDatabase()
 	usersCollection := database.Collection("users")
 
-	var credentials models.UserCredentials
-	if err := context.BindJSON(&credentials); err != nil {
-		return
-	}
-	if err := validator.New().Struct(credentials); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	credentials, err := models.GetUserCredentialsFromJSON(context)
+	if err != nil {
+		helpers.SetStatusBadRequest(context, err.Error())
 		return
 	}
 
 	var user models.User
-	err := usersCollection.FindOne(context, bson.M{"email": credentials.Email}).Decode(&user)
-	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": "user with provided email does not exist"})
+	if err = usersCollection.FindOne(context, bson.M{"email": credentials.Email}).Decode(&user); err != nil {
+		helpers.SetStatusBadRequest(context, "user with provided email does not exist")
 		return
 	}
 
 	if !helpers.CheckPasswordHash(credentials.Password, user.Password) {
-		context.JSON(http.StatusBadRequest, gin.H{"error": "incorrect password"})
+		helpers.SetStatusBadRequest(context, "incorrect password")
 		return
 	}
 
-	token, err := helpers.GenerateToken(user.ID)
+	provideToken(context, user.ID)
+	return
+}
+
+func provideToken(context *gin.Context, id primitive.ObjectID) {
+	token, err := helpers.GenerateToken(id)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error creating access token"})
+		helpers.SetStatusInternalServerError(context, "error creating access token")
 		return
 	}
 	context.JSON(http.StatusOK, gin.H{"access_token": token})

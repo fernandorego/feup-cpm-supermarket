@@ -10,13 +10,13 @@ import (
 )
 
 type SignedDetails struct {
-	UserID string
+	UserID primitive.ObjectID
 	jwt.StandardClaims
 }
 
 func GenerateToken(userID primitive.ObjectID) (string, error) {
 	claims := SignedDetails{
-		UserID: userID.Hex(),
+		UserID: userID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 		},
