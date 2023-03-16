@@ -50,3 +50,48 @@ fun loginService(act: LoginActivity, baseAddress: String, port: Int, email: Stri
         urlConnection?.disconnect()
     }
 }
+
+class NewUser (
+    val name: String,
+    val email: String,
+    val password: String
+)
+
+fun registerService(act: RegisterActivity, baseAddress: String, port: Int, name: String, email: String, password: String) {
+    val urlRoute = "/register"
+    var urlConnection: HttpURLConnection? = null
+
+    act.startSpinner()
+
+    try {
+        val url = URL("http://$baseAddress:$port$urlRoute")
+        urlConnection = url.openConnection() as HttpURLConnection
+        with(urlConnection) {
+            this.doOutput = true
+            this.doInput = true
+            this.requestMethod = "POST"
+            this.setRequestProperty("Content-Type", "application/json")
+            this.useCaches = false
+        }
+
+        val outputStream = DataOutputStream(urlConnection.outputStream)
+        outputStream.writeBytes(Gson().toJson(NewUser(name, email,password)))
+        outputStream.flush()
+        outputStream.close()
+
+        val code = urlConnection.responseCode
+        act.stopSpinner()
+
+        println(code)
+        if (code == 200) {
+            act.setToken(urlConnection.inputStream.reader().readText())
+        } else {
+            act.displayToast("Response Code: $code" + "\nError: ${urlConnection.errorStream.reader().readText()}",
+                Toast.LENGTH_SHORT)
+        }
+    } catch (e: java.lang.Exception) {
+        println(e.toString())
+    } finally {
+        urlConnection?.disconnect()
+    }
+}

@@ -11,31 +11,27 @@ import android.widget.Toast
 import com.google.gson.Gson
 import kotlin.concurrent.thread
 
-class LoginActivity : AppCompatActivity() {
-    private val emailTextView: TextView by lazy { findViewById(R.id.login_input_email) }
-    private val passwordTextView: TextView by lazy { findViewById(R.id.login_input_password) }
+class RegisterActivity : AppCompatActivity() {
+    private val nameTextView: TextView by lazy { findViewById(R.id.register_input_name) }
+    private val emailTextView: TextView by lazy { findViewById(R.id.register_input_email) }
+    private val passwordTextView: TextView by lazy { findViewById(R.id.register_input_password) }
 
-    private val loginBtn: Button by lazy { findViewById(R.id.btn_login) }
     private val registerBtn: Button by lazy { findViewById(R.id.btn_register) }
-    private val spinner: ProgressBar by lazy { findViewById(R.id.login_spinner) }
+    private val spinner: ProgressBar by lazy { findViewById(R.id.register_spinner) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_register)
         spinner.visibility = View.INVISIBLE
         spinner.isIndeterminate = true
     }
 
     override fun onStart() {
         super.onStart()
-        loginBtn.setOnClickListener {
-            thread(start = true) {
-                loginService(this, "192.168.0.4", 8000, emailTextView.text.toString(), passwordTextView.text.toString())
-            }
-        }
-
         registerBtn.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            thread(start = true) {
+                registerService(this, "192.168.0.4", 8000, nameTextView.text.toString(), emailTextView.text.toString(), passwordTextView.text.toString())
+            }
         }
     }
 

@@ -34,6 +34,7 @@ fun getUser(act: MainActivity, baseAddress: String, port: Int, token: String) {
         }
     } catch (e: java.lang.Exception) {
         println(e.toString())
+        act.handleInvalidToken()
     } finally {
         urlConnection?.disconnect()
     }
