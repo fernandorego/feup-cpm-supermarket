@@ -30,7 +30,8 @@ class RegisterActivity : AppCompatActivity() {
         super.onStart()
         registerBtn.setOnClickListener {
             thread(start = true) {
-                registerService(this, "192.168.0.4", 8000, nameTextView.text.toString(), emailTextView.text.toString(), passwordTextView.text.toString())
+                registerService(this, resources.getString(R.string.server_ip), 8000,
+                    nameTextView.text.toString(), emailTextView.text.toString(), passwordTextView.text.toString())
             }
         }
     }

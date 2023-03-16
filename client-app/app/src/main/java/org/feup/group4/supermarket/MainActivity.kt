@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         thread(start = true) {
-            getUser(this, "192.168.0.4", 8000, token)
+            getUser(this, resources.getString(R.string.server_ip), 8000, token)
         }
 
         setContentView(R.layout.activity_main)

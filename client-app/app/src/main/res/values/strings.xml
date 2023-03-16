@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ACME Supermarket</string>
+    <string name="server_ip">192.168.0.4</string>
 </resources>

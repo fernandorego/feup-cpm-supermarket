@@ -30,7 +30,8 @@ class LoginActivity : AppCompatActivity() {
         super.onStart()
         loginBtn.setOnClickListener {
             thread(start = true) {
-                loginService(this, "192.168.0.4", 8000, emailTextView.text.toString(), passwordTextView.text.toString())
+                loginService(this, resources.getString(R.string.server_ip), 8000,
+                    emailTextView.text.toString(), passwordTextView.text.toString())
             }
         }
 
