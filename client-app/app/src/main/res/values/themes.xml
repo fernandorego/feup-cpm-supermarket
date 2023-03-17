@@ -13,4 +13,10 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="Theme.ACMESupermarket.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splashscreen_animation</item>
+        <item name="android:windowSplashScreenBehavior" tools:targetApi="33">icon_preferred</item>
+        <item name="postSplashScreenTheme">@style/Theme.ACMESupermarket</item>
+    </style>
 </resources>

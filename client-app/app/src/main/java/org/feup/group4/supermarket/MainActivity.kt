@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
         val token = sharedPreferences.getString("my_token", null)
         if (token == null) {
             startActivity(Intent(this, LoginActivity::class.java))
+            finish()
             return
         }
 
@@ -33,5 +34,6 @@ class MainActivity : AppCompatActivity() {
 
     fun handleInvalidToken() {
         startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 }

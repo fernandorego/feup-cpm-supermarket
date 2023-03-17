@@ -15,7 +15,8 @@
         android:layout_height="150dp"
         android:scaleX="2"
         android:scaleY="2"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@drawable/ic_launcher_foreground"
+        app:tint="@color/ic_launcher_background"/>
 
     <EditText
         android:id="@+id/register_input_name"
@@ -24,7 +25,7 @@
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:paddingVertical="15dp"
-        android:text="Name"
+        android:hint="Name"
         android:textSize="20sp" />
 
     <EditText
