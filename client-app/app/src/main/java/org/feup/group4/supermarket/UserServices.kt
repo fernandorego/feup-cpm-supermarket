@@ -1,6 +1,5 @@
 package org.feup.group4.supermarket
 
-import android.widget.Toast
 import com.google.gson.Gson
 import java.net.HttpURLConnection
 import java.net.URL
@@ -11,7 +10,7 @@ class User (
     val user_img: String
 )
 
-fun getUser(act: MainActivity, baseAddress: String, port: Int, token: String) {
+fun getUser(act: LaunchActivity, baseAddress: String, port: Int, token: String) {
     val urlRoute = "/user/getUser"
     var urlConnection: HttpURLConnection? = null
 
