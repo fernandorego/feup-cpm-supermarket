@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import kotlin.concurrent.thread
 
@@ -24,6 +25,11 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
         spinner.visibility = View.INVISIBLE
         spinner.isIndeterminate = true
+
+        supportActionBar?.setDisplayShowCustomEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.actionbar_background))
+        supportActionBar?.elevation = 0F
     }
 
     override fun onStart() {
@@ -43,6 +49,7 @@ class RegisterActivity : AppCompatActivity() {
             apply()
         }
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     fun displayToast(msg: String, toastLenght: Int) {
