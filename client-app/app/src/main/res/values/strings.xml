@@ -3,4 +3,14 @@
     <string name="server_ip">192.168.0.4</string>
     <string name="title_home">Início</string>
     <string name="title_receipts">Faturas</string>
+    <string name="home_hello">"Olá %s"</string>
+    <string name="home_balance">Saldo no cartão</string>
+    <string name="home_coupons">Cupões</string>
+    <string name="home_fab">Nova Compra</string>
+    <string name="onboarding_login">Login</string>
+    <string name="onboarding_registration">Registo</string>
+    <string name="onboarding_register">Registar</string>
+    <string name="onboarding_name">Nome</string>
+    <string name="onboarding_email">Email</string>
+    <string name="onboarding_password">Password</string>
 </resources>

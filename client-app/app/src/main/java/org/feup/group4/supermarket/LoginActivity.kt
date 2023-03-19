@@ -4,10 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
+import android.widget.*
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import kotlin.concurrent.thread
@@ -19,6 +18,8 @@ class LoginActivity : AppCompatActivity() {
     private val loginBtn: Button by lazy { findViewById(R.id.btn_login) }
     private val registerBtn: Button by lazy { findViewById(R.id.btn_register) }
     private val spinner: ProgressBar by lazy { findViewById(R.id.login_spinner) }
+
+    private val panel: ImageView by lazy { findViewById(R.id.panel) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

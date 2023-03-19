@@ -11,9 +11,9 @@
         <!-- Bottom Nav Bar-->
         <item name="colorSurface">@color/dark_blue</item>
         <item name="colorSecondaryContainer">@color/light_blue</item>
-        <item name="colorOnSecondaryContainer">#121212</item>
-        <item name="colorOnSurface">#121212</item>
-        <item name="colorOnSurfaceVariant">#121212</item>
+        <item name="colorOnSecondaryContainer">@color/dark_blue</item>
+        <item name="colorOnSurface">@color/light_blue</item>
+        <item name="colorOnSurfaceVariant">@color/light_blue</item>
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/background</item>
         <item name="android:navigationBarColor">@color/dark_blue</item>
