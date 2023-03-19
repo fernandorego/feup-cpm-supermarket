@@ -13,4 +13,5 @@
     <string name="onboarding_name">Nome</string>
     <string name="onboarding_email">Email</string>
     <string name="onboarding_password">Password</string>
+    <string name="receipts_hello">Compras Passadas</string>
 </resources>

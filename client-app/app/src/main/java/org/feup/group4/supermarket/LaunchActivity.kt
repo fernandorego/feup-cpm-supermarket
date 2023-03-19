@@ -20,7 +20,11 @@ class LaunchActivity : AppCompatActivity() {
                 getUser(this, resources.getString(R.string.server_ip), 8000, token)
             }
 
-            startActivity(Intent(this, MainActivity::class.java))
+            val mainIntent = Intent(this, MainActivity::class.java)
+            if ("org.feup.group4.supermarket.receipts" == intent.action) {
+                mainIntent.action = "org.feup.group4.supermarket.receipts"
+            }
+            startActivity(mainIntent)
         }
 
         finish()

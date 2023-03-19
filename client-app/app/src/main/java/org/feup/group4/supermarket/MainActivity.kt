@@ -1,14 +1,13 @@
 package org.feup.group4.supermarket
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.feup.group4.supermarket.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -37,5 +36,9 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        if ("org.feup.group4.supermarket.receipts" == intent.action) {
+            navView.selectedItemId = R.id.navigation_receipts
+        }
     }
 }
