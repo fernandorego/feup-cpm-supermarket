@@ -4,52 +4,68 @@ import java.io.DataOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class HttpServices(private val baseAddress: String, private val port: Int) {
-    fun get(act: HttpInterface, urlRoute: String, token: String) {
-        act.onPreExecute()
-        var urlConnection: HttpURLConnection? = null
-        try {
-            val url = URL("http://$baseAddress:$port$urlRoute")
-            urlConnection = url.openConnection() as HttpURLConnection
-            val bearerAuth = "Bearer $token"
-            with(urlConnection) {
-                this.doInput = true
-                this.setRequestProperty("Authorization", bearerAuth)
-                this.useCaches = false
-            }
+enum class HTTPRequest {
+    GET, POST, PUT, DELETE
+}
 
-            val code = urlConnection.responseCode
-            if (code == 200) {
-                act.onPostExecute(urlConnection.inputStream.reader().readText())
-            } else {
-                act.onErrorExecute(code, urlConnection.errorStream.reader().readText())
-            }
-        } catch (e: java.lang.Exception) {
-            println(e.toString())
-            act.onErrorExecute(500, e.toString())
-        } finally {
-            urlConnection?.disconnect()
-        }
+class HttpServices(private val act: HttpInterface, private val baseAddress: String, private val port: Int) {
+    fun get(urlRoute: String, token: String) {
+        val bearerToken = "Bearer $token"
+        request(HTTPRequest.GET, urlRoute, bearerToken, null)
     }
 
-    fun post(act: HttpInterface, urlRoute:String, json: String) {
+    fun post(urlRoute:String, json: String, token: String? = null) {
+        var bearerToken:String? = null
+        if (token.isNullOrEmpty()) {
+            bearerToken = "Bearer $token"
+        }
+        request(HTTPRequest.POST, urlRoute, bearerToken, json)
+    }
+
+    fun put(urlRoute:String, json: String, token: String? = null) {
+        var bearerToken:String? = null
+        if (token.isNullOrEmpty()) {
+            bearerToken = "Bearer $token"
+        }
+        request(HTTPRequest.PUT, urlRoute, bearerToken, json)
+    }
+
+    fun delete(urlRoute: String, token: String, objId: Int) {
+        val bearerToken = "Bearer $token"
+        request(HTTPRequest.DELETE, "$urlRoute/$objId", bearerToken, null)
+    }
+
+    private fun request(requestMethod: HTTPRequest, urlRoute: String, bearerToken:String?, body:String?) {
         act.onPreExecute()
         var urlConnection: HttpURLConnection? = null
         try {
             val url = URL("http://$baseAddress:$port$urlRoute")
             urlConnection = url.openConnection() as HttpURLConnection
             with(urlConnection) {
-                this.doOutput = true
-                this.doInput = true
-                this.requestMethod = "POST"
-                this.setRequestProperty("Content-Type", "application/json")
+                if (!bearerToken.isNullOrEmpty()) {
+                    this.setRequestProperty("Authorization", bearerToken)
+                }
+
+                this.requestMethod = requestMethod.toString()
                 this.useCaches = false
+
+                when(requestMethod) {
+                    HTTPRequest.GET -> { this.doInput = true }
+                    HTTPRequest.DELETE -> { this.setRequestProperty("Content-Type", "application/json") }
+                    else -> {
+                        this.doOutput = true
+                        this.doInput = true
+                        this.setRequestProperty("Content-Type", "application/json")
+                    }
+                }
             }
 
-            val outputStream = DataOutputStream(urlConnection.outputStream)
-            outputStream.writeBytes(json)
-            outputStream.flush()
-            outputStream.close()
+            if (requestMethod == HTTPRequest.POST || requestMethod == HTTPRequest.PUT) {
+                val outputStream = DataOutputStream(urlConnection.outputStream)
+                outputStream.writeBytes(body)
+                outputStream.flush()
+                outputStream.close()
+            }
 
             val code = urlConnection.responseCode
             if (code == 200) {
