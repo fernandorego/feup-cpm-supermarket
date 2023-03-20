@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity(), HttpInterface {
         super.onStart()
         loginBtn.setOnClickListener {
             thread(start = true) {
-                loginService(this, resources.getString(R.string.server_ip), 8000,
+                loginService(this, resources.getString(R.string.server_ip), resources.getString(R.string.server_port),
                     emailTextView.text.toString(), passwordTextView.text.toString())
             }
         }

@@ -8,7 +8,7 @@ enum class HTTPRequest {
     GET, POST, PUT, DELETE
 }
 
-class HttpServices(private val act: HttpInterface, private val baseAddress: String, private val port: Int) {
+class HttpServices(private val act: HttpInterface, private val baseAddress: String, private val port: String) {
     fun get(urlRoute: String, token: String) {
         val bearerToken = "Bearer $token"
         request(HTTPRequest.GET, urlRoute, bearerToken)

@@ -34,7 +34,7 @@ class RegisterActivity : AppCompatActivity(), HttpInterface {
         super.onStart()
         registerBtn.setOnClickListener {
             thread(start = true) {
-                registerService(this, resources.getString(R.string.server_ip), 8000,
+                registerService(this, resources.getString(R.string.server_ip), resources.getString(R.string.server_port),
                     nameTextView.text.toString(), emailTextView.text.toString(), passwordTextView.text.toString())
             }
         }

@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), HttpInterface {
         }
 
         thread(start = true) {
-            getUser(this, resources.getString(R.string.server_ip), 8000, token)
+            getUser(this, resources.getString(R.string.server_ip), resources.getString(R.string.server_port), token)
         }
 
         setContentView(R.layout.activity_main)
