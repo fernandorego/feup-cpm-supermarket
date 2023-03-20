@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket
+package org.feup.group4.supermarket.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,9 +9,12 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.google.gson.Gson
+import org.feup.group4.supermarket.*
+import org.feup.group4.supermarket.models.Token
+import org.feup.group4.supermarket.services.http.HttpInterface
 import kotlin.concurrent.thread
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), HttpInterface {
     private val emailTextView: TextView by lazy { findViewById(R.id.login_input_email) }
     private val passwordTextView: TextView by lazy { findViewById(R.id.login_input_password) }
 
@@ -40,7 +43,17 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun setToken(json: String) {
+    override fun onPreExecute() {
+        runOnUiThread {
+            spinner.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onPostExecute(json: String) {
+        runOnUiThread {
+            spinner.visibility = View.INVISIBLE
+        }
+
         val token = Gson().fromJson(json, Token::class.java)
         with(getSharedPreferences("MyToken", MODE_PRIVATE).edit()) {
             putString("my_token", token.access_token)
@@ -49,21 +62,10 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
     }
 
-    fun displayToast(msg: String, toastLenght: Int) {
-        runOnUiThread {
-            Toast.makeText(applicationContext,msg, toastLenght).show()
-        }
-    }
-
-    fun startSpinner() {
-        runOnUiThread {
-            spinner.visibility = View.VISIBLE
-        }
-    }
-
-    fun stopSpinner() {
+    override fun onErrorExecute(code: Int, msg: String) {
         runOnUiThread {
             spinner.visibility = View.INVISIBLE
+            Toast.makeText(applicationContext,"code: $code\nmessage: $msg", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -7,7 +7,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="40dp"
-    tools:context=".RegisterActivity">
+    tools:context=".activities.RegisterActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -21,10 +21,10 @@
         android:id="@+id/register_input_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="Name"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:paddingVertical="15dp"
-        android:text="Name"
         android:textSize="20sp" />
 
     <EditText
