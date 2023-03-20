@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment"
+    tools:context=".HomeFragment"
     android:background="@color/dark_blue">
 
     <ImageView
@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/rounded_rectangle"
         app:tint="@color/background"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="@dimen/main_card_top_margin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

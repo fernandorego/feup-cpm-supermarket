@@ -3,7 +3,8 @@
         android:shortcutId="receipts"
         android:enabled="true"
         android:icon="@drawable/shortcut_receipt_icon"
-        android:shortcutShortLabel="@string/title_receipts">
+        android:shortcutShortLabel="@string/title_receipts"
+        android:shortcutLongLabel="@string/receipts_hello">
         <intent
             android:action="org.feup.group4.supermarket.receipts"
             android:targetPackage="org.feup.group4.supermarket"
