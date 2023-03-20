@@ -11,7 +11,7 @@ enum class HTTPRequest {
 class HttpServices(private val act: HttpInterface, private val baseAddress: String, private val port: Int) {
     fun get(urlRoute: String, token: String) {
         val bearerToken = "Bearer $token"
-        request(HTTPRequest.GET, urlRoute, bearerToken, null)
+        request(HTTPRequest.GET, urlRoute, bearerToken)
     }
 
     fun post(urlRoute:String, json: String, token: String? = null) {
@@ -19,7 +19,7 @@ class HttpServices(private val act: HttpInterface, private val baseAddress: Stri
         if (token.isNullOrEmpty()) {
             bearerToken = "Bearer $token"
         }
-        request(HTTPRequest.POST, urlRoute, bearerToken, json)
+        request(HTTPRequest.POST, urlRoute, bearerToken, body = json)
     }
 
     fun put(urlRoute:String, json: String, token: String? = null) {
@@ -27,15 +27,15 @@ class HttpServices(private val act: HttpInterface, private val baseAddress: Stri
         if (token.isNullOrEmpty()) {
             bearerToken = "Bearer $token"
         }
-        request(HTTPRequest.PUT, urlRoute, bearerToken, json)
+        request(HTTPRequest.PUT, urlRoute, bearerToken, body = json)
     }
 
     fun delete(urlRoute: String, token: String, objId: Int) {
         val bearerToken = "Bearer $token"
-        request(HTTPRequest.DELETE, "$urlRoute/$objId", bearerToken, null)
+        request(HTTPRequest.DELETE, "$urlRoute/$objId", bearerToken)
     }
 
-    private fun request(requestMethod: HTTPRequest, urlRoute: String, bearerToken:String?, body:String?) {
+    private fun request(requestMethod: HTTPRequest, urlRoute: String, bearerToken:String?, body:String?=null) {
         act.onPreExecute()
         var urlConnection: HttpURLConnection? = null
         try {
