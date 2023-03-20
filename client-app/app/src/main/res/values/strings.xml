@@ -1,17 +1,17 @@
 <resources>
-    <string name="app_name">ACME Supermarket</string>
-    <string name="server_ip">192.168.0.4</string>
-    <string name="title_home">Início</string>
-    <string name="title_receipts">Faturas</string>
-    <string name="home_hello">"Olá %s"</string>
-    <string name="home_balance">Saldo no cartão</string>
-    <string name="home_coupons">Cupões</string>
-    <string name="home_fab">Nova Compra</string>
+    <string name="app_name" translatable="false">ACME Supermarket</string>
+    <string name="server_ip" translatable="false">192.168.0.4</string>
+    <string name="title_home">Start</string>
+    <string name="title_receipts">Receipts</string>
+    <string name="home_hello">"Hey %s"</string>
+    <string name="home_balance">Card balance</string>
+    <string name="home_coupons">Coupons</string>
+    <string name="home_fab">New Purchase</string>
     <string name="onboarding_login">Login</string>
-    <string name="onboarding_registration">Registo</string>
-    <string name="onboarding_register">Registar</string>
-    <string name="onboarding_name">Nome</string>
+    <string name="onboarding_registration">Registration</string>
+    <string name="onboarding_register">Register</string>
+    <string name="onboarding_name">Name</string>
     <string name="onboarding_email">Email</string>
     <string name="onboarding_password">Password</string>
-    <string name="receipts_hello">Compras Passadas</string>
+    <string name="receipts_hello">Previous Purchases</string>
 </resources>
