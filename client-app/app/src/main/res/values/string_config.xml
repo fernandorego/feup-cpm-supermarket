@@ -1,0 +1,4 @@
+<resources>
+    <string name="server_ip">10.0.2.2</string>
+    <string name="server_port">8000</string>
+</resources>
