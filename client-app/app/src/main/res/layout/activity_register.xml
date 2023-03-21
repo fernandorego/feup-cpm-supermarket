@@ -18,6 +18,7 @@
         android:minHeight="48dp"
         android:paddingVertical="15dp"
         android:hint="@string/onboarding_name"
+        android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         app:backgroundTint="#FFFFFF"
         android:textSize="20sp" />
@@ -27,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/onboarding_email"
+        android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         app:backgroundTint="#FFFFFF"
         android:inputType="textEmailAddress"
@@ -39,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/onboarding_password"
+        android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         app:backgroundTint="#FFFFFF"
         android:inputType="textPassword"
