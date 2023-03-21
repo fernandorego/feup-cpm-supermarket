@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">ACME Supermarket</string>
-    <string name="server_ip">10.227.150.204</string>
+    <string name="server_ip">192.168.1.85</string>
     <string name="server_port">8000</string>
 </resources>

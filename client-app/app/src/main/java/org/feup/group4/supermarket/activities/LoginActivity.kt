@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
         loginBtn.setOnClickListener {
             spinner.visibility = View.VISIBLE
             thread(start = true) {
-                AuthService(this, ::afterHttpRequest).login(emailTextView.text.toString(), passwordTextView.text.toString())
+                AuthService(this, ::afterLoginHttpRequest).login(emailTextView.text.toString(), passwordTextView.text.toString())
             }
         }
 
@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun afterHttpRequest(statusCode: Int, json: String?) {
+    private fun afterLoginHttpRequest(statusCode: Int, json: String?) {
         runOnUiThread {
             spinner.visibility = View.INVISIBLE
             if (statusCode != 200) {
@@ -54,8 +54,7 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        val token = Gson().fromJson(json, Token::class.java)
-        AuthService(this, null).setToken(token.access_token)
+        AuthService(this, null).setToken(Gson().fromJson(json, Token::class.java).access_token)
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

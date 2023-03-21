@@ -33,8 +33,10 @@ class RegisterActivity : AppCompatActivity() {
         super.onStart()
         registerBtn.setOnClickListener {
             thread(start = true) {
-                spinner.visibility = View.VISIBLE
-                AuthService(this, ::afterHttpRequest).register(
+                runOnUiThread {
+                    spinner.visibility = View.VISIBLE
+                }
+                AuthService(this, ::afterRegisterHttpRequest).register(
                     nameTextView.text.toString(),
                     emailTextView.text.toString(),
                     passwordTextView.text.toString()
@@ -43,7 +45,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun afterHttpRequest(statusCode: Int, json: String?) {
+    private fun afterRegisterHttpRequest(statusCode: Int, json: String?) {
         runOnUiThread {
             spinner.visibility = View.INVISIBLE
             if (statusCode != 200) {
@@ -58,11 +60,7 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        val token = Gson().fromJson(json, Token::class.java)
-        with(getSharedPreferences("MyToken", MODE_PRIVATE).edit()) {
-            putString("my_token", token.access_token)
-            apply()
-        }
+        AuthService(this, null).setToken(Gson().fromJson(json, Token::class.java).access_token)
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
