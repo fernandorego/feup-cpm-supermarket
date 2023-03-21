@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket.models
+package org.feup.group4.supermarket.model
 
 data class User(
     val email: String,

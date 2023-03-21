@@ -10,11 +10,11 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.gson.Gson
 import org.feup.group4.supermarket.*
-import org.feup.group4.supermarket.models.Token
-import org.feup.group4.supermarket.services.http.HttpInterface
+import org.feup.group4.supermarket.model.Token
+import org.feup.group4.supermarket.service.AuthService
 import kotlin.concurrent.thread
 
-class LoginActivity : AppCompatActivity(), HttpInterface {
+class LoginActivity : AppCompatActivity() {
     private val emailTextView: TextView by lazy { findViewById(R.id.login_input_email) }
     private val passwordTextView: TextView by lazy { findViewById(R.id.login_input_password) }
 
@@ -32,9 +32,9 @@ class LoginActivity : AppCompatActivity(), HttpInterface {
     override fun onStart() {
         super.onStart()
         loginBtn.setOnClickListener {
+            spinner.visibility = View.VISIBLE
             thread(start = true) {
-                loginService(this, resources.getString(R.string.server_ip), resources.getString(R.string.server_port),
-                    emailTextView.text.toString(), passwordTextView.text.toString())
+                AuthService(this, ::afterHttpRequest).login(emailTextView.text.toString(), passwordTextView.text.toString())
             }
         }
 
@@ -43,29 +43,20 @@ class LoginActivity : AppCompatActivity(), HttpInterface {
         }
     }
 
-    override fun onPreExecute() {
-        runOnUiThread {
-            spinner.visibility = View.VISIBLE
-        }
-    }
-
-    override fun onPostExecute(json: String) {
+    private fun afterHttpRequest(statusCode: Int, json: String?) {
         runOnUiThread {
             spinner.visibility = View.INVISIBLE
+            if (statusCode != 200) {
+                Toast.makeText(applicationContext, "code: $statusCode\nmessage: $json", Toast.LENGTH_SHORT).show()
+            }
+        }
+        if (statusCode != 200) {
+            return
         }
 
         val token = Gson().fromJson(json, Token::class.java)
-        with(getSharedPreferences("MyToken", MODE_PRIVATE).edit()) {
-            putString("my_token", token.access_token)
-            apply()
-        }
+        AuthService(this, null).setToken(token.access_token)
         startActivity(Intent(this, MainActivity::class.java))
-    }
-
-    override fun onErrorExecute(code: Int, msg: String) {
-        runOnUiThread {
-            spinner.visibility = View.INVISIBLE
-            Toast.makeText(applicationContext,"code: $code\nmessage: $msg", Toast.LENGTH_SHORT).show()
-        }
+        finish()
     }
 }
