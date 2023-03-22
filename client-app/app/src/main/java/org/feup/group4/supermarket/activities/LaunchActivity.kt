@@ -1,16 +1,17 @@
 package org.feup.group4.supermarket.activities
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import org.feup.group4.supermarket.model.User
 import org.feup.group4.supermarket.service.UserService
-import kotlin.concurrent.thread
 
 
-class LaunchActivity : AppCompatActivity() {
+@SuppressLint("CustomSplashScreen")
+class LaunchActivity : Activity() {
     private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,17 +21,8 @@ class LaunchActivity : AppCompatActivity() {
         if (token == null) {
             startActivity(Intent(this, LoginActivity::class.java))
         } else {
-            thread(start = true) {
-                UserService(this, ::afterHttpRequest).getUser()
-            }
-
-            val mainIntent = Intent(this, MainActivity::class.java)
-            if ("org.feup.group4.supermarket.receipts" == intent.action) {
-                mainIntent.action = "org.feup.group4.supermarket.receipts"
-            }
-            startActivity(mainIntent)
+            UserService(this, ::afterHttpRequest).getUser()
         }
-        finish()
     }
 
     private fun afterHttpRequest(statusCode: Int, json: String?) {
@@ -44,7 +36,7 @@ class LaunchActivity : AppCompatActivity() {
             }
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
-            return;
+            return
         }
 
         this.user = Gson().fromJson(json, User::class.java)
@@ -56,5 +48,12 @@ class LaunchActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+
+        val mainIntent = Intent(this, MainActivity::class.java)
+        if ("org.feup.group4.supermarket.receipts" == intent.action) {
+            mainIntent.action = "org.feup.group4.supermarket.receipts"
+        }
+        startActivity(mainIntent)
+        finish()
     }
 }
