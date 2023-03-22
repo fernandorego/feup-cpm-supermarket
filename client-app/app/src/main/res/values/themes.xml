@@ -22,6 +22,6 @@
         <item name="windowSplashScreenBackground">@color/dark_blue</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splashscreen_animation</item>
         <item name="android:windowSplashScreenBehavior" tools:targetApi="33">icon_preferred</item>
-        <item name="postSplashScreenTheme">@style/TextAppearance.AppCompat.Display4</item>
+        <item name="postSplashScreenTheme">@style/Theme.ACMESupermarket</item>
     </style>
 </resources>
