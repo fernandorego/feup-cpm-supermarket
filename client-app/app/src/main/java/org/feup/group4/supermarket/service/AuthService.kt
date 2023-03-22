@@ -16,8 +16,8 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
     }
 
     fun login(email: String, password: String) =
-        post("/getToken", Gson().toJson(User(email, password, null, null)))
+        post("/getToken", Gson().toJson(User(email, password, null, null, null)))
 
     fun register(name: String, email: String, password: String) =
-        post("/register", Gson().toJson(User(email, password, name, null)))
+        post("/register", Gson().toJson(User(email, password, name, null, null)))
 }

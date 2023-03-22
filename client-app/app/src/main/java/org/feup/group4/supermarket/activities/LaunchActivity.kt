@@ -51,7 +51,8 @@ class LaunchActivity : AppCompatActivity() {
         runOnUiThread {
             Toast.makeText(
                 applicationContext,
-                "email: ${this.user.email}\nname: ${this.user.name}\nuser_img: ${this.user.user_img}",
+                "email: ${this.user.email}\nname: ${this.user.name}\nuser_img: ${this.user.user_img}\n" +
+                        "is_admin: ${this.user.is_admin}",
                 Toast.LENGTH_SHORT
             ).show()
         }

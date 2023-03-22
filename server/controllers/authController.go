@@ -16,7 +16,7 @@ func Register(context *gin.Context) {
 	database := db.GetDatabase()
 	usersCollection := database.Collection("users")
 
-	doc, err := models.GetUserFromJSON(context)
+	doc, err := models.CreateUserFromJSON(context)
 	if err != nil {
 		helpers.SetStatusBadRequest(context, err.Error())
 		return
@@ -34,7 +34,7 @@ func Register(context *gin.Context) {
 		return
 	}
 
-	provideToken(context, res.InsertedID.(primitive.ObjectID))
+	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin)
 	return
 }
 
@@ -59,12 +59,12 @@ func GenerateToken(context *gin.Context) {
 		return
 	}
 
-	provideToken(context, user.ID)
+	provideToken(context, user.ID, user.IsAdmin)
 	return
 }
 
-func provideToken(context *gin.Context, id primitive.ObjectID) {
-	token, err := helpers.GenerateToken(id)
+func provideToken(context *gin.Context, id primitive.ObjectID, isAdmin bool) {
+	token, err := helpers.GenerateToken(id, isAdmin)
 	if err != nil {
 		helpers.SetStatusInternalServerError(context, "error creating access token")
 		return
