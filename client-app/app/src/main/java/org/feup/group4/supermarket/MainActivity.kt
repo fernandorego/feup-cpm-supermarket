@@ -1,6 +1,7 @@
 package org.feup.group4.supermarket
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
@@ -40,5 +41,10 @@ class MainActivity : AppCompatActivity() {
         if ("org.feup.group4.supermarket.receipts" == intent.action) {
             navView.selectedItemId = R.id.navigation_receipts
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_main, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 }
