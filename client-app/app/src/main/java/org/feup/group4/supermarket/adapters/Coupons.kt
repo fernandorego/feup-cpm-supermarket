@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket
+package org.feup.group4.supermarket.adapters
 
 import android.app.Activity
 import android.content.Context
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import org.feup.group4.supermarket.R
 import java.time.LocalDate
 
 data class Coupon(
@@ -23,7 +24,8 @@ class CouponsAdapter(private val ctx: Context, private val coupons: ArrayList<Co
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(coupons[position]) {
-            holder.dueDate.text = ctx.getString(R.string.date_format,
+            holder.dueDate.text = ctx.getString(
+                R.string.date_format,
                 expiration.month.toString().substring(0,3), expiration.dayOfMonth)
         }
     }

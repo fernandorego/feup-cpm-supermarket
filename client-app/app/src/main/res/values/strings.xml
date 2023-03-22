@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">ACME Supermarket</string>
-    <string name="server_ip" translatable="false">192.168.0.4</string>
     <string name="title_home">Start</string>
     <string name="title_receipts">Receipts</string>
     <string name="home_hello">"Hey %s"</string>

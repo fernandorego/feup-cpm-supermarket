@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket
+package org.feup.group4.supermarket.activities
 
 import android.os.Bundle
 import android.view.Menu
@@ -9,10 +9,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

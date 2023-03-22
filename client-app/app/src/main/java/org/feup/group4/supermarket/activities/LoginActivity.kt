@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket
+package org.feup.group4.supermarket.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +9,9 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
+import org.feup.group4.supermarket.*
+import org.feup.group4.supermarket.model.Token
+import org.feup.group4.supermarket.service.AuthService
 import kotlin.concurrent.thread
 
 class LoginActivity : AppCompatActivity() {
@@ -36,9 +39,9 @@ class LoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         loginBtn.setOnClickListener {
+            spinner.visibility = View.VISIBLE
             thread(start = true) {
-                loginService(this, resources.getString(R.string.server_ip), 8000,
-                    emailTextView.text.toString(), passwordTextView.text.toString())
+                AuthService(this, ::afterLoginHttpRequest).login(emailTextView.text.toString(), passwordTextView.text.toString())
             }
         }
 
@@ -47,31 +50,19 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun setToken(json: String) {
-        val token = Gson().fromJson(json, Token::class.java)
-        with(getSharedPreferences("MyToken", MODE_PRIVATE).edit()) {
-            putString("my_token", token.access_token)
-            apply()
-        }
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
-    }
-
-    fun displayToast(msg: String, toastLenght: Int) {
-        runOnUiThread {
-            Toast.makeText(applicationContext,msg, toastLenght).show()
-        }
-    }
-
-    fun startSpinner() {
-        runOnUiThread {
-            spinner.visibility = View.VISIBLE
-        }
-    }
-
-    fun stopSpinner() {
+    private fun afterLoginHttpRequest(statusCode: Int, json: String?) {
         runOnUiThread {
             spinner.visibility = View.INVISIBLE
+            if (statusCode != 200) {
+                Toast.makeText(applicationContext, "code: $statusCode\nmessage: $json", Toast.LENGTH_SHORT).show()
+            }
         }
+        if (statusCode != 200) {
+            return
+        }
+
+        AuthService(this, null).setToken(Gson().fromJson(json, Token::class.java).access_token)
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

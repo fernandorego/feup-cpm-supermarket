@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="40dp"
     android:background="@color/dark_blue"
-    tools:context=".RegisterActivity">
+    tools:context=".activities.RegisterActivity">
 
     <EditText
         android:id="@+id/register_input_name"

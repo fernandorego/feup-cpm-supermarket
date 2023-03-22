@@ -8,7 +8,7 @@
         <intent
             android:action="org.feup.group4.supermarket.receipts"
             android:targetPackage="org.feup.group4.supermarket"
-            android:targetClass="org.feup.group4.supermarket.LaunchActivity" />
+            android:targetClass="org.feup.group4.supermarket.activities.LaunchActivity" />
     </shortcut>
     <!-- Specify more shortcuts here. -->
 </shortcuts>

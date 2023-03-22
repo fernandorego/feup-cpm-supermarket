@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket
+package org.feup.group4.supermarket.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.feup.group4.supermarket.adapters.CouponsAdapter
+import org.feup.group4.supermarket.R
+import org.feup.group4.supermarket.adapters.coupons
 
 class HomeFragment : Fragment() {
     override fun onCreateView(
