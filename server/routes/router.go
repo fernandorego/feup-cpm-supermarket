@@ -14,9 +14,17 @@ func NewRouter() *gin.Engine {
 	authRoutes := router.Group("/")
 	addAuthRoutes(authRoutes)
 
+	getUserRoute := router.Group("/getUser")
+	getUserRoute.Use(middlewares.AuthMiddleware())
+	addGetTokenRoute(getUserRoute)
+
 	userRoutes := router.Group("/user")
-	userRoutes.Use(middlewares.AuthMiddleware)
+	userRoutes.Use(middlewares.AuthUserMiddleware)
 	addUserRoutes(userRoutes)
+
+	adminRoutes := router.Group("/admin")
+	adminRoutes.Use(middlewares.AuthAdminMiddleware)
+	addAdminRoutes(adminRoutes)
 
 	return router
 }
