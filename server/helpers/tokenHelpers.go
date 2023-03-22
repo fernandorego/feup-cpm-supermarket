@@ -10,13 +10,15 @@ import (
 )
 
 type SignedDetails struct {
-	UserID primitive.ObjectID
+	UserID  primitive.ObjectID
+	IsAdmin bool
 	jwt.StandardClaims
 }
 
-func GenerateToken(userID primitive.ObjectID) (string, error) {
+func GenerateToken(userID primitive.ObjectID, isAdmin bool) (string, error) {
 	claims := SignedDetails{
-		UserID: userID,
+		UserID:  userID,
+		IsAdmin: isAdmin,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 		},

@@ -31,6 +31,7 @@ func GetUser(context *gin.Context) {
 		"name":     user.Name,
 		"email":    user.Email,
 		"user_img": user.UserImg,
+		"is_admin": user.IsAdmin,
 	})
 	return
 }
