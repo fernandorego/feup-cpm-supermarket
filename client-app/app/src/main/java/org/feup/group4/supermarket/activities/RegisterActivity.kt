@@ -1,14 +1,13 @@
 package org.feup.group4.supermarket.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Token
@@ -28,11 +27,6 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
         spinner.visibility = View.INVISIBLE
         spinner.isIndeterminate = true
-
-        supportActionBar?.setDisplayShowCustomEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.actionbar_background))
-        supportActionBar?.elevation = 0F
     }
 
     override fun onStart() {

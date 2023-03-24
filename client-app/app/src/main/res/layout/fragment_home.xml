@@ -35,14 +35,15 @@
 
     <TextView
         android:id="@+id/home_text_balance"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
         android:layout_marginTop="25dp"
         android:textSize="25sp"
         android:text="@string/home_balance"
         app:layout_constraintTop_toTopOf="@id/home_background"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/home_text_balance_value"/>
 
     <TextView
         android:id="@+id/home_text_balance_value"

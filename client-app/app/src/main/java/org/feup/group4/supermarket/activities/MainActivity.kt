@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -36,11 +35,6 @@ class MainActivity : AppCompatActivity() {
                 UserService(this, ::afterHttpRequest).getUser()
             }
         }
-
-        supportActionBar?.setDisplayShowCustomEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.actionbar_background))
-        supportActionBar?.elevation = 0F
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

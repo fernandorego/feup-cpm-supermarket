@@ -2,7 +2,7 @@
     <shortcut
         android:shortcutId="receipts"
         android:enabled="true"
-        android:icon="@drawable/shortcut_receipt_icon"
+        android:icon="@drawable/receipt"
         android:shortcutShortLabel="@string/title_receipts"
         android:shortcutLongLabel="@string/receipts_hello">
         <intent

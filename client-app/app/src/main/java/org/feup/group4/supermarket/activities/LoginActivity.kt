@@ -1,15 +1,15 @@
 package org.feup.group4.supermarket.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.DecelerateInterpolator
-import android.widget.*
-import androidx.core.content.ContextCompat
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import org.feup.group4.supermarket.*
+import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Token
 import org.feup.group4.supermarket.service.AuthService
 import kotlin.concurrent.thread
@@ -22,18 +22,11 @@ class LoginActivity : AppCompatActivity() {
     private val registerBtn: Button by lazy { findViewById(R.id.btn_register) }
     private val spinner: ProgressBar by lazy { findViewById(R.id.login_spinner) }
 
-    private val panel: ImageView by lazy { findViewById(R.id.panel) }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         spinner.visibility = View.INVISIBLE
         spinner.isIndeterminate = true
-
-        supportActionBar?.setDisplayShowCustomEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.actionbar_background))
-        supportActionBar?.elevation = 0F
     }
 
     override fun onStart() {
