@@ -66,7 +66,9 @@
             android:inputType="textPassword"
             android:minHeight="48dp"
             android:paddingVertical="15dp"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:imeOptions="actionDone"
+            android:imeActionLabel="@string/onboarding_login"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

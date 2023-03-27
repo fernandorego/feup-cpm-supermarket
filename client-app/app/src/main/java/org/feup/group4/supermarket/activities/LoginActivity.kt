@@ -3,6 +3,7 @@ package org.feup.group4.supermarket.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -40,6 +41,14 @@ class LoginActivity : AppCompatActivity() {
 
         registerBtn.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
+        }
+
+        passwordTextView.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                loginBtn.callOnClick()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
         }
     }
 
