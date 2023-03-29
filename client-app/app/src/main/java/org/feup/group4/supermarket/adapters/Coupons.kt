@@ -13,7 +13,7 @@ data class Coupon(
     var expiration: LocalDate
 )
 
-var coupons = ArrayList<Coupon>()
+val coupons = ArrayList<Coupon>()
 
 class CouponsAdapter(private val ctx: Context, private val coupons: ArrayList<Coupon>): RecyclerView.Adapter<CouponsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

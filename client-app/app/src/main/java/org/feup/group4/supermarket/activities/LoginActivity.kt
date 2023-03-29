@@ -20,7 +20,7 @@ class LoginActivity : AppCompatActivity() {
     private val passwordTextView: TextView by lazy { findViewById(R.id.login_input_password) }
 
     private val loginBtn: Button by lazy { findViewById(R.id.btn_login) }
-    private val registerBtn: Button by lazy { findViewById(R.id.btn_register) }
+    private val registerBtn: TextView by lazy { findViewById(R.id.btn_register) }
     private val spinner: ProgressBar by lazy { findViewById(R.id.login_spinner) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
