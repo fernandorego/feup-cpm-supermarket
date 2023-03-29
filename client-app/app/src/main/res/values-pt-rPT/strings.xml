@@ -7,7 +7,7 @@
     <string name="home_coupons">Cupões</string>
     <string name="home_fab">Nova Compra</string>
     <string name="onboarding_login">Login</string>
-    <string name="onboarding_registration">Registo</string>
+    <string name="onboarding_registration">Não tens conta? <u>Regista-te</u></string>
     <string name="onboarding_register">Registar</string>
     <string name="onboarding_name">Nome</string>
     <string name="onboarding_email">Email</string>
