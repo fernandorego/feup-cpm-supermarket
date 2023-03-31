@@ -12,8 +12,10 @@ import org.feup.group4.supermarket.adapters.CouponsAdapter
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.activities.MainActivity
 import org.feup.group4.supermarket.adapters.coupons
+import org.feup.group4.supermarket.model.User
 
 class HomeFragment : Fragment() {
+    private val user: User = MainActivity.user
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.fragment_home, container, false)
@@ -21,10 +23,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val homeHelloTv:TextView = view.findViewById(R.id.home_text_hello)
-        homeHelloTv.text = getString(R.string.home_hello, MainActivity.user.name)
+        homeHelloTv.text = getString(R.string.home_hello, this.user.name)
 
         val homeBalanceValueTv:TextView = view.findViewById(R.id.home_text_balance_value)
-        homeBalanceValueTv.text = getString(R.string.home_balance_value, MainActivity.user.accumulated_value)
+        homeBalanceValueTv.text = getString(R.string.home_balance_value, this.user.accumulated_value)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_coupons_list)
         val emptyRecyclerView = view.findViewById<TextView>(R.id.empty_recyclerview)
