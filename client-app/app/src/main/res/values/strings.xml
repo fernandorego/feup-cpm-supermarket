@@ -4,6 +4,7 @@
     <string name="title_receipts">Receipts</string>
     <string name="home_hello">"Hey %s"</string>
     <string name="home_balance">Accumulated balance</string>
+    <string name="home_balance_value" translatable="false">"%.2f€"</string>
     <string name="home_coupons">Coupons</string>
     <string name="home_fab">New Purchase</string>
     <string name="onboarding_login">Login</string>
@@ -15,6 +16,6 @@
     <string name="receipts_hello">Previous Purchases</string>
     <string name="coupons_expiration">Valid until:</string>
     <string name="date_format" translatable="false">"%s %d"</string>
-    <string name="home_empty_recyclerview">Get a 10% discount coupon for every 100€ spent</string>
+    <string name="home_empty_recyclerview">Get a 15% discount coupon for every 100€ spent</string>
     <string name="appbar_menu_account">Account</string>
 </resources>

@@ -10,17 +10,20 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.databinding.ActivityMainBinding
 import org.feup.group4.supermarket.model.User
 import org.feup.group4.supermarket.service.UserService
-import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var user: User
+    private val companion = Companion
     private lateinit var binding: ActivityMainBinding
+    companion object {
+        lateinit var user: User
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -30,11 +33,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {
-            thread(start = true) {
-                UserService(this, ::afterHttpRequest).getUser()
+            runBlocking(Dispatchers.Default) {
+                UserService(this@MainActivity, ::afterHttpRequest).getUser()
             }
         }
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -68,12 +70,12 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        this.user = Gson().fromJson(json, User::class.java)
+        this.companion.user = Gson().fromJson(json, User::class.java)
         runOnUiThread {
             Toast.makeText(
                 applicationContext,
-                "email: ${this.user.email}\nname: ${this.user.name}\nuser_img: ${this.user.user_img}\n" +
-                        "is_admin: ${this.user.is_admin}",
+                "email: ${this.companion.user.email}\nname: ${this.companion.user.name}\nuser_img: ${this.companion.user.user_img}\n" +
+                        "is_admin: ${this.companion.user.is_admin}\naccumulated_value: ${this.companion.user.accumulated_value}\n",
                 Toast.LENGTH_SHORT
             ).show()
         }

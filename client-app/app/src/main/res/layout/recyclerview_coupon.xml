@@ -16,7 +16,7 @@
             android:id="@+id/iv_coupon"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ten_percent_discount"/>
+            android:src="@drawable/fifteen_percent_discount"/>
 
         <LinearLayout
             android:layout_width="0dp"
