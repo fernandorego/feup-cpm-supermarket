@@ -21,6 +21,8 @@ import org.feup.group4.supermarket.service.UserService
 
 class MainActivity : AppCompatActivity() {
     private val homeHelloTv: TextView by lazy { findViewById(R.id.home_text_hello) }
+    private val homeBalanceValueTv: TextView by lazy { findViewById(R.id.home_text_balance_value) }
+
     private lateinit var user: User
     private lateinit var binding: ActivityMainBinding
 
@@ -53,6 +55,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         homeHelloTv.text = getString(R.string.home_hello, this.user.name!!)
+        homeBalanceValueTv.text = getString(R.string.home_balance_value, this.user.accumulated_value!!)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -79,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(
                 applicationContext,
                 "email: ${this.user.email}\nname: ${this.user.name}\nuser_img: ${this.user.user_img}\n" +
-                        "is_admin: ${this.user.is_admin}",
+                        "is_admin: ${this.user.is_admin}\naccumulated_value: ${this.user.accumulated_value}\n",
                 Toast.LENGTH_SHORT
             ).show()
         }

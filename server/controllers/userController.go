@@ -28,10 +28,11 @@ func GetUser(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, gin.H{
-		"name":     user.Name,
-		"email":    user.Email,
-		"user_img": user.UserImg,
-		"is_admin": user.IsAdmin,
+		"name":              user.Name,
+		"email":             user.Email,
+		"accumulated_value": user.AccumulatedValue,
+		"user_img":          user.UserImg,
+		"is_admin":          user.IsAdmin,
 	})
 	return
 }
