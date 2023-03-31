@@ -1,0 +1,14 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="receipts"
+        android:enabled="true"
+        android:icon="@drawable/receipt"
+        android:shortcutShortLabel="@string/title_receipts"
+        android:shortcutLongLabel="@string/receipts_hello">
+        <intent
+            android:action="org.feup.group4.supermarket.receipts"
+            android:targetPackage="org.feup.group4.supermarket"
+            android:targetClass="org.feup.group4.supermarket.activities.MainActivity" />
+    </shortcut>
+    <!-- Specify more shortcuts here. -->
+</shortcuts>

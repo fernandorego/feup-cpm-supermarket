@@ -1,13 +1,14 @@
 package org.feup.group4.supermarket.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Token
@@ -42,6 +43,14 @@ class RegisterActivity : AppCompatActivity() {
                     passwordTextView.text.toString()
                 )
             }
+        }
+
+        passwordTextView.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                registerBtn.callOnClick()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
         }
     }
 

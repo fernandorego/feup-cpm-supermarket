@@ -1,7 +1,6 @@
 package org.feup.group4.supermarket.service
 
 import android.content.Context
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import org.feup.group4.supermarket.R
 import java.io.DataOutputStream

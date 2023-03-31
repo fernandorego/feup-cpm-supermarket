@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">Início</string>
+    <string name="title_receipts">Faturas</string>
+    <string name="home_hello">"Olá %s"</string>
+    <string name="home_balance">Saldo no cartão</string>
+    <string name="home_coupons">Cupões</string>
+    <string name="home_fab">Nova Compra</string>
+    <string name="onboarding_login">Login</string>
+    <string name="onboarding_registration">Não tens conta? <u>Regista-te</u></string>
+    <string name="onboarding_register">Registar</string>
+    <string name="onboarding_name">Nome</string>
+    <string name="onboarding_email">Email</string>
+    <string name="onboarding_password">Password</string>
+    <string name="receipts_hello">Compras Passadas</string>
+</resources>
