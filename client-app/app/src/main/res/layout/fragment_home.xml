@@ -26,12 +26,12 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
         android:layout_marginVertical="8dp"
-        android:textSize="35sp"
-        android:text="Hey João"
+        android:text="Hey"
         android:textColor="#FFFFFF"
+        android:textSize="35sp"
         app:layout_constraintBottom_toTopOf="@id/home_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/home_text_balance"
@@ -50,10 +50,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
+        android:text="€"
         android:textSize="25sp"
-        android:text="7.35€"
-        app:layout_constraintTop_toTopOf="@id/home_text_balance"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/home_text_balance" />
 
     <TextView
         android:id="@+id/home_text_coupons"

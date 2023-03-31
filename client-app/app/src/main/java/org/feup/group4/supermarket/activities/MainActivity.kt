@@ -3,6 +3,7 @@ package org.feup.group4.supermarket.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -10,15 +11,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.databinding.ActivityMainBinding
 import org.feup.group4.supermarket.model.User
 import org.feup.group4.supermarket.service.UserService
-import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
+    private val homeHelloTv: TextView by lazy { findViewById(R.id.home_text_hello) }
     private lateinit var user: User
     private lateinit var binding: ActivityMainBinding
 
@@ -30,11 +32,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {
-            thread(start = true) {
-                UserService(this, ::afterHttpRequest).getUser()
+            runBlocking(Dispatchers.Default) {
+                UserService(this@MainActivity, ::afterHttpRequest).getUser()
             }
         }
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -47,6 +48,11 @@ class MainActivity : AppCompatActivity() {
         if (intent.action == "org.feup.group4.supermarket.receipts") {
             binding.navView.selectedItemId = R.id.navigation_receipts
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        homeHelloTv.text = getString(R.string.home_hello, this.user.name!!)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
