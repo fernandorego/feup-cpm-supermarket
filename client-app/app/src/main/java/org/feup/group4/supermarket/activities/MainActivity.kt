@@ -26,8 +26,7 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        val token = UserService(this, null).getToken()
-        if (token == null) {
+        if (UserService(this, null).getToken() == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {
@@ -39,18 +38,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-        val navController = navHostFragment.navController
-        val appBarConfiguration = AppBarConfiguration(
+        setupActionBarWithNavController(navHostFragment.navController, AppBarConfiguration(
             setOf(R.id.navigation_home, R.id.navigation_receipts)
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        ))
+        binding.navView.setupWithNavController(navHostFragment.navController)
 
         if (intent.action == "org.feup.group4.supermarket.receipts") {
-            navView.selectedItemId = R.id.navigation_receipts
+            binding.navView.selectedItemId = R.id.navigation_receipts
         }
     }
 
