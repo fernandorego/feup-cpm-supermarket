@@ -3,7 +3,6 @@ package org.feup.group4.supermarket.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -20,11 +19,11 @@ import org.feup.group4.supermarket.model.User
 import org.feup.group4.supermarket.service.UserService
 
 class MainActivity : AppCompatActivity() {
-    private val homeHelloTv: TextView by lazy { findViewById(R.id.home_text_hello) }
-    private val homeBalanceValueTv: TextView by lazy { findViewById(R.id.home_text_balance_value) }
-
-    private lateinit var user: User
+    private val companion = Companion
     private lateinit var binding: ActivityMainBinding
+    companion object {
+        lateinit var user: User
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -52,12 +51,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        homeHelloTv.text = getString(R.string.home_hello, this.user.name!!)
-        homeBalanceValueTv.text = getString(R.string.home_balance_value, this.user.accumulated_value!!)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main, menu)
         return super.onCreateOptionsMenu(menu)
@@ -77,12 +70,12 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        this.user = Gson().fromJson(json, User::class.java)
+        this.companion.user = Gson().fromJson(json, User::class.java)
         runOnUiThread {
             Toast.makeText(
                 applicationContext,
-                "email: ${this.user.email}\nname: ${this.user.name}\nuser_img: ${this.user.user_img}\n" +
-                        "is_admin: ${this.user.is_admin}\naccumulated_value: ${this.user.accumulated_value}\n",
+                "email: ${this.companion.user.email}\nname: ${this.companion.user.name}\nuser_img: ${this.companion.user.user_img}\n" +
+                        "is_admin: ${this.companion.user.is_admin}\naccumulated_value: ${this.companion.user.accumulated_value}\n",
                 Toast.LENGTH_SHORT
             ).show()
         }

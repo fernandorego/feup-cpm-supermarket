@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.adapters.CouponsAdapter
 import org.feup.group4.supermarket.R
+import org.feup.group4.supermarket.activities.MainActivity
 import org.feup.group4.supermarket.adapters.coupons
 
 class HomeFragment : Fragment() {
@@ -19,6 +20,12 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val homeHelloTv:TextView = view.findViewById(R.id.home_text_hello)
+        homeHelloTv.text = getString(R.string.home_hello, MainActivity.user.name)
+
+        val homeBalanceValueTv:TextView = view.findViewById(R.id.home_text_balance_value)
+        homeBalanceValueTv.text = getString(R.string.home_balance_value, MainActivity.user.accumulated_value)
+
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_coupons_list)
         val emptyRecyclerView = view.findViewById<TextView>(R.id.empty_recyclerview)
 
