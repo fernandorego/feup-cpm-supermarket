@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread {
             Toast.makeText(
                 applicationContext,
-                "email: ${this.companion.user.email}\nname: ${this.companion.user.name}\nuser_img: ${this.companion.user.user_img}\n" +
+                "nickname: ${this.companion.user.nickname}\nname: ${this.companion.user.name}\nuser_img: ${this.companion.user.user_img}\n" +
                         "is_admin: ${this.companion.user.is_admin}\naccumulated_value: ${this.companion.user.accumulated_value}\n",
                 Toast.LENGTH_SHORT
             ).show()

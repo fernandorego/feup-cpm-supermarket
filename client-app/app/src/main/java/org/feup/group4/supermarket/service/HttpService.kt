@@ -18,13 +18,13 @@ open class HttpService protected constructor(
     private val afterRequest: AfterRequest? = null
 ) {
     companion object {
-        const val tokenStore = "keystore"
+        const val keyStore = "keystore"
         const val tokenStoreKey = "access_token"
     }
 
     fun getToken(): String? {
         val sharedPreferences =
-            context.getSharedPreferences(tokenStore, AppCompatActivity.MODE_PRIVATE)
+            context.getSharedPreferences(keyStore, AppCompatActivity.MODE_PRIVATE)
         return sharedPreferences.getString(tokenStoreKey, null)
     }
 
@@ -37,6 +37,7 @@ open class HttpService protected constructor(
         request(HttpRequestMethod.DELETE, "$urlRoute/$objectId")
 
     private fun request(requestMethod: HttpRequestMethod, urlRoute: String, body: String? = null) {
+        println(body)
         val baseAddress = context.resources.getString(R.string.server_ip)
         val port = context.resources.getString(R.string.server_port)
         val url = URL("http://$baseAddress:$port$urlRoute")
