@@ -1,7 +1,6 @@
 package org.feup.group4.supermarket.service
 
 import android.content.Context
-import android.security.KeyPairGeneratorSpec
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.appcompat.app.AppCompatActivity
@@ -9,47 +8,50 @@ import com.google.gson.Gson
 import org.feup.group4.supermarket.model.Card
 import org.feup.group4.supermarket.model.User
 import java.math.BigInteger
-import java.security.KeyPair
 import java.security.KeyPairGenerator
-import java.security.KeyStore
 import java.security.PublicKey
 import javax.security.auth.x500.X500Principal
-
-object CryptoConstants {
-    const val KEY_SIZE = 512
-    const val ANDROID_KEYSTORE = "AndroidKeyStore"
-    const val KEYNAME = "key_id"
-    const val SERIALNR = 1234567890L
-}
 
 class AuthService(context: Context, afterRequest: AfterRequest?) :
     HttpService(context, afterRequest) {
 
+    companion object {
+        const val KEY_SIZE = 512
+        const val ANDROID_KEYSTORE = "AndroidKeyStore"
+        const val KEYNAME = "key_id"
+        const val SERIALNR = 1234567890L
+
+        const val serverPublicKey = "server_public_key"
+    }
+
     private fun generateKeyPair(): PublicKey {
         val parameterSpec: KeyGenParameterSpec = KeyGenParameterSpec.Builder(
-            CryptoConstants.KEYNAME,
+            KEYNAME,
             KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
         ).run {
             setDigests(KeyProperties.DIGEST_SHA512, KeyProperties.DIGEST_SHA256)
-            setKeySize(CryptoConstants.KEY_SIZE)
-            setCertificateSerialNumber(BigInteger.valueOf(CryptoConstants.SERIALNR))
-            setCertificateSubject(X500Principal("CN=" + CryptoConstants.KEYNAME))
+            setKeySize(KEY_SIZE)
+            setCertificateSerialNumber(BigInteger.valueOf(SERIALNR))
+            setCertificateSubject(X500Principal("CN=$KEYNAME"))
             build()
         }
         KeyPairGenerator.getInstance(
             KeyProperties.KEY_ALGORITHM_RSA,
-            CryptoConstants.ANDROID_KEYSTORE
+            ANDROID_KEYSTORE
         ).run {
             initialize(parameterSpec)
             return generateKeyPair().public
         }
     }
 
-    fun setToken(token: String) {
+    fun setToken(token: String) = setValue(tokenStoreKey, token)
+    fun setServerPublicKey(key: String) = setValue(serverPublicKey, key)
+
+    private fun setValue(name: String, value: String) {
         val sharedPreferences =
             context.getSharedPreferences(keyStore, AppCompatActivity.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        editor.putString(tokenStoreKey, token)
+        editor.putString(name, value)
         editor.apply()
     }
 

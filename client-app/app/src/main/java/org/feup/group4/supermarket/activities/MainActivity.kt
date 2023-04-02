@@ -22,7 +22,8 @@ class MainActivity : AppCompatActivity() {
     private val companion = Companion
     private lateinit var binding: ActivityMainBinding
     companion object {
-        lateinit var user: User
+        // initialized here to avoid uninitialized errors when app goes to login activity
+        var user: User = User("","", null, null, null, null, null, null)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +67,6 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
             startActivity(Intent(this, LoginActivity::class.java))
-            this.companion.user = User("","", null, null, null, null, null, null)
             finish()
             return
         }
