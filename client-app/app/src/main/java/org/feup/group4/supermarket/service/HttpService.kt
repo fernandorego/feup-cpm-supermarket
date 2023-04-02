@@ -37,7 +37,6 @@ open class HttpService protected constructor(
         request(HttpRequestMethod.DELETE, "$urlRoute/$objectId")
 
     private fun request(requestMethod: HttpRequestMethod, urlRoute: String, body: String? = null) {
-        println(body)
         val baseAddress = context.resources.getString(R.string.server_ip)
         val port = context.resources.getString(R.string.server_port)
         val url = URL("http://$baseAddress:$port$urlRoute")

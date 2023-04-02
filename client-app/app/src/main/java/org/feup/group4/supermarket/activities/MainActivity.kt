@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
             startActivity(Intent(this, LoginActivity::class.java))
+            this.companion.user = User("","", null, null, null, null, null, null)
             finish()
             return
         }
