@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/google/uuid"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -10,6 +11,7 @@ import (
 
 type User struct {
 	ID               primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	UUID             uuid.UUID          `json:"uuid"`
 	Nickname         string             `json:"nickname" validate:"required,min=3"`
 	Password         string             `json:"password" validate:"required,min=6"`
 	Name             string             `json:"name" validate:"required,min=3,max=100"`
