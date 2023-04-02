@@ -36,9 +36,7 @@ func CreateUserFromJSON(context *gin.Context) (*User, error) {
 	user.AccumulatedValue = 0
 	user.UserImg = nil
 	user.CreatedAt = time.Now()
-	user.Card.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
-	user.Card.UpdatedAt = time.Now()
 	return user, nil
 }
 

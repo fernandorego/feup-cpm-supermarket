@@ -3,8 +3,6 @@ package controllers
 import (
 	"github.com/google/uuid"
 	"net/http"
-	"os"
-
 	"server/db"
 	"server/helpers"
 	"server/models"
@@ -36,7 +34,7 @@ func Register(context *gin.Context) {
 		helpers.SetStatusInternalServerError(context, "error inserting user into collection")
 		return
 	}
-	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin, gin.H{"user_uuid": doc.UUID.String(), "server_key": os.Getenv("PUBLIC_KEY")})
+	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin)
 	return
 }
 
@@ -61,20 +59,16 @@ func GenerateToken(context *gin.Context) {
 		return
 	}
 
-	provideToken(context, user.ID, user.IsAdmin, gin.H{})
+	provideToken(context, user.ID, user.IsAdmin)
 	return
 }
 
-func provideToken(context *gin.Context, id primitive.ObjectID, isAdmin bool, args map[string]interface{}) {
+func provideToken(context *gin.Context, id primitive.ObjectID, isAdmin bool) {
 	token, err := helpers.GenerateToken(id, isAdmin)
 	if err != nil {
 		helpers.SetStatusInternalServerError(context, "error creating access token")
 		return
 	}
-	json := gin.H{"access_token": token}
-	for key, value := range args {
-		json[key] = value
-	}
-	context.JSON(http.StatusOK, json)
+	context.JSON(http.StatusOK, gin.H{"access_token": token})
 	return
 }
