@@ -22,7 +22,7 @@ func Register(context *gin.Context) {
 		return
 	}
 
-	if !(helpers.IsUnique(context, usersCollection, bson.M{"email": doc.Email}, "this email already exists")) {
+	if !(helpers.IsUnique(context, usersCollection, bson.M{"nickname": doc.Nickname}, "this nickname already exists")) {
 		return
 	}
 
@@ -49,8 +49,8 @@ func GenerateToken(context *gin.Context) {
 	}
 
 	var user models.User
-	if err = usersCollection.FindOne(context, bson.M{"email": credentials.Email}).Decode(&user); err != nil {
-		helpers.SetStatusBadRequest(context, "user with provided email does not exist")
+	if err = usersCollection.FindOne(context, bson.M{"nickname": credentials.Nickname}).Decode(&user); err != nil {
+		helpers.SetStatusBadRequest(context, "user with provided nickname does not exist")
 		return
 	}
 

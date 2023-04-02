@@ -1,18 +1,20 @@
 package models
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"time"
 
+	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type User struct {
 	ID               primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	Name             string             `json:"name" validate:"required,min=3,max=100"`
-	Email            string             `json:"email" validate:"email,required"`
+	Nickname         string             `json:"nickname" validate:"required,min=3"`
 	Password         string             `json:"password" validate:"required,min=6"`
+	Name             string             `json:"name" validate:"required,min=3,max=100"`
+	Card             Card               `json:"card" validate:"required"`
+	PublicKey        string             `json:"public_key" validate:"required"`
 	AccumulatedValue float64            `json:"accumulated_value"`
 	IsAdmin          bool               `json:"is_admin"`
 	UserImg          *string            `json:"user_img"`
@@ -32,12 +34,14 @@ func CreateUserFromJSON(context *gin.Context) (*User, error) {
 	user.AccumulatedValue = 0
 	user.UserImg = nil
 	user.CreatedAt = time.Now()
+	user.Card.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
+	user.Card.UpdatedAt = time.Now()
 	return user, nil
 }
 
 type UserCredentials struct {
-	Email    string `json:"email" validate:"email,required"`
+	Nickname string `json:"nickname" validate:"required,min=3"`
 	Password string `json:"password" validate:"required,min=6"`
 }
 

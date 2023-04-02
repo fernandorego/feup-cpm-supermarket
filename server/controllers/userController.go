@@ -29,7 +29,7 @@ func GetUser(context *gin.Context) {
 
 	context.JSON(http.StatusOK, gin.H{
 		"name":              user.Name,
-		"email":             user.Email,
+		"nickname":          user.Nickname,
 		"accumulated_value": user.AccumulatedValue,
 		"user_img":          user.UserImg,
 		"is_admin":          user.IsAdmin,
