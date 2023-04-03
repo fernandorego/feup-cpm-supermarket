@@ -28,8 +28,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/onboarding_password"
-        android:imeActionLabel="@string/onboarding_register"
-        android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:paddingVertical="15dp"
@@ -62,7 +60,8 @@
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textSize="20sp"
-        app:backgroundTint="#FFFFFF" />
+        app:backgroundTint="#FFFFFF"
+        android:imeOptions="actionNext"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -83,7 +82,8 @@
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textSize="20sp"
-            app:backgroundTint="#FFFFFF" />
+            app:backgroundTint="#FFFFFF"
+            android:imeOptions="actionNext"/>
 
         <EditText
             android:id="@+id/register_input_card_month"
@@ -98,7 +98,8 @@
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textSize="20sp"
-            app:backgroundTint="#FFFFFF" />
+            app:backgroundTint="#FFFFFF"
+            android:imeOptions="actionNext"/>
 
         <TextView
             android:id="@+id/textView3"
@@ -121,7 +122,9 @@
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textSize="20sp"
-            app:backgroundTint="#FFFFFF" />
+            app:backgroundTint="#FFFFFF"
+            android:imeActionLabel="@string/onboarding_register"
+            android:imeOptions="actionDone"/>
     </LinearLayout>
 
     <Button
