@@ -1,8 +1,9 @@
 package controllers
 
 import (
+	"github.com/google/uuid"
 	"net/http"
-
+	"os"
 	"server/db"
 	"server/helpers"
 	"server/models"
@@ -22,19 +23,19 @@ func Register(context *gin.Context) {
 		return
 	}
 
-	if !(helpers.IsUnique(context, usersCollection, bson.M{"email": doc.Email}, "this email already exists")) {
+	if !(helpers.IsUnique(context, usersCollection, bson.M{"nickname": doc.Nickname}, "this nickname already exists")) {
 		return
 	}
 
 	doc.Password = helpers.HashPassword(doc.Password)
+	doc.UUID = uuid.New()
 
 	res, err := usersCollection.InsertOne(context, doc)
 	if err != nil {
 		helpers.SetStatusInternalServerError(context, "error inserting user into collection")
 		return
 	}
-
-	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin)
+	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin, gin.H{})
 	return
 }
 
@@ -49,8 +50,8 @@ func GenerateToken(context *gin.Context) {
 	}
 
 	var user models.User
-	if err = usersCollection.FindOne(context, bson.M{"email": credentials.Email}).Decode(&user); err != nil {
-		helpers.SetStatusBadRequest(context, "user with provided email does not exist")
+	if err = usersCollection.FindOne(context, bson.M{"nickname": credentials.Nickname}).Decode(&user); err != nil {
+		helpers.SetStatusBadRequest(context, "user with provided nickname does not exist")
 		return
 	}
 
@@ -59,16 +60,20 @@ func GenerateToken(context *gin.Context) {
 		return
 	}
 
-	provideToken(context, user.ID, user.IsAdmin)
+	provideToken(context, user.ID, user.IsAdmin, gin.H{"server_public_key": os.Getenv("PUBLIC_KEY")})
 	return
 }
 
-func provideToken(context *gin.Context, id primitive.ObjectID, isAdmin bool) {
+func provideToken(context *gin.Context, id primitive.ObjectID, isAdmin bool, args map[string]interface{}) {
 	token, err := helpers.GenerateToken(id, isAdmin)
 	if err != nil {
 		helpers.SetStatusInternalServerError(context, "error creating access token")
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{"access_token": token})
+	json := gin.H{"access_token": token}
+	for key, value := range args {
+		json[key] = value
+	}
+	context.JSON(http.StatusOK, json)
 	return
 }

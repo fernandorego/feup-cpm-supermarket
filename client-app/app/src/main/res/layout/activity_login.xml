@@ -44,17 +44,17 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
-            android:id="@+id/login_input_email"
+            android:id="@+id/login_input_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/onboarding_email"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#FFFFFF"
             android:backgroundTint="#FFFFFF"
-            android:inputType="textEmailAddress"
+            android:hint="@string/onboarding_nickname"
+            android:inputType="textShortMessage"
             android:minHeight="48dp"
             android:paddingVertical="15dp"
-            android:textSize="20sp"/>
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/login_input_password"

@@ -17,8 +17,12 @@ import kotlin.concurrent.thread
 
 class RegisterActivity : AppCompatActivity() {
     private val nameTextView: TextView by lazy { findViewById(R.id.register_input_name) }
-    private val emailTextView: TextView by lazy { findViewById(R.id.register_input_email) }
+    private val nicknameTextView: TextView by lazy { findViewById(R.id.register_input_nickname) }
     private val passwordTextView: TextView by lazy { findViewById(R.id.register_input_password) }
+    private val cardTextView: TextView by lazy { findViewById(R.id.register_input_card) }
+    private val cardCvvTextView: TextView by lazy { findViewById(R.id.register_input_card_ccv) }
+    private val cardMonthTextView: TextView by lazy { findViewById(R.id.register_input_card_month) }
+    private val cardYearTextView: TextView by lazy { findViewById(R.id.register_input_card_year) }
 
     private val registerBtn: Button by lazy { findViewById(R.id.btn_register) }
     private val spinner: ProgressBar by lazy { findViewById(R.id.register_spinner) }
@@ -39,13 +43,16 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 AuthService(this, ::afterRegisterHttpRequest).register(
                     nameTextView.text.toString(),
-                    emailTextView.text.toString(),
-                    passwordTextView.text.toString()
+                    nicknameTextView.text.toString(),
+                    passwordTextView.text.toString(),
+                    cardTextView.text.toString(),
+                    cardCvvTextView.text.toString(),
+                    cardMonthTextView.text.toString() + "/" + cardYearTextView.text.toString()
                 )
             }
         }
 
-        passwordTextView.setOnEditorActionListener { _, actionId, _ ->
+        cardYearTextView.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 registerBtn.callOnClick()
                 return@setOnEditorActionListener true
