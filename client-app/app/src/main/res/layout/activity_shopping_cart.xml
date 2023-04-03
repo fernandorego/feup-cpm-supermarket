@@ -19,45 +19,35 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/background" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/shopping_cart_subtotal"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/shopping_cart_subtotal"
+        android:textColor="#FFFFFF"
+        android:textSize="35sp"
         android:layout_marginHorizontal="25dp"
         android:layout_marginVertical="8dp"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/shopping_cart_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/shopping_cart_subtotal_value"/>
 
-        <TextView
-            android:id="@+id/shopping_cart_subtotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/shopping_cart_subtotal"
-            android:textColor="#FFFFFF"
-            android:textSize="35sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/shopping_cart_subtotal_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/shopping_cart_values"
-            android:textAlignment="textEnd"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/shopping_cart_subtotal_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:text="@string/shopping_cart_values"
+        android:textColor="#FFFFFF"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toBottomOf="@id/shopping_cart_subtotal"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shopping_cart_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="@+id/shopping_cart_background" />
 
@@ -72,33 +62,32 @@
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/shopping_cart_background" />
 
-    <LinearLayout
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/shopping_cart_checkout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/shopping_cart_add"
+        android:layout_marginVertical="30dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+
+        android:text="@string/shopping_cart_checkout"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:backgroundTint="@color/dark_blue" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/shopping_cart_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/shopping_cart_checkout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toEndOf="@id/shopping_cart_checkout"
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/shopping_cart_checkout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="@string/shopping_cart_checkout"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            app:backgroundTint="@color/dark_blue" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/shopping_cart_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-
-            android:contentDescription="@string/shopping_cart_add"
-            android:src="@drawable/add"
-            app:backgroundTint="@color/dark_blue"
-            app:tint="#FFFFFF" />
-    </LinearLayout>
+        android:contentDescription="@string/shopping_cart_add"
+        android:src="@drawable/add"
+        app:backgroundTint="@color/dark_blue"
+        app:tint="#FFFFFF" />
 </androidx.constraintlayout.widget.ConstraintLayout>
