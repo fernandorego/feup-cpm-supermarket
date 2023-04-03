@@ -16,4 +16,8 @@
     <string name="coupons_expiration">Valido até:</string>
     <string name="home_empty_recyclerview">Recebe um cupão de 15% de desconto por cada 100€ em compras</string>
     <string name="appbar_menu_account">Conta</string>
+    <string name="shopping_cart_subtotal">Subtotal</string>
+    <string name="shopping_cart_empty_cart">O teu carrinho está vazio. Começa a adicionar produtos.</string>
+    <string name="shopping_cart_checkout">Finalizar</string>
+    <string name="shopping_cart_add">Adicionar ao carrinho</string>
 </resources>

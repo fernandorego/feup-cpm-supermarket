@@ -18,4 +18,9 @@
     <string name="date_format" translatable="false">"%s %d"</string>
     <string name="home_empty_recyclerview">Get a 15% discount coupon for every 100€ spent</string>
     <string name="appbar_menu_account">Account</string>
+    <string name="shopping_cart_subtotal">Subtotal</string>
+    <string name="shopping_cart_values" translatable="false">.2f€</string>
+    <string name="shopping_cart_empty_cart">Your cart is empty. Start adding products.</string>
+    <string name="shopping_cart_checkout">Checkout</string>
+    <string name="shopping_cart_add">Add to cart</string>
 </resources>
