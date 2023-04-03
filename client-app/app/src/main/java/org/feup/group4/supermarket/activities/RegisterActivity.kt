@@ -52,7 +52,7 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        passwordTextView.setOnEditorActionListener { _, actionId, _ ->
+        cardYearTextView.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 registerBtn.callOnClick()
                 return@setOnEditorActionListener true
