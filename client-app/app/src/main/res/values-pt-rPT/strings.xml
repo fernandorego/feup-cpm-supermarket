@@ -21,4 +21,7 @@
     <string name="shopping_cart_checkout">Finalizar</string>
     <string name="shopping_cart_add">Adicionar ao carrinho</string>
     <string name="item_units">unidades</string>
+    <string name="payment_card">Pagamento com cartão</string>
+    <string name="payment_balance">Usar saldo</string>
+    <string name="payment_coupon">Usar cupão</string>
 </resources>
