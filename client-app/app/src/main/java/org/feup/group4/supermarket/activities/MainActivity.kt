@@ -14,17 +14,14 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.feup.group4.supermarket.R
-import org.feup.group4.supermarket.databinding.ActivityMainBinding
+import org.feup.group4.supermarket.activities.client.ClientActivity
+import org.feup.group4.supermarket.activities.terminal.TerminalActivity
+import org.feup.group4.supermarket.databinding.ActivityClientMainBinding
 import org.feup.group4.supermarket.model.User
 import org.feup.group4.supermarket.service.UserService
 
 class MainActivity : AppCompatActivity() {
-    private val companion = Companion
-    private lateinit var binding: ActivityMainBinding
-    companion object {
-        // initialized here to avoid uninitialized errors when app goes to login activity
-        var user: User = User("","", null, null, null, null, null, null)
-    }
+    private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -37,24 +34,8 @@ class MainActivity : AppCompatActivity() {
             runBlocking(Dispatchers.Default) {
                 UserService(this@MainActivity, ::afterHttpRequest).getUser()
             }
+            finish()
         }
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-        setupActionBarWithNavController(navHostFragment.navController, AppBarConfiguration(
-            setOf(R.id.navigation_home, R.id.navigation_receipts)
-        ))
-        binding.navView.setupWithNavController(navHostFragment.navController)
-
-        if (intent.action == "org.feup.group4.supermarket.receipts") {
-            binding.navView.selectedItemId = R.id.navigation_receipts
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.activity_main, menu)
-        return super.onCreateOptionsMenu(menu)
     }
 
     private fun afterHttpRequest(statusCode: Int, json: String?) {
@@ -71,14 +52,25 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        this.companion.user = Gson().fromJson(json, User::class.java)
+        user = Gson().fromJson(json, User::class.java)
+        if (user.is_admin == true) {
+            startActivity(
+                Intent(this, TerminalActivity::class.java).putExtra("JSON_USER", json)
+            )
+        } else {
+            startActivity(
+                Intent(this, ClientActivity::class.java).putExtra("JSON_USER", json)
+                    .setAction(intent.action)
+            )
+        }
         runOnUiThread {
             Toast.makeText(
                 applicationContext,
-                "nickname: ${this.companion.user.nickname}\nname: ${this.companion.user.name}\nuser_img: ${this.companion.user.user_img}\n" +
-                        "is_admin: ${this.companion.user.is_admin}\naccumulated_value: ${this.companion.user.accumulated_value}\n",
+                "nickname: ${user.nickname}\nname: ${user.name}\nuser_img: ${user.user_img}\n" +
+                        "is_admin: ${user.is_admin}\naccumulated_value: ${user.accumulated_value}\n",
                 Toast.LENGTH_SHORT
             ).show()
         }
+        return
     }
 }

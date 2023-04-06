@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment"
+    tools:context=".fragments.TerminalProductsFragment"
     android:background="@color/dark_blue">
 
     <ImageView
@@ -17,64 +17,30 @@
         android:src="@drawable/rounded_rectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:tint="@color/background" />
 
     <TextView
-        android:id="@+id/home_text_hello"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
         android:layout_marginVertical="8dp"
-        android:text="@string/home_hello"
+        android:text="Products"
         android:textColor="#FFFFFF"
         android:textSize="35sp"
         app:layout_constraintBottom_toTopOf="@id/home_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/home_text_balance"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginTop="25dp"
-        android:textSize="25sp"
-        android:text="@string/home_balance"
-        app:layout_constraintTop_toTopOf="@id/home_background"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/home_text_balance_value"/>
-
-    <TextView
-        android:id="@+id/home_text_balance_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:text="@string/home_balance_value"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/home_text_balance" />
-
-    <TextView
-        android:id="@+id/home_text_coupons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginTop="20dp"
-        android:textSize="25sp"
-        android:text="@string/home_coupons"
-        app:layout_constraintTop_toBottomOf="@id/home_text_balance"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_coupons_list"
+        android:id="@+id/home_products_list"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/home_text_coupons"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/home_background"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="visible"/>
 
@@ -82,7 +48,7 @@
         android:id="@+id/empty_recyclerview"
         android:layout_width="0dp"
         android:layout_height="130dp"
-        android:text="@string/home_empty_recyclerview"
+        android:text="Start adding products"
         android:textSize="25sp"
         android:textColor="#FFFFFF"
         android:background="@drawable/rounded_rectangle"
@@ -91,7 +57,7 @@
         android:paddingHorizontal="15dp"
         android:layout_marginHorizontal="15dp"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/home_text_coupons"
+        app:layout_constraintTop_toTopOf="@id/home_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="gone"/>
@@ -102,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         app:icon="@drawable/add"
-        android:text="@string/home_fab"
+        android:text="New product"
         android:textSize="20sp"
         app:iconTint="#FFFFFF"
         android:textColor="#FFFFFF"

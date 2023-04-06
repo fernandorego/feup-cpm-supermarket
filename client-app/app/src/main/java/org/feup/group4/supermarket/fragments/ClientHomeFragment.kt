@@ -11,14 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.adapters.CouponsAdapter
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.activities.MainActivity
+import org.feup.group4.supermarket.activities.client.ClientActivity
 import org.feup.group4.supermarket.adapters.coupons
 import org.feup.group4.supermarket.model.User
 
-class HomeFragment : Fragment() {
-    private val user: User = MainActivity.user
+class ClientHomeFragment : Fragment() {
+    private val user: User = ClientActivity.user
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_home, container, false)
+    ): View = inflater.inflate(R.layout.fragment_client_home, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

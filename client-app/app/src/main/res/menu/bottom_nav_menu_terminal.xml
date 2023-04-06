@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_products"
+        android:icon="@drawable/navigation_home_selector"
+        android:title="@string/title_products" />
+
+    <item
+        android:id="@+id/navigation_checkout"
+        android:icon="@drawable/navigation_receipts_selector"
+        android:title="@string/title_checkout" />
+
+</menu>

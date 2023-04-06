@@ -22,4 +22,6 @@
     <string name="date_format" translatable="false">"%s %d"</string>
     <string name="home_empty_recyclerview">Get a 15% discount coupon for every 100€ spent</string>
     <string name="appbar_menu_account">Account</string>
+    <string name="title_products">Products</string>
+    <string name="title_checkout">Checkout</string>
 </resources>
