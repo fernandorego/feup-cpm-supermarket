@@ -1,23 +1,16 @@
 package org.feup.group4.supermarket.activities.client
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import org.feup.group4.supermarket.R
-import org.feup.group4.supermarket.activities.LoginActivity
 import org.feup.group4.supermarket.databinding.ActivityClientMainBinding
 import org.feup.group4.supermarket.model.User
-import org.feup.group4.supermarket.service.UserService
 
 class ClientActivity : AppCompatActivity() {
     private lateinit var binding: ActivityClientMainBinding

@@ -8,10 +8,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.feup.group4.supermarket.adapters.CouponsAdapter
 import org.feup.group4.supermarket.R
-import org.feup.group4.supermarket.activities.MainActivity
 import org.feup.group4.supermarket.activities.client.ClientActivity
+import org.feup.group4.supermarket.adapters.CouponsAdapter
 import org.feup.group4.supermarket.adapters.coupons
 import org.feup.group4.supermarket.model.User
 

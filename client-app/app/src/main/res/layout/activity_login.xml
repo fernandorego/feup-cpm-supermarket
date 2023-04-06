@@ -47,7 +47,7 @@
             android:id="@+id/login_input_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FFFFFF"
+            app:backgroundTint="#FFFFFF"
             android:hint="@string/onboarding_nickname"
             android:inputType="textShortMessage"
             android:minHeight="48dp"

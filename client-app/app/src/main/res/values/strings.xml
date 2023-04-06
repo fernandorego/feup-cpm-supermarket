@@ -24,4 +24,7 @@
     <string name="appbar_menu_account">Account</string>
     <string name="title_products">Products</string>
     <string name="title_checkout">Checkout</string>
+    <string name="products_hello">Generate Products</string>
+    <string name="products_empty_recyclerview">Start generating product codes</string>
+    <string name="products_new_product">New product</string>
 </resources>

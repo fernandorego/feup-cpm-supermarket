@@ -20,4 +20,7 @@
     <string name="onboarding_year">AA</string>
     <string name="title_products">Products</string>
     <string name="title_checkout">Checkout</string>
+    <string name="products_hello">Gerar Produtos</string>
+    <string name="products_empty_recyclerview">Começa a gerar códigos de produtos</string>
+    <string name="products_new_product">Novo produto</string>
 </resources>
