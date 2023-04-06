@@ -37,5 +37,4 @@ func GetUser(context *gin.Context) {
 		"user_img":          user.UserImg,
 		"is_admin":          user.IsAdmin,
 	})
-	return
 }
