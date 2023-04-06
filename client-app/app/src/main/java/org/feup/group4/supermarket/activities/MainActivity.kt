@@ -22,7 +22,8 @@ class MainActivity : AppCompatActivity() {
     private val companion = Companion
     private lateinit var binding: ActivityMainBinding
     companion object {
-        lateinit var user: User
+        // initialized here to avoid uninitialized errors when app goes to login activity
+        var user: User = User("","", null, null, null, null, null, null)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread {
             Toast.makeText(
                 applicationContext,
-                "email: ${this.companion.user.email}\nname: ${this.companion.user.name}\nuser_img: ${this.companion.user.user_img}\n" +
+                "nickname: ${this.companion.user.nickname}\nname: ${this.companion.user.name}\nuser_img: ${this.companion.user.user_img}\n" +
                         "is_admin: ${this.companion.user.is_admin}\naccumulated_value: ${this.companion.user.accumulated_value}\n",
                 Toast.LENGTH_SHORT
             ).show()

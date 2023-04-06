@@ -44,12 +44,12 @@
         app:layout_constraintTop_toTopOf="@id/panel">
 
         <EditText
-            android:id="@+id/login_input_email"
+            android:id="@+id/login_input_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFFFF"
-            android:hint="@string/onboarding_email"
-            android:inputType="textEmailAddress"
+            android:hint="@string/onboarding_nickname"
+            android:inputType="textShortMessage"
             android:minHeight="48dp"
             android:paddingVertical="15dp"
             android:textColor="#FFFFFF"

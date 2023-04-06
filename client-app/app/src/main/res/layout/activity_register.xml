@@ -1,55 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark_blue"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="40dp"
-    android:background="@color/dark_blue"
     tools:context=".activities.RegisterActivity">
 
     <EditText
-        android:id="@+id/register_input_name"
+        android:id="@+id/register_input_nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:hint="@string/onboarding_nickname"
+        android:inputType="textShortMessage"
         android:minHeight="48dp"
         android:paddingVertical="15dp"
-        android:hint="@string/onboarding_name"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        app:backgroundTint="#FFFFFF"
-        android:textSize="20sp" />
-
-    <EditText
-        android:id="@+id/register_input_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/onboarding_email"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
-        app:backgroundTint="#FFFFFF"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp"
-        android:paddingVertical="15dp"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:backgroundTint="#FFFFFF" />
 
     <EditText
         android:id="@+id/register_input_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/onboarding_password"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
-        app:backgroundTint="#FFFFFF"
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:paddingVertical="15dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         android:textSize="20sp"
-        android:imeOptions="actionDone"
-        android:imeActionLabel="@string/onboarding_register"/>
+        app:backgroundTint="#FFFFFF" />
+
+    <EditText
+        android:id="@+id/register_input_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/onboarding_name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:paddingVertical="15dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="20sp"
+        app:backgroundTint="#FFFFFF" />
+
+    <EditText
+        android:id="@+id/register_input_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/onboarding_card"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:paddingVertical="15dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="20sp"
+        app:backgroundTint="#FFFFFF"
+        android:imeOptions="actionNext"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/register_input_card_ccv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="100dp"
+            android:layout_weight="3"
+            android:hint="@string/onboarding_ccv"
+            android:inputType="number"
+            android:maxLength="3"
+            android:minHeight="48dp"
+            android:paddingVertical="15dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="20sp"
+            app:backgroundTint="#FFFFFF"
+            android:imeOptions="actionNext"/>
+
+        <EditText
+            android:id="@+id/register_input_card_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:hint="@string/onboarding_month"
+            android:inputType="number"
+            android:maxLength="2"
+            android:minHeight="48dp"
+            android:paddingVertical="15dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="20sp"
+            app:backgroundTint="#FFFFFF"
+            android:imeOptions="actionNext"/>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/register_input_card_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:hint="@string/onboarding_year"
+            android:inputType="number"
+            android:maxLength="2"
+            android:minHeight="48dp"
+            android:paddingVertical="15dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="20sp"
+            app:backgroundTint="#FFFFFF"
+            android:imeActionLabel="@string/onboarding_register"
+            android:imeOptions="actionDone"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_register"
@@ -58,7 +136,7 @@
         android:layout_marginVertical="10dp"
         android:backgroundTint="@color/light_blue"
         android:text="@string/onboarding_register"
-        android:textColor="#000000"/>
+        android:textColor="#000000" />
 
     <ProgressBar
         android:id="@+id/register_spinner"

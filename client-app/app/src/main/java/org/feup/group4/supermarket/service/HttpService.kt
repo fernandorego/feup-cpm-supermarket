@@ -18,13 +18,13 @@ open class HttpService protected constructor(
     private val afterRequest: AfterRequest? = null
 ) {
     companion object {
-        const val tokenStore = "keystore"
+        const val keyStore = "keystore"
         const val tokenStoreKey = "access_token"
     }
 
     fun getToken(): String? {
         val sharedPreferences =
-            context.getSharedPreferences(tokenStore, AppCompatActivity.MODE_PRIVATE)
+            context.getSharedPreferences(keyStore, AppCompatActivity.MODE_PRIVATE)
         return sharedPreferences.getString(tokenStoreKey, null)
     }
 
