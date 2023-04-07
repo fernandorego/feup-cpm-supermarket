@@ -70,24 +70,24 @@
         android:id="@+id/shopping_cart_checkout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/shopping_cart_add"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/shopping_cart_add"
-        android:layout_marginVertical="30dp"
         app:layout_constraintHorizontal_chainStyle="packed"
 
         android:text="@string/shopping_cart_checkout"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:backgroundTint="@color/dark_blue" />
+        app:backgroundTint="@color/dark_blue"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/shopping_cart_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/shopping_cart_checkout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginVertical="30dp"
         app:layout_constraintStart_toEndOf="@id/shopping_cart_checkout"
 
         android:contentDescription="@string/shopping_cart_add"
