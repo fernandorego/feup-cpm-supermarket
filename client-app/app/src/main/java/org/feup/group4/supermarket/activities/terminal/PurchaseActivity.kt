@@ -1,19 +1,41 @@
 package org.feup.group4.supermarket.activities.terminal
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.adapters.ProductsAdapter
 import org.feup.group4.supermarket.model.Purchase
 
+
 class PurchaseActivity : AppCompatActivity() {
     private val purchase = Purchase()
+    private val adapter = ProductsAdapter(this, purchase.products)
 
-    private val recyclerView: RecyclerView by lazy {findViewById(R.id.shopping_cart_items)}
-    private val emptyRecyclerView: TextView by lazy {findViewById(R.id.empty_recyclerview)}
+    private val recyclerView: RecyclerView by lazy { findViewById(R.id.shopping_cart_items) }
+    private val emptyRecyclerView: TextView by lazy { findViewById(R.id.empty_recyclerview) }
+
+    private val qrCodeScannerLauncher: ActivityResultLauncher<ScanOptions> =
+        registerForActivityResult(
+            ScanContract()
+        ) { result ->
+            if (result.contents == null) {
+                Toast.makeText(this, resources.getString(R.string.scan_qr_error), Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Scanned: " + result.contents,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +49,16 @@ class PurchaseActivity : AppCompatActivity() {
             emptyRecyclerView.visibility = View.GONE
         }
 
-        val adapter = ProductsAdapter(this, purchase.products)
         recyclerView.adapter = adapter
+
+        val scanButton = findViewById<FloatingActionButton>(R.id.shopping_cart_add)
+        scanButton.setOnClickListener {
+            val scanOptions = ScanOptions()
+            scanOptions.setOrientationLocked(false)
+            scanOptions.setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+            scanOptions.setPrompt(resources.getString(R.string.scan_product_qr))
+            qrCodeScannerLauncher.launch(scanOptions)
+        }
     }
 
     override fun onStart() {

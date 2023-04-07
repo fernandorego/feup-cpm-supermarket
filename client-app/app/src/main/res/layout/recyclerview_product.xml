@@ -56,7 +56,6 @@
         app:layout_constraintEnd_toEndOf="@id/item_name"
         app:layout_constraintStart_toEndOf="@id/item_quantity" />
 
-
     <ImageButton
         android:id="@+id/item_remove"
         android:layout_width="48dp"
