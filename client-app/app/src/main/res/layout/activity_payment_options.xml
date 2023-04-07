@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="15dp"
-        android:text="@string/shopping_cart_values"
+        android:text="@string/price_format"
         android:textColor="#FFFFFF"
         android:textSize="45sp"
         app:layout_constraintEnd_toEndOf="parent"

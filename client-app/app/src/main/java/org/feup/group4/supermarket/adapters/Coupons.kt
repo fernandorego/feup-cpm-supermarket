@@ -7,11 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
+import org.feup.group4.supermarket.model.Coupon
 import java.time.LocalDate
-
-data class Coupon(
-    var expiration: LocalDate
-)
 
 val coupons = ArrayList<Coupon>()
 
