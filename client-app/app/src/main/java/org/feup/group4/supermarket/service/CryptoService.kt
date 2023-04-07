@@ -71,6 +71,7 @@ class CryptoService(context: Context) {
             ANDROID_KEYSTORE
         ).run {
             initialize(parameterSpec)
+            sharedPreferencesService.setValue("client_public_key", generateKeyPair().public.encoded.toString())
             return generateKeyPair()
         }
     }
