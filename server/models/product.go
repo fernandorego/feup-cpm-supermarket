@@ -10,13 +10,14 @@ import (
 type Product struct {
 	UUID  uuid.UUID `json:"uuid"`
 	Name  string    `json:"name" validate:"required"`
-	Price float32   `json:"price" validate:"required"`
+	Euros int       `json:"euros" validate:"required"`
+	Cents int       `json:"cents" validate:"required"`
 	Image string    `json:"image"`
 }
 
-func CreateProductFromJSONString(jsonProduct string) (*Product, error) {
+func CreateProductFromJSONString(jsonProduct []byte) (*Product, error) {
 	product := new(Product)
-	if err := json.Unmarshal([]byte(jsonProduct), &product); err != nil {
+	if err := json.Unmarshal(jsonProduct, &product); err != nil {
 		return nil, err
 	}
 	if err := validator.New().Struct(product); err != nil {

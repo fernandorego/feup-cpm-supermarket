@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"net/http"
 	database "server/db"
 	"server/helpers"
@@ -17,7 +19,15 @@ func CreateUpdateProduct(context *gin.Context) {
 	db := database.GetDatabase()
 	productsCollection := db.Collection("products")
 
-	encodedJSON := context.GetString("hash")
+	b64Message := context.MustGet("b64Message")
+
+	encodedJSON := make([]byte, base64.StdEncoding.DecodedLen(len(b64Message.([]byte))))
+	_, err := base64.StdEncoding.Decode(encodedJSON, b64Message.([]byte))
+	if err != nil {
+		helpers.SetStatusBadRequest(context, "invalid JSON encoding")
+		return
+	}
+
 	doc, err := models.CreateProductFromJSONString(encodedJSON)
 	if err != nil {
 		helpers.SetStatusBadRequest(context, err.Error())
@@ -53,7 +63,20 @@ func GetProduct(context *gin.Context) {
 	var product models.Product
 	doc.Decode(&product)
 
-	context.JSON(http.StatusOK, product)
+	jsonProduct, _ := json.Marshal(product)
+	b64Product := make([]byte, base64.StdEncoding.EncodedLen(len(jsonProduct)))
+	base64.StdEncoding.Encode(b64Product, jsonProduct)
+
+	encryptedProduct, err := helpers.EncryptMessage(b64Product)
+	if err != nil {
+		helpers.SetStatusInternalServerError(context, "error encrypting product")
+		return
+	}
+
+	b64EncryptedProduct := make([]byte, base64.StdEncoding.EncodedLen(len(encryptedProduct)))
+	base64.StdEncoding.Encode(b64EncryptedProduct, encryptedProduct)
+
+	context.JSON(http.StatusOK, b64EncryptedProduct)
 }
 
 func GetProducts(context *gin.Context) {
@@ -80,5 +103,3 @@ func GetProducts(context *gin.Context) {
 
 	context.JSON(http.StatusOK, products)
 }
-
-// TODO: generate a qr code of the signed product information

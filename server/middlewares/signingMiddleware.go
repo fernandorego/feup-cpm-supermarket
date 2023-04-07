@@ -1,11 +1,7 @@
 package middlewares
 
 import (
-	"crypto"
-	"crypto/rsa"
-	"crypto/sha256"
-	"crypto/x509"
-	"encoding/pem"
+	"encoding/base64"
 	"server/helpers"
 	"server/models"
 
@@ -14,15 +10,22 @@ import (
 )
 
 func VerifySignature(context *gin.Context) {
-	encodedJSON, exists := context.Get("hash")
+	b64Message, exists := context.Get("b64Message")
 	if !exists {
 		helpers.SetStatusBadRequest(context, "missing string encoded JSON object")
 		return
 	}
 
-	signature, exists := context.Get("signature")
+	b64Signature, exists := context.Get("b64Signature")
 	if !exists {
 		helpers.SetStatusBadRequest(context, "missing string encoded signature")
+		return
+	}
+
+	signature := make([]byte, base64.StdEncoding.DecodedLen(len(b64Signature.([]byte))))
+	_, err := base64.StdEncoding.Decode(signature, b64Signature.([]byte))
+	if err != nil {
+		helpers.SetStatusBadRequest(context, "invalid signature encoding")
 		return
 	}
 
@@ -32,18 +35,15 @@ func VerifySignature(context *gin.Context) {
 		return
 	}
 
-	pubKeyString, _ := pem.Decode([]byte(user.PublicKey))
-	pubKey, err := x509.ParsePKCS1PublicKey(pubKeyString.Bytes)
+	pubKey, err := helpers.LoadPublicKey([]byte(user.PublicKey))
 	if err != nil {
-		helpers.SetStatusInternalServerError(context, "couldn't parse user pubkey")
+		helpers.SetStatusInternalServerError(context, "couldn't load public key")
 		return
 	}
-	hash := sha256.New()
-	hash.Write([]byte(encodedJSON.(string)))
-	d := hash.Sum(nil)
-	err = rsa.VerifyPKCS1v15(pubKey, crypto.SHA256, d, []byte(signature.(string)))
+
+	err = helpers.VerifySignature(b64Message.([]byte), signature, pubKey)
 	if err != nil {
-		helpers.SetStatusBadRequest(context, "signatures don't match")
+		helpers.SetStatusUnauthorized(context, "invalid signature")
 		return
 	}
 
