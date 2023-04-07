@@ -1,8 +1,9 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
 	"server/middlewares"
+
+	"github.com/gin-gonic/gin"
 )
 
 func NewRouter() *gin.Engine {
@@ -15,7 +16,7 @@ func NewRouter() *gin.Engine {
 	addAuthRoutes(authRoutes)
 
 	getUserRoute := router.Group("/getUser")
-	getUserRoute.Use(middlewares.AuthMiddleware())
+	getUserRoute.Use(middlewares.AuthMiddleware)
 	addGetTokenRoute(getUserRoute)
 
 	userRoutes := router.Group("/user")

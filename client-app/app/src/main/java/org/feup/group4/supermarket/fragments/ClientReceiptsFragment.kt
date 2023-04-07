@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.feup.group4.supermarket.R
 
-class ReceiptsFragment : Fragment() {
+class ClientReceiptsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_receipts, container, false)
+    ): View = inflater.inflate(R.layout.fragment_client_receipts, container, false)
 }
