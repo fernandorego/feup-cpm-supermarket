@@ -18,4 +18,5 @@
     <string name="home_empty_recyclerview">Recebe um cupão de 15% de desconto por cada 100€ em compras</string>
     <string name="appbar_menu_account">Conta</string>
     <string name="onboarding_year">AA</string>
+    <string name="receipts_empty_recyclerview">Sem compras prévias. Começa uma agora!</string>
 </resources>
