@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ReceiptsFragment"
+    tools:context=".fragments.ClientReceiptsFragment"
     android:background="@color/dark_blue">
 
     <ImageView
@@ -53,7 +53,7 @@
         android:textSize="25sp"
         android:textColor="#FFFFFF"
         android:background="@drawable/rounded_rectangle"
-        android:backgroundTint="@color/dark_blue"
+        app:backgroundTint="@color/dark_blue"
         android:layout_marginTop="20dp"
         android:paddingHorizontal="15dp"
         android:layout_marginHorizontal="15dp"

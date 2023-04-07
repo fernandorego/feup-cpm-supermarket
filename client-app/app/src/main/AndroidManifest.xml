@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.terminal.PurchaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.RegisterActivity"
             android:exported="false"
             android:parentActivityName=".activities.LoginActivity" />
@@ -23,14 +26,23 @@
             android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.client.ClientActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.terminal.TerminalActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.ACMESupermarket.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data android:name="android.app.shortcuts"
+
+            <meta-data
+                android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
     </application>

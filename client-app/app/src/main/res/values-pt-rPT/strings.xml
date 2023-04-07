@@ -17,6 +17,21 @@
     <string name="coupons_expiration">Valido até:</string>
     <string name="home_empty_recyclerview">Recebe um cupão de 15% de desconto por cada 100€ em compras</string>
     <string name="appbar_menu_account">Conta</string>
+    <string name="shopping_cart_subtotal">Subtotal</string>
+    <string name="shopping_cart_empty_cart">O teu carrinho está vazio. Começa a adicionar produtos.</string>
+    <string name="shopping_cart_checkout">Finalizar</string>
+    <string name="shopping_cart_add">Adicionar ao carrinho</string>
+    <string name="item_units">unidade(s)</string>
+    <string name="payment_card">Pagamento com cartão</string>
+    <string name="payment_balance">Usar saldo</string>
+    <string name="payment_coupon">Usar cupão</string>
     <string name="onboarding_year">AA</string>
+    <string name="title_products">Produtos</string>
+    <string name="title_checkout">Checkout</string>
+    <string name="products_hello">Gerar Produtos</string>
+    <string name="products_empty_recyclerview">Começa a gerar códigos de produtos</string>
+    <string name="products_new_product">Novo produto</string>
+    <string name="scan_product_qr">Aponte a câmara para o código QR do produto</string>
+    <string name="scan_qr_error">Erro ao ler o código QR</string>
     <string name="receipts_empty_recyclerview">Sem compras prévias. Começa uma agora!</string>
 </resources>

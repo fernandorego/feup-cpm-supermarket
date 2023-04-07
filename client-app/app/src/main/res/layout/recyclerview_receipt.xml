@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
         android:layout_marginVertical="20dp"
-        android:text="@string/home_balance_value"
+        android:text="@string/money_format"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
         app:layout_constraintTop_toTopOf="parent"

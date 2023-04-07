@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/onboarding"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/dark_blue"
     tools:context=".activities.LoginActivity">
 
@@ -12,25 +12,25 @@
         android:id="@+id/produce_img"
         android:layout_width="match_parent"
         android:layout_height="310dp"
-        android:src="@drawable/produce_section"
         android:alpha=".7"
         android:scaleType="fitXY"
-        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/produce_section"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/panel"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:src="@drawable/rounded_rectangle"
-        app:tint="@color/dark_blue"
         android:layout_marginTop="-30dp"
         android:layout_marginBottom="-50dp"
-        app:layout_constraintTop_toBottomOf="@id/produce_img"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/rounded_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/produce_img"
+        app:tint="@color/dark_blue" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,16 +38,16 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="40dp"
-        app:layout_constraintTop_toTopOf="@id/panel"
-        app:layout_constraintStart_toStartOf="@id/panel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/panel"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="@id/panel"
+        app:layout_constraintTop_toTopOf="@id/panel">
 
         <EditText
             android:id="@+id/login_input_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FFFFFF"
+            app:backgroundTint="#FFFFFF"
             android:hint="@string/onboarding_nickname"
             android:inputType="textShortMessage"
             android:minHeight="48dp"
@@ -61,24 +61,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/onboarding_password"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#FFFFFF"
-            app:backgroundTint="#FFFFFF"
+            android:imeActionLabel="@string/onboarding_login"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:minHeight="48dp"
             android:paddingVertical="15dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
             android:textSize="20sp"
-            android:imeOptions="actionDone"
-            android:imeActionLabel="@string/onboarding_login"/>
+            app:backgroundTint="#FFFFFF" />
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:backgroundTint="@color/light_blue"
             android:text="@string/onboarding_login"
-            android:textColor="#000000"
-            android:backgroundTint="@color/light_blue"/>
+            android:textColor="#000000" />
 
         <ProgressBar
             android:id="@+id/login_spinner"
@@ -89,17 +89,17 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/btn_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/onboarding_registration"
-            android:textColor="#ffffff"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:text="@string/onboarding_registration"
+            android:textColor="#ffffff" />
 
     </LinearLayout>
 

@@ -20,12 +20,26 @@ open class HttpService protected constructor(
     companion object {
         const val keyStore = "keystore"
         const val tokenStoreKey = "access_token"
+        const val serverPublicKeyStoreKey = "server_public_key"
+        const val clientPrivateKeyStoreKey = "client_private_key"
     }
 
     fun getToken(): String? {
         val sharedPreferences =
             context.getSharedPreferences(keyStore, AppCompatActivity.MODE_PRIVATE)
         return sharedPreferences.getString(tokenStoreKey, null)
+    }
+
+    protected fun getServerPublicKey(): String? {
+        val sharedPreferences =
+            context.getSharedPreferences(keyStore, AppCompatActivity.MODE_PRIVATE)
+        return sharedPreferences.getString(serverPublicKeyStoreKey, null)
+    }
+
+    protected fun getClientPrivateKey(): String? {
+        val sharedPreferences =
+            context.getSharedPreferences(keyStore, AppCompatActivity.MODE_PRIVATE)
+        return sharedPreferences.getString(clientPrivateKeyStoreKey, null)
     }
 
     protected fun get(urlRoute: String) = request(HttpRequestMethod.GET, urlRoute)
