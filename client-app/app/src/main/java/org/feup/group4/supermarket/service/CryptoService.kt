@@ -3,13 +3,9 @@ package org.feup.group4.supermarket.service
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import android.util.Log
 import java.math.BigInteger
-import java.security.KeyFactory
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.PrivateKey
-import java.security.PublicKey
-import java.security.Signature
+import java.security.*
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
@@ -18,6 +14,10 @@ import javax.security.auth.x500.X500Principal
 class CryptoService(context: Context) {
     private val sharedPreferencesService =
         SharedPreferencesService(context, SharedPreferencesService.Companion.KeyStore.CRYPTO.value)
+    private val androidKeyStore = KeyStore.getInstance(ANDROID_KEYSTORE).apply {
+        load(null)
+    }
+
 
     companion object {
         const val KEY_SIZE = 512
@@ -71,10 +71,7 @@ class CryptoService(context: Context) {
             ANDROID_KEYSTORE
         ).run {
             initialize(parameterSpec)
-            val keyPair = generateKeyPair()
-            // sharedPreferencesService.setValue("public_key", keyPair.public.encoded.toString())
-            // sharedPreferencesService.setValue("private_key", keyPair.private.encoded.toString())
-            return keyPair
+            return generateKeyPair()
         }
     }
 
@@ -92,10 +89,6 @@ class CryptoService(context: Context) {
     }
 
     private fun getClientPrivateKey(): PrivateKey {
-        val privateKeyString =
-            sharedPreferencesService.sharedPreferences.getString("private_key", null)
-        val keySpec = PKCS8EncodedKeySpec(privateKeyString?.toByteArray(Charsets.UTF_8))
-        val keyFactory = KeyFactory.getInstance("RSA")
-        return keyFactory.generatePrivate(keySpec)
+       return androidKeyStore.getKey(KEY_NAME, null) as PrivateKey
     }
 }

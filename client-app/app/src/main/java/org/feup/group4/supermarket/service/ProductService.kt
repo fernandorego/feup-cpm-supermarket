@@ -2,6 +2,7 @@ package org.feup.group4.supermarket.service
 
 import android.content.Context
 import android.util.Base64
+import android.util.Log
 import java.util.UUID
 import java.util.logging.Logger
 
@@ -10,7 +11,7 @@ class ProductService(val context: Context) {
         var encryptedProduct: ByteArray
         fun afterRequest(statusCode: Int, body: String?) {
             if (statusCode != 200) {
-                Logger.getLogger("ProductService").warning("Error getting product: $body")
+                Log.w("ProductService","Error getting product: $body")
             }
 
             // Decode Base64 string
@@ -38,7 +39,7 @@ class ProductService(val context: Context) {
         val signedProduct = cryptoService.signMessage(unsignedProduct)
         fun afterRequest(statusCode: Int, body: String?) {
             if (statusCode != 200) {
-                Logger.getLogger("ProductService").warning("Error creating product: $body")
+                Log.w("ProductService", "Error creating product: $body")
             }
 
         }
