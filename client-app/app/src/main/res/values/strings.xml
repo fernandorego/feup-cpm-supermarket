@@ -25,7 +25,7 @@
     <string name="title_products">Products</string>
     <string name="title_checkout">Checkout</string>
     <string name="products_hello">Generate Products</string>
-    <string name="products_empty_recyclerview">Start generating product codes</string>
+    <string name="products_empty_recyclerview">Start generating products</string>
     <string name="products_new_product">New product</string>
     <string name="shopping_cart_subtotal">Subtotal</string>
     <string name="shopping_cart_empty_cart">Your cart is empty. Start adding products.</string>
@@ -37,4 +37,10 @@
     <string name="payment_coupon">Apply coupon</string>
     <string name="scan_product_qr">Point the camera to the product\'s QR Code</string>
     <string name="scan_qr_error">Error while scanning QR Code</string>
+    <string name="checkout_mode_home_background" translatable="false">Checkout Mode Home Background</string>
+    <string name="generate_products_home_background" translatable="false">Generate Products Home Background</string>
+    <string name="checkout_mode">Checkout Mode</string>
+    <string name="scan_qr_code">Scan QR</string>
+    <string name="approach_phone_nfc">Put your phone close to the terminal to complete your purchase</string>
+    <string name="use_nfc">Use NFC</string>
 </resources>

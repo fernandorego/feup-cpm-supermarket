@@ -33,4 +33,8 @@
     <string name="products_new_product">Novo produto</string>
     <string name="scan_product_qr">Aponte a câmara para o código QR do produto</string>
     <string name="scan_qr_error">Erro ao ler o código QR</string>
+    <string name="checkout_mode">Modo Checkout</string>
+    <string name="scan_qr_code">Ler QR</string>
+    <string name="approach_phone_nfc">Aproxime o seu smartphone do termina para concluir a sua compra</string>
+    <string name="use_nfc">Usar NFC</string>
 </resources>
