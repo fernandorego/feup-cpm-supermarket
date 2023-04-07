@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ACMESupermarket"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="33">
         <activity
             android:name=".activities.client.PurchaseActivity"
             android:exported="false" />

@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket.fragments
+package org.feup.group4.supermarket.fragments.client
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,7 +16,7 @@ import org.feup.group4.supermarket.adapters.CouponsAdapter
 import org.feup.group4.supermarket.adapters.coupons
 import org.feup.group4.supermarket.model.User
 
-class ClientHomeFragment : Fragment() {
+class HomeFragment : Fragment() {
     private val user: User = ClientActivity.user
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

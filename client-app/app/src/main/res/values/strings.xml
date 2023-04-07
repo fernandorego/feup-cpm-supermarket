@@ -43,4 +43,9 @@
     <string name="scan_qr_code">Scan QR</string>
     <string name="approach_phone_nfc">Put your phone close to the terminal to complete your purchase</string>
     <string name="use_nfc">Use NFC</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="product_name">Product name</string>
+    <string name="product_cost">Product cost</string>
+    <string name="invalid_product_fields">Invalid product fields</string>
 </resources>

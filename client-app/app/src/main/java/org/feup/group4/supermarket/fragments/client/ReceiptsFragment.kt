@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket.fragments
+package org.feup.group4.supermarket.fragments.client
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.feup.group4.supermarket.R
 
-class ClientReceiptsFragment : Fragment() {
+class ReceiptsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

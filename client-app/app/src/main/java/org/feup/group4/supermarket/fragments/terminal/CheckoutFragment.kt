@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket.fragments
+package org.feup.group4.supermarket.fragments.terminal
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import org.feup.group4.supermarket.R
 
 
-class TerminalCheckoutFragment : Fragment() {
+class CheckoutFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

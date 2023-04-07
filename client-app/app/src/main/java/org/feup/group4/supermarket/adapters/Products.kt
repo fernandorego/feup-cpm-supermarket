@@ -2,25 +2,23 @@ package org.feup.group4.supermarket.adapters
 
 import android.app.Activity
 import android.content.Context
-import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Product
 
 class ProductsAdapter(
-    private val activity: Activity,
+    private val context: Context,
     private val products: ArrayList<Pair<Product, Int>>,
     private val onChangeCallBack: (Int) -> Unit = {},
-    private val showQuantity: Boolean = true
+    private val adminMode: Boolean = false
 ) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = activity.layoutInflater.inflate(R.layout.recyclerview_product, parent, false)
+        val view = (context as Activity).layoutInflater.inflate(R.layout.recyclerview_product, parent, false)
 
         val removeItemButton = view.findViewById<ImageButton>(R.id.item_remove)
         removeItemButton.setOnClickListener {
@@ -34,8 +32,8 @@ class ProductsAdapter(
             }
         }
 
-        if (!showQuantity) {
-            view.findViewById<EditText>(R.id.item_quantity).visibility = View.GONE
+        if (adminMode) {
+            view.findViewById<TextView>(R.id.item_quantity).visibility = View.GONE
             view.findViewById<TextView>(R.id.item_units).visibility = View.GONE
         }
 
@@ -45,7 +43,7 @@ class ProductsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(products[position]) {
             holder.name.text = first.name
-            holder.price.text = activity.getString(
+            holder.price.text = context.getString(
                 R.string.price_format,
                 first.euros,
                 first.cents

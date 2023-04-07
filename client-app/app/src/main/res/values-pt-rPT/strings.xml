@@ -37,4 +37,9 @@
     <string name="scan_qr_code">Ler QR</string>
     <string name="approach_phone_nfc">Aproxime o seu smartphone do termina para concluir a sua compra</string>
     <string name="use_nfc">Usar NFC</string>
+    <string name="add">Adicionar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="product_name">Nome do produto</string>
+    <string name="product_cost">Custo do produto</string>
+    <string name="invalid_product_fields">Campos do produto inválidos</string>
 </resources>
