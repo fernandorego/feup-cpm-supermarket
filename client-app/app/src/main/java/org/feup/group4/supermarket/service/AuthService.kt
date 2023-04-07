@@ -68,7 +68,8 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
         card_date: String
     ) {
         val clientKeyPair = generateClientKeyPair()
-        setValue(clientPrivateKeyStoreKey, clientKeyPair.private.encoded.toString())
+        // TODO: save clientPrivKey
+        //setValue(clientPrivateKeyStoreKey, clientKeyPair.private.encoded.toString())
         post(
             "/register", Gson().toJson(
                 User(
