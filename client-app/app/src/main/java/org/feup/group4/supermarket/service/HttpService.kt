@@ -16,7 +16,9 @@ open class HttpService internal constructor(
     protected val context: Context,
     private val afterRequest: AfterRequest? = null,
 ) {
-    protected val sharedPreferencesService = SharedPreferencesService(context, SharedPreferencesService.Companion.KeyStore.AUTH.value)
+    protected val sharedPreferencesService =
+        SharedPreferencesService(context, SharedPreferencesService.Companion.KeyStore.AUTH.value)
+
     companion object {
         const val tokenStoreKey = "access_token"
     }
@@ -26,10 +28,13 @@ open class HttpService internal constructor(
     }
 
     internal fun get(urlRoute: String) = request(HttpRequestMethod.GET, urlRoute)
+
     internal fun post(urlRoute: String, json: String) =
         request(HttpRequestMethod.POST, urlRoute, body = json)
 
-    internal fun put(urlRoute: String, json: String) = request(HttpRequestMethod.PUT, urlRoute, body = json)
+    internal fun put(urlRoute: String, json: String) =
+        request(HttpRequestMethod.PUT, urlRoute, body = json)
+
     internal fun delete(urlRoute: String, objectId: Int) =
         request(HttpRequestMethod.DELETE, "$urlRoute/$objectId")
 

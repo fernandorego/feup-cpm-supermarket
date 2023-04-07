@@ -8,8 +8,8 @@ import com.google.gson.Gson
 import org.feup.group4.supermarket.model.Card
 import org.feup.group4.supermarket.model.User
 import java.math.BigInteger
+import java.security.KeyPair
 import java.security.KeyPairGenerator
-import java.security.PublicKey
 import javax.security.auth.x500.X500Principal
 
 class AuthService(context: Context, afterRequest: AfterRequest?) :
@@ -17,7 +17,6 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
     private val cryptoService = CryptoService(context)
 
     fun setToken(token: String) = sharedPreferencesService.setValue(tokenStoreKey, token)
-
     fun setServerPublicKey(key: String) = cryptoService.setServerPublicKey(key)
 
     fun login(nickname: String, password: String) =

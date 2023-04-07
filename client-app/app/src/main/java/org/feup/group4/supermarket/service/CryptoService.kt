@@ -72,8 +72,8 @@ class CryptoService(context: Context) {
         ).run {
             initialize(parameterSpec)
             val keyPair = generateKeyPair()
-            sharedPreferencesService.setValue("public_key", keyPair.public.encoded.toString())
-            sharedPreferencesService.setValue("private_key", keyPair.private.encoded.toString())
+            // sharedPreferencesService.setValue("public_key", keyPair.public.encoded.toString())
+            // sharedPreferencesService.setValue("private_key", keyPair.private.encoded.toString())
             return keyPair
         }
     }
