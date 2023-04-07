@@ -1,8 +1,9 @@
 package models
 
 import (
-	"github.com/google/uuid"
 	"time"
+
+	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -32,7 +33,11 @@ func CreateUserFromJSON(context *gin.Context) (*User, error) {
 	if err := validator.New().Struct(user); err != nil {
 		return nil, err
 	}
-	user.IsAdmin = false
+
+	// TODO:
+	// Admins should be created using another endopoint with some
+	// security check
+	user.IsAdmin = user.IsAdmin || false
 	user.AccumulatedValue = 0
 	user.UserImg = nil
 	user.CreatedAt = time.Now()

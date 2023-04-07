@@ -8,8 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AuthMiddleware() gin.HandlerFunc {
-	return AuthUserMiddleware
+func AuthMiddleware(context *gin.Context) {
+	claims, err := getClaims(context)
+	if err {
+		return
+	}
+
+	context.Set("user_id", claims.UserID)
+	context.Next()
 }
 
 func AuthUserMiddleware(context *gin.Context) {

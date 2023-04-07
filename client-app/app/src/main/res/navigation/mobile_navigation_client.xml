@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="org.feup.group4.supermarket.fragments.HomeFragment"
+        android:name="org.feup.group4.supermarket.fragments.ClientHomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_client_home" />
 
     <fragment
         android:id="@+id/navigation_receipts"
-        android:name="org.feup.group4.supermarket.fragments.ReceiptsFragment"
+        android:name="org.feup.group4.supermarket.fragments.ClientReceiptsFragment"
         android:label="@string/title_receipts"
-        tools:layout="@layout/fragment_receipts" />
+        tools:layout="@layout/fragment_client_receipts" />
 </navigation>
