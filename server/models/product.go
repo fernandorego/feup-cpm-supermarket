@@ -1,7 +1,8 @@
 package models
 
 import (
-	"github.com/gin-gonic/gin"
+	"encoding/json"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 )
@@ -13,9 +14,9 @@ type Product struct {
 	Image string    `json:"image"`
 }
 
-func CreateProductFromJSON(context *gin.Context) (*Product, error) {
+func CreateProductFromJSONString(jsonProduct string) (*Product, error) {
 	product := new(Product)
-	if err := context.BindJSON(&product); err != nil {
+	if err := json.Unmarshal([]byte(jsonProduct), &product); err != nil {
 		return nil, err
 	}
 	if err := validator.New().Struct(product); err != nil {

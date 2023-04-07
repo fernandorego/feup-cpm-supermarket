@@ -13,6 +13,6 @@ func addAdminRoutes(rg *gin.RouterGroup) {
 	})
 }
 
-func addAdminSecuredRoutes(rg *gin.RouterGroup) {
+func addAdminSignedRoutes(rg *gin.RouterGroup) {
 	rg.POST("/product", controllers.CreateUpdateProduct)
 }

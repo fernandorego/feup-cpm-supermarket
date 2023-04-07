@@ -1,12 +1,13 @@
 package controllers
 
 import (
-	"github.com/google/uuid"
 	"net/http"
 	"os"
 	"server/db"
 	"server/helpers"
 	"server/models"
+
+	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
@@ -35,8 +36,7 @@ func Register(context *gin.Context) {
 		helpers.SetStatusInternalServerError(context, "error inserting user into collection")
 		return
 	}
-	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin, gin.H{})
-	return
+	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin, gin.H{"server_public_key": os.Getenv("PUBLIC_KEY")})
 }
 
 func GenerateToken(context *gin.Context) {
@@ -61,7 +61,6 @@ func GenerateToken(context *gin.Context) {
 	}
 
 	provideToken(context, user.ID, user.IsAdmin, gin.H{"server_public_key": os.Getenv("PUBLIC_KEY")})
-	return
 }
 
 func provideToken(context *gin.Context, id primitive.ObjectID, isAdmin bool, args map[string]interface{}) {
@@ -75,5 +74,4 @@ func provideToken(context *gin.Context, id primitive.ObjectID, isAdmin bool, arg
 		json[key] = value
 	}
 	context.JSON(http.StatusOK, json)
-	return
 }

@@ -17,7 +17,8 @@ func CreateUpdateProduct(context *gin.Context) {
 	db := database.GetDatabase()
 	productsCollection := db.Collection("products")
 
-	doc, err := models.CreateProductFromJSON(context)
+	encodedJSON := context.GetString("hash")
+	doc, err := models.CreateProductFromJSONString(encodedJSON)
 	if err != nil {
 		helpers.SetStatusBadRequest(context, err.Error())
 		return
@@ -79,3 +80,5 @@ func GetProducts(context *gin.Context) {
 
 	context.JSON(http.StatusOK, products)
 }
+
+// TODO: generate a qr code of the signed product information
