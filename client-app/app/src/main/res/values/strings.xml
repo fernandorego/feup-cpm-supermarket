@@ -27,4 +27,13 @@
     <string name="products_hello">Generate Products</string>
     <string name="products_empty_recyclerview">Start generating product codes</string>
     <string name="products_new_product">New product</string>
+    <string name="shopping_cart_subtotal">Subtotal</string>
+    <string name="shopping_cart_values" translatable="false">%.2f€</string>
+    <string name="shopping_cart_empty_cart">Your cart is empty. Start adding products.</string>
+    <string name="shopping_cart_checkout">Checkout</string>
+    <string name="shopping_cart_add">Add to cart</string>
+    <string name="item_units">unit(s)</string>
+    <string name="payment_card">Pay with card</string>
+    <string name="payment_balance">Pay with balance</string>
+    <string name="payment_coupon">Apply coupon</string>
 </resources>
