@@ -15,7 +15,6 @@ val coupons = ArrayList<Coupon>()
 class CouponsAdapter(private val ctx: Context, private val coupons: ArrayList<Coupon>): RecyclerView.Adapter<CouponsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = (ctx as Activity).layoutInflater.inflate(R.layout.recyclerview_client_coupon, parent, false)
-
         return ViewHolder(view)
     }
 
