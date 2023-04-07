@@ -2,8 +2,6 @@ package org.feup.group4.supermarket.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -30,21 +28,6 @@ class MainActivity : AppCompatActivity() {
                 UserService(this@MainActivity, ::afterHttpRequest).getUser()
             }
             finish()
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.activity_main, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.account_details -> {
-            startActivity(Intent(this, AccountActivity::class.java))
-            true
-        }
-        else -> {
-            super.onOptionsItemSelected(item)
         }
     }
 

@@ -43,7 +43,7 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
     }
 
     fun setToken(token: String?) = setValue(tokenStoreKey, token)
-    fun setServerPublicKey(key: String) = setValue(serverPublicKey, key)
+    fun setServerPublicKey(key: String) = setValue(serverPublicKeyStoreKey, key)
 
     private fun setValue(name: String, value: String?) {
         val sharedPreferences =
