@@ -58,7 +58,12 @@ func SignMessage(message string, privateKey *rsa.PrivateKey) (string, error) {
 }*/
 
 func ParseClientPublicKey(publicKey string) (*rsa.PublicKey, error) {
-	pubKey, err := x509.ParsePKIXPublicKey([]byte(publicKey))
+	publicKeyBytes, err := base64.StdEncoding.DecodeString(publicKey)
+	if err != nil {
+		return nil, err
+	}
+
+	pubKey, err := x509.ParsePKIXPublicKey(publicKeyBytes)
 	if err != nil {
 		return nil, err
 	}

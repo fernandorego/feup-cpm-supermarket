@@ -40,11 +40,11 @@ class PurchaseActivity : AppCompatActivity() {
                     "Scanned: " + result.contents,
                     Toast.LENGTH_LONG
                 ).show()
-                purchase.addProduct(Product("Test", 1, 0))
-                purchase.addProduct(Product("Test2", 1, 0))
-                purchase.addProduct(Product("Test3", 1, 0))
-                purchase.addProduct(Product("Test4", 1, 0))
-                purchase.addProduct(Product("Test5", 1, 0))
+                purchase.addProduct(Product("Test", 1.0))
+                purchase.addProduct(Product("Test2", 1.0))
+                purchase.addProduct(Product("Test3", 1.0))
+                purchase.addProduct(Product("Test4", 1.0))
+                purchase.addProduct(Product("Test5", 1.0))
                 adapter.notifyItemInserted(purchase.getProducts().size - 1)
             }
         }

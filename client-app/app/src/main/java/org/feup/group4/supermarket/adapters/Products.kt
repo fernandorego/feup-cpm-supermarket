@@ -54,8 +54,7 @@ class ProductsAdapter(
             holder.name.text = first.name
             holder.price.text = context.getString(
                 R.string.price_format,
-                first.euros,
-                first.cents
+                first.price
             )
             holder.quantity.text = second.toString()
         }

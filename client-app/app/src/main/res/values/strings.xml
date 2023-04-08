@@ -4,7 +4,7 @@
     <string name="title_receipts">Receipts</string>
     <string name="home_hello">"Hey %s"</string>
     <string name="home_balance">Accumulated balance</string>
-    <string name="price_format" translatable="false">"%d,%02d€"</string>
+    <string name="price_format" translatable="false">"%.2f€"</string>
     <string name="home_coupons">Coupons</string>
     <string name="home_fab">New Purchase</string>
     <string name="onboarding_login">Login</string>

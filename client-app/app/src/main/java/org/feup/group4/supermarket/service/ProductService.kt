@@ -6,7 +6,6 @@ import android.util.Base64
 import android.util.Log
 import com.google.gson.Gson
 import org.feup.group4.supermarket.model.Product
-import org.feup.group4.supermarket.model.ProductTest
 import java.util.*
 
 
@@ -30,7 +29,7 @@ class ProductService(val context: Context) {
     }
 
 
-    fun getDecryptedProduct(uuid: UUID, callback: (ProductTest) -> Unit) {
+    fun getDecryptedProduct(uuid: UUID, callback: (Product) -> Unit) {
         fun afterRequest(encryptedProduct: ByteArray) {
             val product = decryptProduct(encryptedProduct)
 
@@ -39,7 +38,7 @@ class ProductService(val context: Context) {
         getEncryptedProduct(uuid, ::afterRequest)
     }
 
-    fun decryptProduct(encryptedProduct: ByteArray): ProductTest {
+    fun decryptProduct(encryptedProduct: ByteArray): Product {
         val cryptoService = CryptoService(context)
         val encryptedProductMap =
             Gson().fromJson(encryptedProduct.toString(charset = Charsets.UTF_8), Map::class.java)
@@ -66,7 +65,7 @@ class ProductService(val context: Context) {
                 )
             )
 
-        return ProductTest(
+        return Product(
             String(name),
             String(price).toDouble(),
             UUID.fromString(String(decryptedUUID))
