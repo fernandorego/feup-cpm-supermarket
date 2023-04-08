@@ -3,8 +3,6 @@ package org.feup.group4.supermarket.fragments.terminal
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
-import android.view.inputmethod.EditorInfo.IME_ACTION_NEXT
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
