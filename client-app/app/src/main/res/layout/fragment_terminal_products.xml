@@ -35,6 +35,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_products_list"
+        android:paddingBottom="280dp"
+        android:clipToPadding="false"
+        tools:itemCount="30"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_marginTop="16dp"

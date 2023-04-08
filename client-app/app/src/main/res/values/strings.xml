@@ -48,4 +48,8 @@
     <string name="product_name">Product name</string>
     <string name="product_cost">Product cost</string>
     <string name="invalid_product_fields">Invalid product fields</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="delete_product">Delete product</string>
+    <string name="delete_product_message">Are you sure you want to delete this product from the catalog?</string>
 </resources>

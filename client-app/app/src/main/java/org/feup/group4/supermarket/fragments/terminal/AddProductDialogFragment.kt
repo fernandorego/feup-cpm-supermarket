@@ -3,6 +3,8 @@ package org.feup.group4.supermarket.fragments.terminal
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
+import android.view.inputmethod.EditorInfo.IME_ACTION_NEXT
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
@@ -24,31 +26,33 @@ class AddProductDialogFragment(private val listener: AddProductListener) :
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setCancelable(false)
-            setTitle("Generate Product")
+            setTitle(context.resources.getString(R.string.products_new_product))
             setContentView(R.layout.dialog_add_product)
-
-            window?.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
 
             cancelButton?.setOnClickListener {
                 dismiss()
             }
 
             addButton?.setOnClickListener {
-                val name = productName!!.text.toString()
-                val price = productPrice!!.text.toString().toDoubleOrNull()
+                addProduct()
+            }
+        }
 
-                if (price == null || name.isEmpty()) {
-                    Toast.makeText(
-                        context,
-                        context.resources.getString(R.string.invalid_product_fields),
-                        Toast.LENGTH_LONG
-                    ).show()
-                    return@setOnClickListener
-                }
+        private fun addProduct() {
+            val name = productName!!.text.toString()
+            val price = productPrice!!.text.toString().toDoubleOrNull()
 
-                listener(name, price) {
-                    dismiss()
-                }
+            if (price == null || name.isEmpty()) {
+                Toast.makeText(
+                    context,
+                    context.resources.getString(R.string.invalid_product_fields),
+                    Toast.LENGTH_LONG
+                ).show()
+                return
+            }
+
+            listener(name, price) {
+                dismiss()
             }
         }
     }

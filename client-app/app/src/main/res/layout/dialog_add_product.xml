@@ -9,8 +9,7 @@
         android:id="@+id/product_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/product_name"
-        android:inputType="textMultiLine" />
+        android:hint="@string/product_name" />
 
     <EditText
         android:id="@+id/product_cost"
