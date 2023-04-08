@@ -26,7 +26,7 @@
     <string name="payment_balance">Usar saldo</string>
     <string name="payment_coupon">Usar cupão</string>
     <string name="onboarding_year">AA</string>
-    <string name="title_products">Products</string>
+    <string name="title_products">Produtos</string>
     <string name="title_checkout">Checkout</string>
     <string name="products_hello">Catálogo de Produtos</string>
     <string name="products_empty_recyclerview">Começa a gerar códigos de produtos</string>
@@ -54,4 +54,5 @@
     <string name="export_file_success">Ficheiro exportado com sucesso</string>
     <string name="purchase_success_message">Compra efetuada</string>
     <string name="purchase_error_message">Compra falhou</string>
+    <string name="receipts_empty_recyclerview">Sem compras prévias. Comece uma agora!</string>
 </resources>

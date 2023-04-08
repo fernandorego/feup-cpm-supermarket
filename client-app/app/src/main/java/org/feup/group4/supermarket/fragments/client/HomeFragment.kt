@@ -28,11 +28,9 @@ class HomeFragment : Fragment() {
         homeHelloTv.text = getString(R.string.home_hello, this.user.name)
 
         val homeBalanceValueTv: TextView = view.findViewById(R.id.home_text_balance_value)
-        val accumulatedValueEuros = this.user.accumulated_value?.div(100)?.toInt() ?: 0
-        val accumulatedValueCents = this.user.accumulated_value?.times(100)?.rem(100)?.toInt() ?: 0
         homeBalanceValueTv.text = getString(
             R.string.price_format,
-            accumulatedValueEuros, accumulatedValueCents
+            this.user.accumulated_value
         )
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_coupons_list)
