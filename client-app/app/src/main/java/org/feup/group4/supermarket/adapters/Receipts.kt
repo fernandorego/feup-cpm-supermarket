@@ -25,7 +25,7 @@ class ReceiptsAdapter(private val ctx: Context, private val receipts: ArrayList<
                 date.month.name.lowercase().replaceFirstChar { it.uppercaseChar() },
                 date.dayOfMonth,
                 date.year)
-            holder.receiptTotal.text = ctx.getString(R.string.home_balance_value, total)
+            holder.receiptTotal.text = ctx.getString(R.string.money_format, total)
         }
     }
 

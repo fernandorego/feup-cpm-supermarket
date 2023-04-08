@@ -33,5 +33,6 @@
     <string name="products_new_product">Novo produto</string>
     <string name="scan_product_qr">Aponte a câmara para o código QR do produto</string>
     <string name="scan_qr_error">Erro ao ler o código QR</string>
+    <string name="account_logout">Logout</string>
     <string name="receipts_empty_recyclerview">Sem compras prévias. Começa uma agora!</string>
 </resources>
