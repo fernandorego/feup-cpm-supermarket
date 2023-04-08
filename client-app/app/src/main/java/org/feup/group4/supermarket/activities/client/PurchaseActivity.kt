@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket.activities.terminal
+package org.feup.group4.supermarket.activities.client
 
 import android.os.Bundle
 import android.view.View

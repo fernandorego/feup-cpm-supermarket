@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket.fragments
+package org.feup.group4.supermarket.fragments.client
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,24 +9,23 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
-import org.feup.group4.supermarket.activities.terminal.TerminalActivity
-import org.feup.group4.supermarket.adapters.CouponsAdapter
-import org.feup.group4.supermarket.adapters.coupons
-import org.feup.group4.supermarket.model.User
+import org.feup.group4.supermarket.adapters.ReceiptsAdapter
+import org.feup.group4.supermarket.adapters.receipts
 
-class TerminalProductsFragment : Fragment() {
-    private val user: User = TerminalActivity.user
+class ReceiptsFragment : Fragment() {
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_terminal_products, container, false)
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_client_receipts, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.home_products_list)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.receipts_list)
         val emptyRecyclerView = view.findViewById<TextView>(R.id.empty_recyclerview)
 
-        if (coupons.isEmpty()) {
+        if (receipts.isEmpty()) {
             recyclerView.visibility = View.GONE
             emptyRecyclerView.visibility = View.VISIBLE
         } else {
@@ -34,8 +33,8 @@ class TerminalProductsFragment : Fragment() {
             emptyRecyclerView.visibility = View.GONE
         }
 
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val adapter = CouponsAdapter(requireContext(), coupons)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = ReceiptsAdapter(requireContext(), receipts)
         recyclerView.adapter = adapter
     }
 }
