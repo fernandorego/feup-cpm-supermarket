@@ -52,4 +52,6 @@
     <string name="no">No</string>
     <string name="delete_product">Delete product</string>
     <string name="delete_product_message">Are you sure you want to delete this product from the catalog?</string>
+    <string name="account_logout">Logout</string>
+    <string name="string_format" translatable="false">"%s"</string>
 </resources>

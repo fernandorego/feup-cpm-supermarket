@@ -46,4 +46,5 @@
     <string name="no">Não</string>
     <string name="delete_product">Eliminar produto</string>
     <string name="delete_product_message">Tem a certeza de que pretende eliminar este produto do catálogo?</string>
+    <string name="account_logout">Logout</string>
 </resources>
