@@ -59,7 +59,7 @@ class ProductService(val context: Context) {
         HttpService(context, ::afterRequest).get("/product")
     }
 
-    fun createUpdateProduct(unsignedProduct: Product, callback: () -> Unit) {
+    fun createUpdateProduct(unsignedProduct: Product, callback: (Product) -> Unit) {
         val cryptoService = CryptoService(context)
         val jsonProduct = Gson().toJson(unsignedProduct)
         val base64JsonProduct = Base64.encode(jsonProduct.toByteArray(), Base64.DEFAULT)
@@ -67,11 +67,13 @@ class ProductService(val context: Context) {
         val base64SignedProduct = Base64.encode(signedProduct, Base64.DEFAULT)
 
         fun afterRequest(statusCode: Int, body: String?) {
-            if (statusCode != 204) {
+            if (statusCode != 200) {
                 Log.w("ProductService", "Error creating product: $statusCode: $body")
                 return
             }
-            callback()
+
+            val product = Gson().fromJson(body, Product::class.java)
+            callback(product)
         }
         HttpService(context, ::afterRequest).post("/product", base64SignedProduct.toString())
     }
