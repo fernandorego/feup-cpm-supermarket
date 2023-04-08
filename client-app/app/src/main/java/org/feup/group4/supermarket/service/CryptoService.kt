@@ -89,7 +89,13 @@ class CryptoService(context: Context) {
         return keyFactory.generatePublic(keySpec)
     }
 
-    private fun getClientPrivateKey(): PrivateKey {
-       return androidKeyStore.getKey(KEY_NAME, null) as PrivateKey
+    private fun getClientPrivateKey(): PrivateKey? {
+        val entry: KeyStore.Entry = androidKeyStore.getEntry(KEY_NAME, null)
+        if (entry !is KeyStore.PrivateKeyEntry) {
+            Log.w("CryptoService", "Not an instance of a PrivateKeyEntry")
+            return null
+        }
+
+        return entry.privateKey
     }
 }
