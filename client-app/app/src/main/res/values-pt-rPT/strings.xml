@@ -52,4 +52,6 @@
     <string name="product_s_qr_code">QR Code do produto</string>
     <string name="export_file_failed">Impossível exportar ficheiro. Verifique permissão de escrita em disco</string>
     <string name="export_file_success">Ficheiro exportado com sucesso</string>
+    <string name="purchase_success_message">Compra efetuada</string>
+    <string name="purchase_error_message">Compra falhou</string>
 </resources>

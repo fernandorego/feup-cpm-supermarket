@@ -59,4 +59,6 @@
     <string name="product_s_qr_code">Product\'s QR Code</string>
     <string name="export_file_failed">Could not export file. Verify storage permission</string>
     <string name="export_file_success">File exported successfully</string>
+    <string name="purchase_success_message">Purchase successful</string>
+    <string name="purchase_error_message">Purchase failed</string>
 </resources>
