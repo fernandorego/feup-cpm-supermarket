@@ -35,7 +35,7 @@ class TerminalCheckoutFragment : Fragment() {
         val getProductButton = view.findViewById<Button>(R.id.get_product_button)
         getProductButton.setOnClickListener {
             thread(start = true) {
-                ProductService(requireContext()).getDecryptedProduct(UUID.randomUUID()) { product ->
+                ProductService(requireContext()).getDecryptedProduct(UUID.fromString("bdc0f964-68df-419f-8f21-690fb3b28748")) { product ->
                     println(product)
                 }
             }

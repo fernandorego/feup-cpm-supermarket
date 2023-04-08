@@ -3,6 +3,8 @@ package org.feup.group4.supermarket.service
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import android.util.Base64
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import org.feup.group4.supermarket.model.Card
@@ -17,13 +19,26 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
     private val cryptoService = CryptoService(context)
 
     fun setToken(token: String) = sharedPreferencesService.setValue(tokenStoreKey, token)
-    fun setServerPublicKey(key: String) = cryptoService.setServerPublicKey(key)
+    fun setServerPrivateKey(key: String) = cryptoService.setServerPrivateKey(key)
 
-    fun login(nickname: String, password: String) =
+    fun login(nickname: String, password: String) {
+        val publicKey = CryptoService(context).generateKeyPair().public
         post(
             "/getToken",
-            Gson().toJson(User(nickname, password, null, null, null, null, null, null))
+            Gson().toJson(
+                User(
+                    nickname,
+                    password,
+                    null,
+                    null,
+                    Base64.encodeToString(publicKey.encoded, Base64.DEFAULT),
+                    null,
+                    null,
+                    null
+                )
+            )
         )
+    }
 
     fun register(
         name: String,
@@ -41,7 +56,7 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
                     password,
                     name,
                     Card(card_number, card_cvv, card_date),
-                    cryptoService.generateKeyPair().public.encoded.toString(),
+                    Base64.encodeToString(cryptoService.generateKeyPair().public.encoded, Base64.DEFAULT),
                     null,
                     null,
                     null

@@ -5,38 +5,58 @@ import android.util.Base64
 import android.util.Log
 import com.google.gson.Gson
 import org.feup.group4.supermarket.model.Product
-import java.util.UUID
-import java.util.logging.Logger
+import org.feup.group4.supermarket.model.ProductTest
+import java.util.*
+
 
 class ProductService(val context: Context) {
     fun getEncryptedProduct(uuid: UUID, callback: (ByteArray) -> Unit) {
         var encryptedProduct: ByteArray
         fun afterRequest(statusCode: Int, body: String?) {
             if (statusCode != 200) {
-                Log.w("ProductService", "Error getting product: $statusCode: $body")
+                Log.w("ProductService", "AAAAError getting product: $statusCode: $body")
                 return
             }
 
             // Decode Base64 string
             encryptedProduct = Base64.decode(body, Base64.DEFAULT)
+            Log.w("ProductService", encryptedProduct.toString(charset = Charsets.UTF_8))
 
             callback(encryptedProduct)
+            return
         }
         HttpService(context, ::afterRequest).get("/product/$uuid")
     }
 
 
-    fun getDecryptedProduct(uuid: UUID, callback: (Product) -> Unit) {
+    fun getDecryptedProduct(uuid: UUID, callback: (ProductTest) -> Unit) {
         fun afterRequest(encryptedProduct: ByteArray) {
-            val cryptoService = CryptoService(context)
-            val jsonProduct =
-                Base64.decode(cryptoService.decryptMessage(encryptedProduct), Base64.DEFAULT)
-            val product =
-                Gson().fromJson(jsonProduct.toString(Charsets.UTF_8), Product::class.java)
+            val product = decryptProduct(encryptedProduct)
 
             callback(product)
         }
         getEncryptedProduct(uuid, ::afterRequest)
+    }
+
+    fun decryptProduct(encryptedProduct: ByteArray): ProductTest {
+        val cryptoService = CryptoService(context)
+
+        var encryptedProductMap =
+            Gson().fromJson(encryptedProduct.toString(charset = Charsets.UTF_8), Map::class.java)
+
+        //Log.w("ProductService", Base64.decode((encryptedProductMap["uuid"] as String).toByteArray(), Base64.DEFAULT).toString(charset = Charsets.UTF_8))
+        val decryptedUUID =
+            cryptoService.decryptMessage((encryptedProductMap["uuid"] as String).toByteArray())
+        val name =
+            cryptoService.decryptMessage((encryptedProductMap["name"] as String).toByteArray())
+        val price =
+            cryptoService.decryptMessage((encryptedProductMap["price"] as String).toByteArray())
+
+        return ProductTest(
+            name.toString(),
+            price.toString().toDouble(),
+            UUID.fromString(decryptedUUID.toString())
+        )
     }
 
     fun getProducts(callback: (List<Product>) -> Unit) {
@@ -60,12 +80,6 @@ class ProductService(val context: Context) {
     }
 
     fun createUpdateProduct(unsignedProduct: Product, callback: (Product) -> Unit) {
-        val cryptoService = CryptoService(context)
-        val jsonProduct = Gson().toJson(unsignedProduct)
-        val base64JsonProduct = Base64.encode(jsonProduct.toByteArray(), Base64.DEFAULT)
-        val signedProduct = cryptoService.signMessage(base64JsonProduct)
-        val base64SignedProduct = Base64.encode(signedProduct, Base64.DEFAULT)
-
         fun afterRequest(statusCode: Int, body: String?) {
             if (statusCode != 200) {
                 Log.w("ProductService", "Error creating product: $statusCode: $body")
@@ -75,6 +89,22 @@ class ProductService(val context: Context) {
             val product = Gson().fromJson(body, Product::class.java)
             callback(product)
         }
-        HttpService(context, ::afterRequest).post("/product", base64SignedProduct.toString())
+
+        val cryptoService = CryptoService(context)
+        val jsonProduct = Gson().toJson(unsignedProduct)
+        val signature =
+            cryptoService.getMessageSignature(jsonProduct.toByteArray(charset = Charsets.UTF_8))
+        val base64Signature = Base64.encodeToString(signature, Base64.DEFAULT)
+
+        HttpService(context, ::afterRequest).post(
+            "/product",
+            Gson().toJson(
+                mapOf(
+                    "b64SignatureString" to base64Signature,
+                    "message" to jsonProduct
+                )
+            )
+        )
+
     }
 }

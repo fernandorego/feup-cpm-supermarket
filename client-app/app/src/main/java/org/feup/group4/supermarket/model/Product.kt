@@ -13,3 +13,9 @@ data class Product(
         this.uuid = uuid
     }
 }
+
+data class ProductTest(
+    val name: String,
+    val price: Double,
+    val uuid: UUID? = null,
+)
