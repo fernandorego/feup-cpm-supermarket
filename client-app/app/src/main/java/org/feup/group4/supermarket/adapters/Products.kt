@@ -4,11 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
+import org.feup.group4.supermarket.fragments.terminal.ProductQRDialogFragment
 import org.feup.group4.supermarket.model.Product
 
 class ProductsAdapter(
@@ -41,9 +44,21 @@ class ProductsAdapter(
             removeItem(view)
         }
 
+        val generateQRButton = view.findViewById<ImageButton>(R.id.item_generate_qr)
+        generateQRButton.setOnClickListener {
+            val product =
+                products.first { it.first.name == view.findViewById<TextView>(R.id.item_name).text }.first
+            ProductQRDialogFragment(product).show(
+                (context as AppCompatActivity).supportFragmentManager,
+                "ProductQRDialogFragment"
+            )
+        }
+
         if (adminMode) {
             view.findViewById<TextView>(R.id.item_quantity).visibility = View.GONE
             view.findViewById<TextView>(R.id.item_units).visibility = View.GONE
+        } else {
+            generateQRButton.visibility = View.GONE
         }
 
         return ViewHolder(view)
@@ -54,8 +69,7 @@ class ProductsAdapter(
             holder.name.text = first.name
             holder.price.text = context.getString(
                 R.string.price_format,
-                first.euros,
-                first.cents
+                first.price
             )
             holder.quantity.text = second.toString()
         }

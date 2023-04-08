@@ -43,11 +43,7 @@ class PurchaseActivity : AppCompatActivity() {
                     Toast.makeText(
                         this, "Scanned: $content", Toast.LENGTH_LONG
                     ).show()
-                    purchase.addProduct(Product("Test", 1, 0))
-                    purchase.addProduct(Product("Test2", 1, 0))
-                    purchase.addProduct(Product("Test3", 1, 0))
-                    purchase.addProduct(Product("Test4", 1, 0))
-                    purchase.addProduct(Product("Test5", 1, 0))
+                    purchase.addProduct(Product("Test", 1.0))
                     recyclerView.adapter?.notifyItemInserted(purchase.getProducts().size - 1)
                 }
             }
@@ -76,8 +72,6 @@ class PurchaseActivity : AppCompatActivity() {
 
     private fun updateSubTotal() {
         val totalValueTextView = findViewById<TextView>(R.id.shopping_cart_subtotal_value)
-        val totalValueEuros = purchase.getTotalPrice().toInt()
-        val totalValueCents = purchase.getTotalPrice().times(100).rem(100).toInt()
-        totalValueTextView.text = getString(R.string.price_format, totalValueEuros, totalValueCents)
+        totalValueTextView.text = getString(R.string.price_format, purchase.getTotalPrice())
     }
 }
