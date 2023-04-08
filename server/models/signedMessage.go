@@ -8,7 +8,7 @@ import (
 
 type SignedMessage struct {
 	B64SignatureString string `json:"b64SignatureString" validate:"required"`
-	Message            string `json:"message" validate:"required"`
+	B64MessageString   string `json:"b64MessageString" validate:"required"`
 }
 
 func CreateSignedMessageFromJSONString(context *gin.Context) (*SignedMessage, error) {

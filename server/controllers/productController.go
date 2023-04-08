@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -25,7 +26,14 @@ func CreateUpdateProduct(context *gin.Context) {
 		return
 	}
 
-	doc, err := models.CreateProductFromJSONString(signedMessage.Message)
+	messageBytes, err := base64.StdEncoding.Strict().DecodeString(signedMessage.B64MessageString)
+	if err != nil {
+		helpers.SetStatusBadRequest(context, "error decoding message: "+err.Error())
+		return
+	}
+
+	message := string(messageBytes)
+	doc, err := models.CreateProductFromJSONString(message)
 	if err != nil {
 		helpers.SetStatusBadRequest(context, err.Error())
 		return

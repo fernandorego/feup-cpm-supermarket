@@ -40,7 +40,7 @@ class AddProductDialogFragment(private val listener: AddProductListener) :
             val name = productName!!.text.toString()
             val price = productPrice!!.text.toString().toDoubleOrNull()
 
-            if (price == null || name.isEmpty()) {
+            if (price == null || name.isEmpty() || price <= 0) {
                 Toast.makeText(
                     context,
                     context.resources.getString(R.string.invalid_product_fields),

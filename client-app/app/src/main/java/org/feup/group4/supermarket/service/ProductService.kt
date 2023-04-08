@@ -6,6 +6,7 @@ import android.util.Base64
 import android.util.Log
 import com.google.gson.Gson
 import org.feup.group4.supermarket.model.Product
+import java.net.URLEncoder
 import java.util.*
 
 
@@ -105,8 +106,10 @@ class ProductService(val context: Context) {
 
         val cryptoService = CryptoService(context)
         val jsonProduct = Gson().toJson(unsignedProduct)
+        val b64Product =
+            Base64.encodeToString(jsonProduct.toByteArray(charset = Charsets.UTF_8), Base64.DEFAULT)
         val signature =
-            cryptoService.getMessageSignature(jsonProduct.toByteArray(charset = Charsets.UTF_8))
+            cryptoService.getMessageSignature(b64Product.toByteArray(charset = Charsets.UTF_8))
         val base64Signature = Base64.encodeToString(signature, Base64.DEFAULT)
 
         HttpService(context, ::afterRequest).post(
@@ -114,7 +117,7 @@ class ProductService(val context: Context) {
             Gson().toJson(
                 mapOf(
                     "b64SignatureString" to base64Signature,
-                    "message" to jsonProduct
+                    "b64MessageString" to b64Product
                 )
             )
         )

@@ -30,7 +30,7 @@ func VerifySignature(context *gin.Context) {
 		return
 	}
 
-	err = helpers.VerifySignature(signedMessage.Message, signedMessage.B64SignatureString, pubKey)
+	err = helpers.VerifySignature(signedMessage.B64MessageString, signedMessage.B64SignatureString, pubKey)
 	if err != nil {
 		helpers.SetStatusUnauthorized(context, "error signing message: "+err.Error())
 		context.Abort()
