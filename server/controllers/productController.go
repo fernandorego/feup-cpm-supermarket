@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	database "server/db"
 	"server/helpers"
@@ -19,16 +19,13 @@ func CreateUpdateProduct(context *gin.Context) {
 	db := database.GetDatabase()
 	productsCollection := db.Collection("products")
 
-	b64Message := context.MustGet("b64Message")
-
-	encodedJSON := make([]byte, base64.StdEncoding.DecodedLen(len(b64Message.([]byte))))
-	_, err := base64.StdEncoding.Decode(encodedJSON, b64Message.([]byte))
+	signedMessage, err := models.CreateSignedMessageFromJSONString(context)
 	if err != nil {
-		helpers.SetStatusBadRequest(context, "invalid JSON encoding")
+		helpers.SetStatusBadRequest(context, "error parsing signed message")
 		return
 	}
 
-	doc, err := models.CreateProductFromJSONString(encodedJSON)
+	doc, err := models.CreateProductFromJSONString(signedMessage.Message)
 	if err != nil {
 		helpers.SetStatusBadRequest(context, err.Error())
 		return
@@ -41,7 +38,7 @@ func CreateUpdateProduct(context *gin.Context) {
 		return
 	}
 
-	context.Status(http.StatusNoContent)
+	context.JSON(http.StatusOK, doc)
 }
 
 func GetProduct(context *gin.Context) {
@@ -63,20 +60,27 @@ func GetProduct(context *gin.Context) {
 	var product models.Product
 	doc.Decode(&product)
 
-	jsonProduct, _ := json.Marshal(product)
-	b64Product := make([]byte, base64.StdEncoding.EncodedLen(len(jsonProduct)))
-	base64.StdEncoding.Encode(b64Product, jsonProduct)
-
-	encryptedProduct, err := helpers.EncryptMessage(b64Product)
+	encryptedUUID, err := helpers.EncryptMessage([]byte(product.UUID.String()))
 	if err != nil {
-		helpers.SetStatusInternalServerError(context, "error encrypting product")
+		helpers.SetStatusInternalServerError(context, "error encrypting product UUID: "+err.Error())
 		return
 	}
 
-	b64EncryptedProduct := make([]byte, base64.StdEncoding.EncodedLen(len(encryptedProduct)))
-	base64.StdEncoding.Encode(b64EncryptedProduct, encryptedProduct)
+	encryptedName, err := helpers.EncryptMessage([]byte(product.Name))
+	if err != nil {
+		helpers.SetStatusInternalServerError(context, "error encrypting product name: "+err.Error())
+		return
+	}
 
-	context.JSON(http.StatusOK, b64EncryptedProduct)
+	encryptedPrice, err := helpers.EncryptMessage([]byte(fmt.Sprintf("%.2f", product.Price)))
+	if err != nil {
+		helpers.SetStatusInternalServerError(context, "error encrypting product price: "+err.Error())
+		return
+	}
+
+	encryptedProduct, _ := json.Marshal(models.EncryptedProduct{UUID: encryptedUUID, Name: encryptedName, Price: encryptedPrice})
+
+	context.JSON(http.StatusOK, encryptedProduct)
 }
 
 func GetProducts(context *gin.Context) {

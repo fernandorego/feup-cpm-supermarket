@@ -49,8 +49,9 @@ func CreateUserFromJSON(context *gin.Context) (*User, error) {
 }
 
 type UserCredentials struct {
-	Nickname string `json:"nickname" validate:"required,min=3"`
-	Password string `json:"password" validate:"required,min=6"`
+	Nickname  string `json:"nickname" validate:"required,min=3"`
+	Password  string `json:"password" validate:"required,min=6"`
+	PublicKey string `json:"public_key" validate:"required"`
 }
 
 func GetUserCredentialsFromJSON(context *gin.Context) (*UserCredentials, error) {
@@ -74,5 +75,5 @@ func GetUserFromID(id primitive.ObjectID) (user *User, err error) {
 		return nil, err
 	}
 
-	return
+	return user, nil
 }

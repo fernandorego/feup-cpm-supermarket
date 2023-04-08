@@ -33,7 +33,6 @@ class CryptoService(context: Context) {
     fun decryptMessage(message: ByteArray): ByteArray {
         val key = getServerPrivateKey()
 
-        // TODO: Might be needed to add padding transformation
         val cypher = Cipher.getInstance("RSA/NONE/PKCS1Padding")
         cypher.init(Cipher.DECRYPT_MODE, key)
         return cypher.doFinal(message)
@@ -58,20 +57,17 @@ class CryptoService(context: Context) {
     }*/
 
     fun setServerPrivateKey(key: String) {
-        sharedPreferencesService.setValue(serverPrivateKeyName, key)
-
-        // TODO: Might be needed to convert from PEM to DER format
-    }
-
-    private fun getServerPrivateKey(): PrivateKey {
-        val serverPrivateKeyString =
-            sharedPreferencesService.sharedPreferences.getString(serverPrivateKeyName, null)
-
-        val privateKey = serverPrivateKeyString!!.replace("\n", "")
+        val privateKeyString = key.replace("\n", "")
             .replace("-----BEGIN RSA PRIVATE KEY-----", "")
             .replace("-----END RSA PRIVATE KEY-----", "").replace(Regex("\\s"), "");
 
-        val keySpec = PKCS8EncodedKeySpec(Base64.decode(privateKey, Base64.DEFAULT))
+        sharedPreferencesService.setValue(serverPrivateKeyName, privateKeyString)
+    }
+
+    private fun getServerPrivateKey(): PrivateKey {
+        val privateKeyString = sharedPreferencesService.sharedPreferences.getString(serverPrivateKeyName, null)
+
+        val keySpec = PKCS8EncodedKeySpec(Base64.decode(privateKeyString, Base64.DEFAULT))
         val keyFactory = KeyFactory.getInstance("RSA")
         return keyFactory.generatePrivate(keySpec)
     }

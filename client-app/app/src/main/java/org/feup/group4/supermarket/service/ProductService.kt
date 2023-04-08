@@ -1,5 +1,6 @@
 package org.feup.group4.supermarket.service
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Base64
 import android.util.Log
@@ -40,22 +41,35 @@ class ProductService(val context: Context) {
 
     fun decryptProduct(encryptedProduct: ByteArray): ProductTest {
         val cryptoService = CryptoService(context)
-
-        var encryptedProductMap =
+        val encryptedProductMap =
             Gson().fromJson(encryptedProduct.toString(charset = Charsets.UTF_8), Map::class.java)
 
-        //Log.w("ProductService", Base64.decode((encryptedProductMap["uuid"] as String).toByteArray(), Base64.DEFAULT).toString(charset = Charsets.UTF_8))
         val decryptedUUID =
-            cryptoService.decryptMessage((encryptedProductMap["uuid"] as String).toByteArray())
+            cryptoService.decryptMessage(
+                Base64.decode(
+                    (encryptedProductMap["uuid"] as String).toByteArray(),
+                    Base64.DEFAULT
+                )
+            )
         val name =
-            cryptoService.decryptMessage((encryptedProductMap["name"] as String).toByteArray())
+            cryptoService.decryptMessage(
+                Base64.decode(
+                    (encryptedProductMap["name"] as String).toByteArray(),
+                    Base64.DEFAULT
+                )
+            )
         val price =
-            cryptoService.decryptMessage((encryptedProductMap["price"] as String).toByteArray())
+            cryptoService.decryptMessage(
+                Base64.decode(
+                    (encryptedProductMap["price"] as String).toByteArray(),
+                    Base64.DEFAULT
+                )
+            )
 
         return ProductTest(
-            name.toString(),
-            price.toString().toDouble(),
-            UUID.fromString(decryptedUUID.toString())
+            String(name),
+            String(price).toDouble(),
+            UUID.fromString(String(decryptedUUID))
         )
     }
 

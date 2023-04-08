@@ -18,7 +18,7 @@ func main() {
 	}
 
 	// Load private key
-	err = helpers.LoadPrivateKey()
+	err = helpers.LoadServerPublicKey()
 	if err != nil {
 		panic(err)
 	}
