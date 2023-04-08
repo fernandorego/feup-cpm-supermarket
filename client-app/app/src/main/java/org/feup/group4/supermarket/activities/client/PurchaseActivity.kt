@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket.activities.terminal
+package org.feup.group4.supermarket.activities.client
 
 import android.os.Bundle
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
@@ -23,6 +24,7 @@ class PurchaseActivity : AppCompatActivity() {
 
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.shopping_cart_items) }
     private val emptyRecyclerView: TextView by lazy { findViewById(R.id.empty_recyclerview) }
+    private val checkoutBtn: ExtendedFloatingActionButton by lazy { findViewById(R.id.shopping_cart_checkout) }
 
     private val qrCodeScannerLauncher: ActivityResultLauncher<ScanOptions> =
         registerForActivityResult(
@@ -68,9 +70,11 @@ class PurchaseActivity : AppCompatActivity() {
 
         if (purchase.getProducts().isEmpty()) {
             recyclerView.visibility = View.GONE
+            checkoutBtn.visibility = View.GONE
             emptyRecyclerView.visibility = View.VISIBLE
         } else {
             recyclerView.visibility = View.VISIBLE
+            checkoutBtn.visibility = View.VISIBLE
             emptyRecyclerView.visibility = View.GONE
         }
 

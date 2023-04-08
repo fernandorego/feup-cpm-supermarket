@@ -1,4 +1,4 @@
-package org.feup.group4.supermarket.fragments
+package org.feup.group4.supermarket.fragments.client
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,14 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
-import org.feup.group4.supermarket.activities.MainActivity
 import org.feup.group4.supermarket.activities.client.ClientActivity
-import org.feup.group4.supermarket.activities.terminal.PurchaseActivity
+import org.feup.group4.supermarket.activities.client.PurchaseActivity
 import org.feup.group4.supermarket.adapters.CouponsAdapter
 import org.feup.group4.supermarket.adapters.coupons
 import org.feup.group4.supermarket.model.User
 
-class ClientHomeFragment : Fragment() {
+class HomeFragment : Fragment() {
     private val user: User = ClientActivity.user
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

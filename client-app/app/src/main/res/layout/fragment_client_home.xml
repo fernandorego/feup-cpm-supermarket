@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ClientHomeFragment"
+    tools:context=".fragments.client.HomeFragment"
     android:background="@color/dark_blue">
 
     <ImageView
@@ -76,7 +76,9 @@
         app:layout_constraintTop_toBottomOf="@id/home_text_coupons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        android:paddingEnd="15dp"
+        android:clipToPadding="false"/>
 
     <TextView
         android:id="@+id/empty_recyclerview"

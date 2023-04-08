@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"encoding/base64"
 	"net/http"
 	"os"
 	"server/db"
@@ -32,22 +31,12 @@ func Register(context *gin.Context) {
 	doc.Password = helpers.HashPassword(doc.Password)
 	doc.UUID = uuid.New()
 
-	publicKey, err := base64.StdEncoding.DecodeString(doc.PublicKey)
-	if err != nil {
-		helpers.SetStatusBadRequest(context, "invalid public key encoding")
-		return
-	}
-
-	doc.PublicKey = string(publicKey)
-
 	res, err := usersCollection.InsertOne(context, doc)
 	if err != nil {
 		helpers.SetStatusInternalServerError(context, "error inserting user into collection")
 		return
 	}
-	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin, gin.H{"server_private_key": os.Getenv("PUBLIC_KEY")})
-
-	println("In register", doc.PublicKey)
+	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin, gin.H{"server_private_key": os.Getenv("PRIVATE_KEY")})
 }
 
 func GenerateToken(context *gin.Context) {
@@ -56,6 +45,7 @@ func GenerateToken(context *gin.Context) {
 
 	credentials, err := models.GetUserCredentialsFromJSON(context)
 	if err != nil {
+		println(err.Error())
 		helpers.SetStatusBadRequest(context, err.Error())
 		return
 	}
@@ -71,17 +61,7 @@ func GenerateToken(context *gin.Context) {
 		return
 	}
 
-	publicKey, err := base64.StdEncoding.DecodeString(credentials.PublicKey)
-	if err != nil {
-		helpers.SetStatusBadRequest(context, "invalid public key encoding")
-		return
-	}
-
-	user.PublicKey = string(publicKey)
-	usersCollection.FindOneAndReplace(context, bson.M{"nickname": user.Nickname}, user)
 	provideToken(context, user.ID, user.IsAdmin, gin.H{"server_private_key": os.Getenv("PRIVATE_KEY")})
-
-	println("In login", user.PublicKey)
 }
 
 func provideToken(context *gin.Context, id primitive.ObjectID, isAdmin bool, args map[string]interface{}) {

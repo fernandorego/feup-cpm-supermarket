@@ -23,6 +23,7 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
 
     fun login(nickname: String, password: String) {
         val publicKey = CryptoService(context).generateKeyPair().public
+        Log.w("publicKey", Base64.encodeToString(publicKey.encoded, Base64.DEFAULT))
         post(
             "/getToken",
             Gson().toJson(
@@ -56,7 +57,10 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
                     password,
                     name,
                     Card(card_number, card_cvv, card_date),
-                    Base64.encodeToString(cryptoService.generateKeyPair().public.encoded, Base64.DEFAULT),
+                    Base64.encodeToString(
+                        cryptoService.generateKeyPair().public.encoded,
+                        Base64.DEFAULT
+                    ),
                     null,
                     null,
                     null
