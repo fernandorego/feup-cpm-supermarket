@@ -20,6 +20,7 @@
     <string name="receipts_hello">Previous Purchases</string>
     <string name="coupons_expiration">Valid until:</string>
     <string name="date_format" translatable="false">"%s %d"</string>
+    <string name="date_format_with_year" translatable="false">"%s %d, %d"</string>
     <string name="home_empty_recyclerview">Get a 15% discount coupon for every 100€ spent</string>
     <string name="appbar_menu_account">Account</string>
     <string name="title_products">Products</string>
@@ -39,4 +40,6 @@
     <string name="scan_qr_error">Error while scanning QR Code</string>
     <string name="account_logout">Logout</string>
     <string name="string_format" translatable="false">"%s"</string>
+    <string name="receipts_empty_recyclerview">No previous purchases. Start one now!</string>
+    <string name="money_format" translatable="false">"%.2f€"</string>
 </resources>

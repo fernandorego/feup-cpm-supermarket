@@ -26,7 +26,7 @@
     <string name="payment_balance">Usar saldo</string>
     <string name="payment_coupon">Usar cupão</string>
     <string name="onboarding_year">AA</string>
-    <string name="title_products">Products</string>
+    <string name="title_products">Produtos</string>
     <string name="title_checkout">Checkout</string>
     <string name="products_hello">Gerar Produtos</string>
     <string name="products_empty_recyclerview">Começa a gerar códigos de produtos</string>
@@ -34,4 +34,5 @@
     <string name="scan_product_qr">Aponte a câmara para o código QR do produto</string>
     <string name="scan_qr_error">Erro ao ler o código QR</string>
     <string name="account_logout">Logout</string>
+    <string name="receipts_empty_recyclerview">Sem compras prévias. Começa uma agora!</string>
 </resources>

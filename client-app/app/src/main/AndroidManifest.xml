@@ -25,7 +25,8 @@
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.terminal.PurchaseActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.ACMESupermarketNoNavBar"/>
         <activity
             android:name=".activities.RegisterActivity"
             android:exported="false"
