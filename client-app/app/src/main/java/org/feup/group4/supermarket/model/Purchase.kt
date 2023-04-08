@@ -33,8 +33,7 @@ class Purchase {
     fun getTotalPrice(): Double {
         var totalPrice = 0.0
         for (product in products) {
-            totalPrice += product.first.euros * product.second
-            totalPrice += product.first.cents / 100 * product.second
+            totalPrice += product.first.price * product.second
         }
         return totalPrice
     }
