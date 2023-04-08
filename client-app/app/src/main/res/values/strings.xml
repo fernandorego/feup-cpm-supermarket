@@ -37,4 +37,6 @@
     <string name="payment_coupon">Apply coupon</string>
     <string name="scan_product_qr">Point the camera to the product\'s QR Code</string>
     <string name="scan_qr_error">Error while scanning QR Code</string>
+    <string name="account_logout">Logout</string>
+    <string name="string_format" translatable="false">"%s"</string>
 </resources>
