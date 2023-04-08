@@ -35,7 +35,7 @@
     <string name="payment_card">Pay with card</string>
     <string name="payment_balance">Pay with balance</string>
     <string name="payment_coupon">Apply coupon</string>
-    <string name="scan_product_qr">Point the camera to the product\'s QR Code</string>
+    <string name="scan_qr_tip">Point the camera to the QR Code</string>
     <string name="scan_qr_error">Error while scanning QR Code</string>
     <string name="checkout_mode_home_background" translatable="false">Checkout Mode Home Background</string>
     <string name="generate_products_home_background" translatable="false">Generate Products Home Background</string>

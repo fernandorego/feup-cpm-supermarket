@@ -16,38 +16,16 @@ import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.adapters.ProductsAdapter
 import org.feup.group4.supermarket.model.Product
 import org.feup.group4.supermarket.model.Purchase
+import org.feup.group4.supermarket.service.QRService
 
 private val purchase = Purchase()
 
 class PurchaseActivity : AppCompatActivity() {
-    private val adapter = ProductsAdapter(this, purchase.getProducts())
+    private val qrService = QRService(this)
 
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.shopping_cart_items) }
     private val emptyRecyclerView: TextView by lazy { findViewById(R.id.empty_recyclerview) }
     private val checkoutBtn: ExtendedFloatingActionButton by lazy { findViewById(R.id.shopping_cart_checkout) }
-
-    private val qrCodeScannerLauncher: ActivityResultLauncher<ScanOptions> =
-        registerForActivityResult(
-            ScanContract()
-        ) { result ->
-            if (result.contents == null) {
-                Toast.makeText(this, resources.getString(R.string.scan_qr_error), Toast.LENGTH_LONG)
-                    .show()
-            } else {
-                // TODO: Decrypt QR code and add actual product
-                Toast.makeText(
-                    this,
-                    "Scanned: " + result.contents,
-                    Toast.LENGTH_LONG
-                ).show()
-                purchase.addProduct(Product("Test", 1, 0))
-                purchase.addProduct(Product("Test2", 1, 0))
-                purchase.addProduct(Product("Test3", 1, 0))
-                purchase.addProduct(Product("Test4", 1, 0))
-                purchase.addProduct(Product("Test5", 1, 0))
-                adapter.notifyItemInserted(purchase.getProducts().size - 1)
-            }
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +33,24 @@ class PurchaseActivity : AppCompatActivity() {
 
         val scanButton = findViewById<FloatingActionButton>(R.id.shopping_cart_add)
         scanButton.setOnClickListener {
-            val scanOptions = ScanOptions()
-            scanOptions.setOrientationLocked(false)
-            scanOptions.setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-            scanOptions.setPrompt(resources.getString(R.string.scan_product_qr))
-            qrCodeScannerLauncher.launch(scanOptions)
+            qrService.scanQRCode { content ->
+                if (content == null) {
+                    Toast.makeText(
+                        this, resources.getString(R.string.scan_qr_error), Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    // TODO: Decrypt QR code and add actual product
+                    Toast.makeText(
+                        this, "Scanned: $content", Toast.LENGTH_LONG
+                    ).show()
+                    purchase.addProduct(Product("Test", 1, 0))
+                    purchase.addProduct(Product("Test2", 1, 0))
+                    purchase.addProduct(Product("Test3", 1, 0))
+                    purchase.addProduct(Product("Test4", 1, 0))
+                    purchase.addProduct(Product("Test5", 1, 0))
+                    recyclerView.adapter?.notifyItemInserted(purchase.getProducts().size - 1)
+                }
+            }
         }
     }
 
