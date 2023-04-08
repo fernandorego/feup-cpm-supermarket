@@ -34,7 +34,7 @@
         <activity
             android:name=".activities.client.PurchaseActivity"
             android:exported="false"
-            android:theme="@style/Theme.ACMESupermarketNoNavBar"/>
+            android:theme="@style/Theme.ACMESupermarketNoNavBar" />
         <activity
             android:name=".activities.RegisterActivity"
             android:exported="false"

@@ -63,4 +63,6 @@
     <string name="purchase_success_message">Purchase successful</string>
     <string name="purchase_error_message">Purchase failed</string>
     <string name="receipts_empty_recyclerview">No previous purchases. Start one now!</string>
+    <string name="money_format" translatable="false">"%.2f€"</string>
+    <string name="checkout_complete_purchase">Complete your purchase below</string>
 </resources>

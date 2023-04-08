@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
     android:background="@drawable/rounded_rectangle"
-    android:backgroundTint="@color/light_blue">
+    android:backgroundTint="@color/dark_blue"
+    android:layout_marginHorizontal="15dp"
+    android:layout_marginTop="20dp">
 
     <ImageView
         android:id="@+id/item_image"
@@ -27,6 +28,7 @@
         android:maxLines="2"
         android:text="Very long item name that will be cut off if it is too long"
         android:textSize="20sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/item_quantity"
         app:layout_constraintStart_toEndOf="@+id/item_image"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,6 +43,7 @@
         android:text="1"
         android:paddingEnd="4dp"
         android:paddingStart="12dp"
+        android:textColor="#FFFFFF"
 
         android:textAlignment="textEnd"
         app:layout_constraintEnd_toStartOf="@id/item_units"
@@ -54,6 +57,7 @@
         android:layout_height="wrap_content"
         android:text="@string/item_units"
         android:textSize="16sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintBaseline_toBaselineOf="@+id/item_quantity"
         app:layout_constraintStart_toEndOf="@id/item_quantity" />
 
@@ -68,7 +72,7 @@
         app:layout_constraintEnd_toStartOf="@+id/item_remove"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/cardview_dark_background" />
+        app:tint="#FFFFFF" />
 
     <ImageButton
         android:id="@+id/item_remove"
@@ -80,7 +84,7 @@
         android:src="@android:drawable/ic_delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/cardview_dark_background" />
+        app:tint="#FFFFFF" />
 
     <TextView
         android:id="@+id/item_price"
@@ -88,6 +92,7 @@
         android:layout_height="wrap_content"
         android:text="@string/price_format"
         android:textSize="18sp"
+        android:textColor="#FFFFFF"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
