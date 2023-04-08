@@ -27,7 +27,8 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/export" />
+            android:text="@string/export"
+            android:textColor="#FFFFFF"/>
 
         <Space
             android:layout_width="16dp"
@@ -38,6 +39,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/close" />
+            android:text="@string/close"
+            android:textColor="#FFFFFF"/>
     </LinearLayout>
 </LinearLayout>
