@@ -67,8 +67,7 @@ class ProductsFragment : Fragment() {
         // TODO: Add product to database and verify correctness
         val product = Product(
             productName,
-            productPrice.toInt(),
-            ((productPrice * 100) % 100).toInt(),
+            productPrice
         )
         products.add(Pair(product, 1))
         successCallBack()

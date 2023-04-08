@@ -4,7 +4,7 @@
     <string name="title_receipts">Receipts</string>
     <string name="home_hello">"Hey %s"</string>
     <string name="home_balance">Accumulated balance</string>
-    <string name="price_format" translatable="false">"%d,%02d€"</string>
+    <string name="price_format" translatable="false">"%.2f€"</string>
     <string name="home_coupons">Coupons</string>
     <string name="home_fab">New Purchase</string>
     <string name="onboarding_login">Login</string>
@@ -25,7 +25,7 @@
     <string name="appbar_menu_account">Account</string>
     <string name="title_products">Products</string>
     <string name="title_checkout">Checkout</string>
-    <string name="products_hello">Generate Products</string>
+    <string name="products_hello">Products Catalog</string>
     <string name="products_empty_recyclerview">Start generating products</string>
     <string name="products_new_product">New product</string>
     <string name="shopping_cart_subtotal">Subtotal</string>
@@ -36,7 +36,7 @@
     <string name="payment_card">Pay with card</string>
     <string name="payment_balance">Pay with balance</string>
     <string name="payment_coupon">Apply coupon</string>
-    <string name="scan_product_qr">Point the camera to the product\'s QR Code</string>
+    <string name="scan_qr_tip">Point the camera to the QR Code</string>
     <string name="scan_qr_error">Error while scanning QR Code</string>
     <string name="checkout_mode_home_background" translatable="false">Checkout Mode Home Background</string>
     <string name="generate_products_home_background" translatable="false">Generate Products Home Background</string>
@@ -55,6 +55,13 @@
     <string name="delete_product_message">Are you sure you want to delete this product from the catalog?</string>
     <string name="account_logout">Logout</string>
     <string name="string_format" translatable="false">"%s"</string>
+    <string name="close">Close</string>
+    <string name="export">Export</string>
+    <string name="product_s_qr_code">Product\'s QR Code</string>
+    <string name="export_file_failed">Could not export file. Verify storage permission</string>
+    <string name="export_file_success">File exported successfully</string>
+    <string name="purchase_success_message">Purchase successful</string>
+    <string name="purchase_error_message">Purchase failed</string>
     <string name="receipts_empty_recyclerview">No previous purchases. Start one now!</string>
     <string name="money_format" translatable="false">"%.2f€"</string>
     <string name="checkout_complete_purchase">Complete your purchase below</string>
