@@ -1,12 +1,10 @@
 package org.feup.group4.supermarket.service
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Base64
 import android.util.Log
 import com.google.gson.Gson
 import org.feup.group4.supermarket.model.Product
-import java.net.URLEncoder
 import java.util.*
 
 
@@ -20,13 +18,13 @@ class ProductService(val context: Context) {
             }
 
             // Decode Base64 string
-            encryptedProduct = (Base64.decode(body, Base64.DEFAULT)).toString(charset = Charsets.UTF_8)
+            encryptedProduct =
+                (Base64.decode(body, Base64.DEFAULT)).toString(charset = Charsets.UTF_8)
             callback(encryptedProduct)
             return
         }
         HttpService(context, ::afterRequest).get("/product/$uuid")
     }
-
 
     fun getDecryptedProduct(uuid: UUID, callback: (Product) -> Unit) {
         fun afterRequest(encryptedProduct: String) {
@@ -104,21 +102,44 @@ class ProductService(val context: Context) {
 
         val cryptoService = CryptoService(context)
         val jsonProduct = Gson().toJson(unsignedProduct)
-        val b64Product =
+        val b64Message =
             Base64.encodeToString(jsonProduct.toByteArray(charset = Charsets.UTF_8), Base64.DEFAULT)
         val signature =
-            cryptoService.getMessageSignature(b64Product.toByteArray(charset = Charsets.UTF_8))
-        val base64Signature = Base64.encodeToString(signature, Base64.DEFAULT)
+            cryptoService.getMessageSignature(b64Message.toByteArray(charset = Charsets.UTF_8))
+        val base64Signature = Base64.encodeToString(signature, Base64.NO_WRAP)
 
         HttpService(context, ::afterRequest).post(
             "/product",
             Gson().toJson(
                 mapOf(
-                    "b64SignatureString" to base64Signature,
-                    "b64MessageString" to b64Product
+                    "b64MessageString" to b64Message
                 )
-            )
+            ),
+            mapOf("Signature" to base64Signature)
         )
 
+    }
+
+    fun deleteProduct(product: Product, callback: () -> Unit) {
+        fun afterRequest(statusCode: Int, body: String?) {
+            if (statusCode != 204) {
+                Log.w("ProductService", "Error deleting product: $statusCode: $body")
+                return
+            }
+            callback()
+        }
+
+        val cryptoService = CryptoService(context)
+        val message = Gson().toJson(product.uuid)
+        val b64Message =
+            Base64.encodeToString(message.toByteArray(charset = Charsets.UTF_8), Base64.NO_WRAP)
+        val signature =
+            cryptoService.getMessageSignature(b64Message.toByteArray(charset = Charsets.UTF_8))
+        val base64Signature = Base64.encodeToString(signature, Base64.NO_WRAP)
+
+        HttpService(context, ::afterRequest).delete(
+            "/product/${product.uuid}",
+            mapOf("Signature" to base64Signature, "Signed-Message" to b64Message)
+        )
     }
 }

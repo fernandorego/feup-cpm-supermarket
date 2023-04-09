@@ -7,11 +7,10 @@ import (
 )
 
 type SignedMessage struct {
-	B64SignatureString string `json:"b64SignatureString" validate:"required"`
-	B64MessageString   string `json:"b64MessageString" validate:"required"`
+	B64MessageString string `json:"b64MessageString" validate:"required"`
 }
 
-func CreateSignedMessageFromJSONString(context *gin.Context) (*SignedMessage, error) {
+func CreateSignedMessageFromContext(context *gin.Context) (*SignedMessage, error) {
 	signedMessage := new(SignedMessage)
 	if err := context.ShouldBindBodyWith(&signedMessage, binding.JSON); err != nil {
 		return nil, err

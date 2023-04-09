@@ -9,11 +9,28 @@ import (
 )
 
 func VerifySignature(context *gin.Context) {
-	signedMessage, err := models.CreateSignedMessageFromJSONString(context)
-	if err != nil {
-		helpers.SetStatusBadRequest(context, "error parsing signed message: "+err.Error())
+
+	b64MessageSignatureString := context.GetHeader("Signature")
+	if b64MessageSignatureString == "" {
+		helpers.SetStatusBadRequest(context, "missing signature header")
 		context.Abort()
 		return
+	}
+
+	var b64SignedMessageString string
+
+	if helpers.MethodWithBody(context.Request.Method) {
+		signedBody, err := models.CreateSignedMessageFromContext(context)
+		if err != nil {
+			helpers.SetStatusBadRequest(context, "error parsing signed message: "+err.Error())
+			context.Abort()
+			return
+		}
+
+		b64SignedMessageString = signedBody.B64MessageString
+
+	} else {
+		b64SignedMessageString = context.GetHeader("Signed-Message")
 	}
 
 	user, err := models.GetUserFromID(context.MustGet("user_id").(primitive.ObjectID))
@@ -30,7 +47,7 @@ func VerifySignature(context *gin.Context) {
 		return
 	}
 
-	err = helpers.VerifySignature(signedMessage.B64MessageString, signedMessage.B64SignatureString, pubKey)
+	err = helpers.VerifySignature(b64SignedMessageString, b64MessageSignatureString, pubKey)
 	if err != nil {
 		helpers.SetStatusUnauthorized(context, "error signing message: "+err.Error())
 		context.Abort()

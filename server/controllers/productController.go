@@ -20,7 +20,7 @@ func CreateUpdateProduct(context *gin.Context) {
 	db := database.GetDatabase()
 	productsCollection := db.Collection("products")
 
-	signedMessage, err := models.CreateSignedMessageFromJSONString(context)
+	signedMessage, err := models.CreateSignedMessageFromContext(context)
 	if err != nil {
 		helpers.SetStatusBadRequest(context, "error parsing signed message")
 		return
@@ -47,6 +47,26 @@ func CreateUpdateProduct(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, doc)
+}
+
+func DeleteProduct(context *gin.Context) {
+	productUUID, err := uuid.Parse(context.Param("uuid"))
+	if err != nil {
+		helpers.SetStatusBadRequest(context, "cannot parse uuid")
+		return
+	}
+
+	db := database.GetDatabase()
+	productsCollection := db.Collection("products")
+
+	_, err = productsCollection.DeleteOne(context, bson.M{"uuid": productUUID})
+	if err != nil {
+		helpers.SetStatusInternalServerError(context,
+			"error deleting product from collection: "+err.Error())
+		return
+	}
+
+	context.Status(http.StatusNoContent)
 }
 
 func GetProduct(context *gin.Context) {

@@ -38,7 +38,7 @@ class ProductsFragment : Fragment() {
         updateListVisibility()
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_products_list)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = ProductsAdapter(requireContext(), products, adminMode = true)
+        val adapter = ProductsAdapter(requireContext(), products, {updateListVisibility()},true)
         recyclerView.adapter = adapter
 
         val newProductButton = view.findViewById<TextView>(R.id.new_product_fab)

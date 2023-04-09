@@ -27,18 +27,24 @@ open class HttpService internal constructor(
         return sharedPreferencesService.sharedPreferences.getString(tokenStoreKey, null)
     }
 
-    internal fun get(urlRoute: String) = request(HttpRequestMethod.GET, urlRoute)
+    internal fun get(urlRoute: String, headers: Map<String, String>? = null) =
+        request(HttpRequestMethod.GET, urlRoute, headers = headers)
 
-    internal fun post(urlRoute: String, json: String) =
-        request(HttpRequestMethod.POST, urlRoute, body = json)
+    internal fun post(urlRoute: String, json: String, headers: Map<String, String>? = null) =
+        request(HttpRequestMethod.POST, urlRoute, body = json, headers = headers)
 
-    internal fun put(urlRoute: String, json: String) =
-        request(HttpRequestMethod.PUT, urlRoute, body = json)
+    internal fun put(urlRoute: String, json: String, headers: Map<String, String>? = null) =
+        request(HttpRequestMethod.PUT, urlRoute, body = json, headers = headers)
 
-    internal fun delete(urlRoute: String, objectId: Int) =
-        request(HttpRequestMethod.DELETE, "$urlRoute/$objectId")
+    internal fun delete(urlRoute: String, headers: Map<String, String>? = null) =
+        request(HttpRequestMethod.DELETE, urlRoute, headers = headers)
 
-    private fun request(requestMethod: HttpRequestMethod, urlRoute: String, body: String? = null) {
+    private fun request(
+        requestMethod: HttpRequestMethod,
+        urlRoute: String,
+        body: String? = null,
+        headers: Map<String, String>? = null
+    ) {
         val baseAddress = context.resources.getString(R.string.server_ip)
         val port = context.resources.getString(R.string.server_port)
         val url = URL("http://$baseAddress:$port$urlRoute")
@@ -65,6 +71,10 @@ open class HttpService internal constructor(
                         this.doInput = true
                         this.setRequestProperty("Content-Type", "application/json")
                     }
+                }
+
+                headers?.forEach { (key, value) ->
+                    this.setRequestProperty(key, value)
                 }
             }
 
