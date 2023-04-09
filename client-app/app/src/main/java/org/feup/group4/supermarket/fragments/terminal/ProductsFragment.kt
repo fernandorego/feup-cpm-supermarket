@@ -91,11 +91,10 @@ class ProductsFragment : Fragment() {
                         products.addAll(remoteProducts.map { Pair(it, 1) }.toList())
                         adapter.notifyDataSetChanged()
                         updateListVisibility()
+                        successCallBack()
                     }
                 }
             }
         }
-
-        successCallBack()
     }
 }

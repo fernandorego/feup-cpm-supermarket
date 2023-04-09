@@ -61,13 +61,10 @@ func GenerateToken(context *gin.Context) {
 		return
 	}
 
-	user.PublicKey = credentials.PublicKey
-	// if _, err = usersCollection.UpdateOne(context, bson.M{"_id": user.ID}, bson.M{"$set": bson.M{"publickey": user.PublicKey}}); err != nil {
-	// 	helpers.SetStatusInternalServerError(context, "error updating user public key")
-	// 	return
-	// }
-
-	usersCollection.FindOneAndReplace(context, bson.M{"nickname": user.Nickname}, user)
+	if _, err = usersCollection.UpdateOne(context, bson.M{"_id": user.ID}, bson.M{"$set": bson.M{"publickey": credentials.PublicKey}}); err != nil {
+		helpers.SetStatusInternalServerError(context, "error updating user public key")
+		return
+	}
 
 	provideToken(context, user.ID, user.IsAdmin, gin.H{"server_private_key": os.Getenv("PRIVATE_KEY")})
 }
