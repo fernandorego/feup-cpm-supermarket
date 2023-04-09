@@ -1,5 +1,6 @@
 package org.feup.group4.supermarket.fragments.terminal
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Bitmap
@@ -10,25 +11,37 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Product
+import org.feup.group4.supermarket.service.ProductService
 import org.feup.group4.supermarket.service.QRService
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.concurrent.thread
 
 class ProductQRDialogFragment(private val product: Product) : AppCompatDialogFragment() {
-    class ProductQRDialog(context: Context, private val product: Product) :
-        AppCompatDialog(context) {
-        private fun setQRImage(): Bitmap {
-            // TODO: Add proper QR code payload with encryption
-            val contents = product.toString()
-            val bitmap = QRService.generateQRCode(contents, 600, 600)
-            val qrCodeImage = findViewById<ImageView>(R.id.qr_image)
-            qrCodeImage?.setImageBitmap(bitmap)
-            return bitmap
+    class ProductQRDialog(private val activity: FragmentActivity, private val product: Product) :
+        AppCompatDialog(activity) {
+        private lateinit var bitmap: Bitmap
+        private fun setQRImage() {
+            thread(start = true) {
+                var contents = ""
+                ProductService(context).getEncryptedProduct(product.uuid!!) {
+                    contents = it
+                }
+                bitmap = QRService.generateQRCode(contents, 600, 600)
+                activity.runOnUiThread {
+                    val qrCodeImage = findViewById<ImageView>(R.id.qr_image)
+                    qrCodeImage?.setImageBitmap(bitmap)
+                }
+            }
+
+
         }
 
-        private fun exportImage(bitmap: Bitmap) {
+        private fun exportImage() {
             val directory = File(
                 Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOCUMENTS
@@ -72,7 +85,7 @@ class ProductQRDialogFragment(private val product: Product) : AppCompatDialogFra
             val exportButton = findViewById<Button>(R.id.export_button)
             exportButton?.setOnClickListener {
                 try {
-                    exportImage(bitmap)
+                    exportImage()
                 } catch (e: Exception) {
                     Toast.makeText(
                         context,
@@ -88,7 +101,7 @@ class ProductQRDialogFragment(private val product: Product) : AppCompatDialogFra
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
         return ProductQRDialog(
-            activity as Context, product
+            requireActivity(), product
         )
     }
 }

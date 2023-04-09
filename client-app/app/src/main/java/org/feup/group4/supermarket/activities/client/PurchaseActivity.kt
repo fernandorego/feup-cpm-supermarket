@@ -1,6 +1,7 @@
 package org.feup.group4.supermarket.activities.client
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -13,6 +14,7 @@ import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.adapters.ProductsAdapter
 import org.feup.group4.supermarket.model.Product
 import org.feup.group4.supermarket.model.Purchase
+import org.feup.group4.supermarket.service.ProductService
 import org.feup.group4.supermarket.service.QRService
 
 private val purchase = Purchase()
@@ -36,11 +38,12 @@ class PurchaseActivity : AppCompatActivity() {
                         this, resources.getString(R.string.scan_qr_error), Toast.LENGTH_LONG
                     ).show()
                 } else {
-                    // TODO: Decrypt QR code and add actual product
                     Toast.makeText(
                         this, "Scanned: $content", Toast.LENGTH_LONG
                     ).show()
-                    purchase.addProduct(Product("Test", 1.0))
+                    val product = ProductService(this).decryptProduct(content)
+                    Log.w("PurchaseActivity", "Scanned: $product")
+                    purchase.addProduct(product)
                     recyclerView.adapter?.notifyItemInserted(purchase.getProducts().size - 1)
                 }
             }

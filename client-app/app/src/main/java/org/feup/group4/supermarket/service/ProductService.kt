@@ -11,8 +11,8 @@ import java.util.*
 
 
 class ProductService(val context: Context) {
-    fun getEncryptedProduct(uuid: UUID, callback: (ByteArray) -> Unit) {
-        var encryptedProduct: ByteArray
+    fun getEncryptedProduct(uuid: UUID, callback: (String) -> Unit) {
+        var encryptedProduct: String
         fun afterRequest(statusCode: Int, body: String?) {
             if (statusCode != 200) {
                 Log.w("ProductService", "AAAAError getting product: $statusCode: $body")
@@ -20,9 +20,7 @@ class ProductService(val context: Context) {
             }
 
             // Decode Base64 string
-            encryptedProduct = Base64.decode(body, Base64.DEFAULT)
-            Log.w("ProductService", encryptedProduct.toString(charset = Charsets.UTF_8))
-
+            encryptedProduct = (Base64.decode(body, Base64.DEFAULT)).toString(charset = Charsets.UTF_8)
             callback(encryptedProduct)
             return
         }
@@ -31,7 +29,7 @@ class ProductService(val context: Context) {
 
 
     fun getDecryptedProduct(uuid: UUID, callback: (Product) -> Unit) {
-        fun afterRequest(encryptedProduct: ByteArray) {
+        fun afterRequest(encryptedProduct: String) {
             val product = decryptProduct(encryptedProduct)
 
             callback(product)
@@ -39,10 +37,10 @@ class ProductService(val context: Context) {
         getEncryptedProduct(uuid, ::afterRequest)
     }
 
-    fun decryptProduct(encryptedProduct: ByteArray): Product {
+    fun decryptProduct(encryptedProduct: String): Product {
         val cryptoService = CryptoService(context)
         val encryptedProductMap =
-            Gson().fromJson(encryptedProduct.toString(charset = Charsets.UTF_8), Map::class.java)
+            Gson().fromJson(encryptedProduct, Map::class.java)
 
         val decryptedUUID =
             cryptoService.decryptMessage(
