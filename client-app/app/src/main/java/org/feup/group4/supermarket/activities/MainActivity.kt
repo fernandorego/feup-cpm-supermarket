@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        if (UserService(this, null).getToken() == null) {
+        if (UserService(this, null).getToken().isNullOrEmpty()) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {
