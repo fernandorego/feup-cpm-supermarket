@@ -36,7 +36,7 @@ func Register(context *gin.Context) {
 		helpers.SetStatusInternalServerError(context, "error inserting user into collection")
 		return
 	}
-	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin, gin.H{"server_private_key": os.Getenv("PRIVATE_KEY")})
+	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin, gin.H{})
 }
 
 func GenerateToken(context *gin.Context) {
