@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -36,7 +35,7 @@ func GetPurchases(context *gin.Context) {
 	}
 
 	//TODO: change to custom json instead of Marshal with only the necessary fields
-	context.JSON(http.StatusOK, gin.H{"purchases": json.Marshal(purchases)})
+	context.JSON(http.StatusOK, gin.H{"purchases": purchases})
 }
 
 func Purchase(context *gin.Context) {
@@ -73,13 +72,13 @@ func Purchase(context *gin.Context) {
 		return
 	}
 
-	totalPrice, paidPrice, err := payment(context, purchase, user)
+	totalPrice, paidPrice, err := payment(context, purchase, &user)
 	if err != nil {
 		helpers.SetStatusBadRequest(context, "error payment message: "+err.Error())
 		return
 	}
 
-	updatedValues := bson.M{"accumulatedvalue": user.AccumulatedValue, "accumulatedpaidvalue": user.AccumulatedPaidValue}
+	updatedValues := bson.M{"accumulatedvalue": user.AccumulatedValue, "accumulatedpaidvalue": user.AccumulatedPaidValue, "activecoupons": user.ActiveCoupons}
 	if _, err = usersCollection.UpdateOne(context, bson.M{"_id": user.ID}, bson.M{"$set": updatedValues}); err != nil {
 		helpers.SetStatusInternalServerError(context, "error updating user message: "+err.Error())
 		return
@@ -105,7 +104,7 @@ func verifyActiveCoupon(purchase *models.Purchase, user models.User) error {
 	return errors.New("invalid coupon")
 }
 
-func removeCoupon(coupon uuid.UUID, user models.User) {
+func removeCoupon(coupon uuid.UUID, user *models.User) {
 	index := 0
 	for i, activeCoupon := range user.ActiveCoupons {
 		if activeCoupon == coupon {
@@ -115,11 +114,11 @@ func removeCoupon(coupon uuid.UUID, user models.User) {
 	user.ActiveCoupons = append(user.ActiveCoupons[:index], user.ActiveCoupons[index+1:]...)
 }
 
-func addCoupon(user models.User) {
+func addCoupon(user *models.User) {
 	user.ActiveCoupons = append(user.ActiveCoupons, uuid.New())
 }
 
-func payment(context *gin.Context, purchase *models.Purchase, user models.User) (totalPrice float64, paidPrice float64, err error) {
+func payment(context *gin.Context, purchase *models.Purchase, user *models.User) (totalPrice float64, paidPrice float64, err error) {
 	totalPrice = 0
 	paidPrice = 0
 	err = nil
@@ -127,8 +126,7 @@ func payment(context *gin.Context, purchase *models.Purchase, user models.User) 
 	productCollection := db.GetDatabase().Collection("products")
 	for _, cardProduct := range purchase.Cart {
 		var product models.Product
-		if doc := productCollection.FindOne(context, bson.M{"uuid": cardProduct.ProductUUID}); doc != nil {
-			err = doc.Err()
+		if err = productCollection.FindOne(context, bson.M{"uuid": cardProduct.ProductUUID}).Decode(&product); err != nil {
 			return
 		}
 		totalPrice += product.Price * float64(cardProduct.Quantity)
@@ -137,6 +135,8 @@ func payment(context *gin.Context, purchase *models.Purchase, user models.User) 
 	if purchase.Discount {
 		paidPrice = math.Max(0, totalPrice-user.AccumulatedValue)
 		user.AccumulatedValue = math.Max(0, user.AccumulatedValue-totalPrice)
+	} else {
+		paidPrice = totalPrice
 	}
 
 	if purchase.Coupon != nil {

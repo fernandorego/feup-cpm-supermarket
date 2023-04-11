@@ -87,3 +87,16 @@ func GetUserFromID(id primitive.ObjectID) (user *User, err error) {
 
 	return user, nil
 }
+
+func GetUserFromUUID(uuid uuid.UUID) (user *User, err error) {
+	database := db.GetDatabase()
+	usersCollection := database.Collection("users")
+
+	ctx := context.Background()
+	user = new(User)
+	if err := usersCollection.FindOne(ctx, bson.M{"uuid": uuid}).Decode(&user); err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}

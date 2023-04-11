@@ -13,9 +13,9 @@ type CartProduct struct {
 
 type Purchase struct {
 	UUID     uuid.UUID     `json:"uuid"`
-	UserUUID uuid.UUID     `json:"user_uuid"`
+	UserUUID uuid.UUID     `json:"user_uuid" validate:"required"`
 	Cart     []CartProduct `json:"cart" validate:"required"`
-	Discount bool          `json:"discount" validate:"required"`
+	Discount bool          `json:"discount"`
 	Coupon   *uuid.UUID    `json:"coupon"`
 }
 
