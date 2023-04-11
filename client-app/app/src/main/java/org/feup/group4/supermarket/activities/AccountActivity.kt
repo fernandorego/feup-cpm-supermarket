@@ -9,6 +9,7 @@ import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.activities.client.ClientActivity
 import org.feup.group4.supermarket.activities.terminal.TerminalActivity
 import org.feup.group4.supermarket.model.User
+import org.feup.group4.supermarket.repository.ProductRepository
 import org.feup.group4.supermarket.service.AuthService
 
 class AccountActivity : AppCompatActivity() {
@@ -38,6 +39,8 @@ class AccountActivity : AppCompatActivity() {
         super.onStart()
         logoutBtn.setOnClickListener {
             AuthService(this, null).setToken("")
+            val productRepository = ProductRepository.getInstance(this)
+            productRepository.removeAll()
             startActivity(Intent(this, MainActivity::class.java))
             finishAffinity()
         }

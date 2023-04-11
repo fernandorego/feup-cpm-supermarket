@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.fragments.terminal.ProductQRDialogFragment
 import org.feup.group4.supermarket.model.Product
+import org.feup.group4.supermarket.repository.ProductRepository
 import org.feup.group4.supermarket.service.ProductService
 import kotlin.concurrent.thread
 
@@ -19,7 +20,8 @@ class ProductsAdapter(
     private val context: Context,
     private val products: ArrayList<Pair<Product, Int>>,
     private val onChangeCallBack: (Int) -> Unit = {},
-    private val adminMode: Boolean = false
+    private val adminMode: Boolean = false,
+    private val productsRepository: ProductRepository? = null
 ) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = (context as Activity).layoutInflater.inflate(
@@ -40,6 +42,7 @@ class ProductsAdapter(
                                 if (products[i].first.name == view.findViewById<TextView>(R.id.item_name).text) {
                                     ProductService(context).deleteProduct(products[i].first) {
                                         context.runOnUiThread {
+                                            productsRepository?.removeProduct(products[i].first)
                                             removeItem(view)
                                         }
                                     }
