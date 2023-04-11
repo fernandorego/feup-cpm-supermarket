@@ -49,6 +49,7 @@ func Purchase(context *gin.Context) {
 
 	totalPrice, paidPrice, err := payment(context, purchase, user)
 	if err != nil {
+		helpers.SetStatusBadRequest(context, "error payment message: "+err.Error())
 		return
 	}
 
@@ -98,7 +99,6 @@ func payment(context *gin.Context, purchase *models.Purchase, user models.User) 
 		var product models.Product
 		if doc := productCollection.FindOne(context, bson.M{"uuid": cardProduct.ProductUUID}); doc != nil {
 			err = doc.Err()
-			helpers.SetStatusBadRequest(context, "product with provided uuid does not exist")
 			return
 		}
 		totalPrice += product.Price * float64(cardProduct.Quantity)
