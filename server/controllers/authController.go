@@ -15,8 +15,7 @@ import (
 )
 
 func Register(context *gin.Context) {
-	database := db.GetDatabase()
-	usersCollection := database.Collection("users")
+	usersCollection := db.GetDatabase().Collection("users")
 
 	doc, err := models.CreateUserFromJSON(context)
 	if err != nil {
@@ -40,8 +39,7 @@ func Register(context *gin.Context) {
 }
 
 func GenerateToken(context *gin.Context) {
-	database := db.GetDatabase()
-	usersCollection := database.Collection("users")
+	usersCollection := db.GetDatabase().Collection("users")
 
 	credentials, err := models.GetUserCredentialsFromJSON(context)
 	if err != nil {

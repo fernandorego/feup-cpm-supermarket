@@ -16,4 +16,6 @@ func addAdminRoutes(rg *gin.RouterGroup) {
 func addAdminSignedRoutes(rg *gin.RouterGroup) {
 	rg.POST("/product", controllers.CreateOrReplaceProduct)
 	rg.DELETE("/product/:uuid", controllers.DeleteProduct)
+
+	rg.POST("/purchase", controllers.Purchase)
 }
