@@ -56,7 +56,8 @@
     <string name="purchase_error_message">Compra falhou</string>
     <string name="receipts_empty_recyclerview">Sem compras prévias. Começa uma agora!</string>
     <string name="checkout_complete_purchase">Completa a tua compra em baixo</string>
-    <string name="scanning_nfc_title">À procura de NFC…</string>
-    <string name="scanning_nfc_message_receiver">Aproxime o seu telefone do terminal</string>
+    <string name="scanning_nfc_title">Procura de NFC</string>
+    <string name="scanning_nfc_message_receiver">À espera de um dispositivo cliente…</string>
+    <string name="scanning_nfc_message_sender">À espera de um dispositivo terminal…</string>
     <string name="nfc_not_supported">O seu telefone não suporta NFC</string>
 </resources>

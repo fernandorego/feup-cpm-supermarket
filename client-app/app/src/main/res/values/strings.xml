@@ -65,7 +65,8 @@
     <string name="receipts_empty_recyclerview">No previous purchases. Start one now!</string>
     <string name="money_format" translatable="false">"%.2f€"</string>
     <string name="checkout_complete_purchase">Complete your purchase below</string>
-    <string name="scanning_nfc_title">Scanning NFC…</string>
-    <string name="scanning_nfc_message_receiver">Move your phone close to the terminal</string>
+    <string name="scanning_nfc_title">NFC Scan</string>
+    <string name="scanning_nfc_message_receiver">Looking for a client phone…</string>
+    <string name="scanning_nfc_message_sender">Looking for a terminal application…</string>
     <string name="nfc_not_supported">Your phone does not support NFC</string>
 </resources>

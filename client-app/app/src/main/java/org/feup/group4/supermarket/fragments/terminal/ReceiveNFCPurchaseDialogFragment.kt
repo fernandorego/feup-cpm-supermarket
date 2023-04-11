@@ -9,9 +9,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import org.feup.group4.supermarket.R
+import org.feup.group4.supermarket.service.NFCReaderService
 
-class ReceiveNFCPurchaseDialogFragment: AppCompatDialogFragment() {
-
+class ReceiveNFCPurchaseDialogFragment : AppCompatDialogFragment() {
     class ReceiveNFCPurchaseDialog(context: Context) : AppCompatDialog(context) {
         private val nfcAdapter: NfcAdapter? by lazy { NfcAdapter.getDefaultAdapter(context) }
 
@@ -29,13 +29,8 @@ class ReceiveNFCPurchaseDialogFragment: AppCompatDialogFragment() {
                 dismiss()
             }
 
-            nfcAdapter!!.enableReaderMode(ownerActivity, { tag ->
-                val ndef = Ndef.get(tag) ?: return@enableReaderMode
-                ndef.connect()
-                val message = ndef.ndefMessage
-                ndef.close()
-                Toast.makeText(context, String(message.records[0].payload), Toast.LENGTH_SHORT).show()
-                dismiss()
+            nfcAdapter!!.enableReaderMode(ownerActivity, NFCReaderService { bytes: ByteArray ->
+                println("Received bytes")
             }, NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK, null)
 
             setOnDismissListener { nfcAdapter!!.disableReaderMode(ownerActivity) }
