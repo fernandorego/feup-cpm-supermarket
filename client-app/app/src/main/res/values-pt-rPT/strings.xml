@@ -56,4 +56,5 @@
     <string name="purchase_error_message">Compra falhou</string>
     <string name="receipts_empty_recyclerview">Sem compras prévias. Começa uma agora!</string>
     <string name="checkout_complete_purchase">Completa a tua compra em baixo</string>
+    <string name="title_admin">Admin</string>
 </resources>
