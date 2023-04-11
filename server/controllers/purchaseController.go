@@ -13,6 +13,30 @@ import (
 	"server/models"
 )
 
+func GetPurchases(context *gin.Context) {
+	purchaseCollection := db.GetDatabase().Collection("purchases")
+
+	userUUID, err := uuid.Parse(context.Param("uuid"))
+	if err != nil {
+		helpers.SetStatusBadRequest(context, "cannot parse uuid")
+		return
+	}
+
+	cursor, err := purchaseCollection.Find(context, bson.M{"useruuid": userUUID})
+	if err != nil {
+		helpers.SetStatusInternalServerError(context, "error retreiving purchases")
+		return
+	}
+
+	var purchases []models.Purchase
+	if err = cursor.All(context, &purchases); err != nil {
+		helpers.SetStatusInternalServerError(context, "error retreiving purchases")
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"purchases": purchases})
+}
+
 func Purchase(context *gin.Context) {
 	purchaseCollection := db.GetDatabase().Collection("purchases")
 	usersCollection := db.GetDatabase().Collection("users")

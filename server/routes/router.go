@@ -32,7 +32,7 @@ func NewRouter() *gin.Engine {
 	clientSignedRoutes := authenticatedRoutes.Group("/")
 	clientSignedRoutes.Use(middlewares.AuthUserMiddleware)
 	clientSignedRoutes.Use(middlewares.VerifySignature)
-	//addClientSignedRoutes(clientSignedRoutes)
+	addClientSignedRoutes(clientSignedRoutes)
 
 	return router
 }
