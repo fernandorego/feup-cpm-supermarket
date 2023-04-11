@@ -1,7 +1,12 @@
 package org.feup.group4.supermarket.model
 
+import java.util.UUID
+
 class Purchase {
     private val products: ArrayList<Pair<Product, Int>> = ArrayList()
+    var discount: Boolean? = null
+    var coupon: UUID? = null
+
 
     fun addProduct(product: Product, quantity: Int = 1) {
         for (i in 0 until products.size) {

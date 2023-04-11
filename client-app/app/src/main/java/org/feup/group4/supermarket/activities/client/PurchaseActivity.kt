@@ -12,7 +12,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.adapters.ProductsAdapter
-import org.feup.group4.supermarket.model.Product
+import org.feup.group4.supermarket.fragments.client.PurchaseOptionsDialogFragment
 import org.feup.group4.supermarket.model.Purchase
 import org.feup.group4.supermarket.service.ProductService
 import org.feup.group4.supermarket.service.QRService
@@ -47,6 +47,13 @@ class PurchaseActivity : AppCompatActivity() {
                     recyclerView.adapter?.notifyItemInserted(purchase.getProducts().size - 1)
                 }
             }
+        }
+
+        checkoutBtn.setOnClickListener {
+            PurchaseOptionsDialogFragment(purchase).show(
+                supportFragmentManager,
+                "PurchaseOptionsDialogFragment"
+            )
         }
     }
 

@@ -1,5 +1,7 @@
 package org.feup.group4.supermarket.model
 
+import java.util.UUID
+
 data class User(
     val nickname: String,
     val password: String,
@@ -9,4 +11,5 @@ data class User(
     val accumulated_value: Double?,
     val user_img: String?,
     val is_admin: Boolean?,
+    val uuid: UUID? = null
 )

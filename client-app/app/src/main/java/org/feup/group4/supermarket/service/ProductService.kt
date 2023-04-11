@@ -89,7 +89,7 @@ class ProductService(val context: Context) {
         HttpService(context, ::afterRequest).get("/product")
     }
 
-    fun createUpdateProduct(unsignedProduct: Product, callback: (Product) -> Unit) {
+    fun createReplaceProduct(unsignedProduct: Product, callback: (Product) -> Unit) {
         fun afterRequest(statusCode: Int, body: String?) {
             if (statusCode != 200) {
                 Log.w("ProductService", "Error creating product: $statusCode: $body")
@@ -106,7 +106,7 @@ class ProductService(val context: Context) {
             Base64.encodeToString(jsonProduct.toByteArray(charset = Charsets.UTF_8), Base64.DEFAULT)
         val signature =
             cryptoService.getMessageSignature(b64Message.toByteArray(charset = Charsets.UTF_8))
-        val base64Signature = Base64.encodeToString(signature, Base64.NO_WRAP)
+        val b64Signature = Base64.encodeToString(signature, Base64.NO_WRAP)
 
         HttpService(context, ::afterRequest).post(
             "/product",
@@ -115,7 +115,7 @@ class ProductService(val context: Context) {
                     "b64MessageString" to b64Message
                 )
             ),
-            mapOf("Signature" to base64Signature)
+            mapOf("Signature" to b64Signature)
         )
 
     }
