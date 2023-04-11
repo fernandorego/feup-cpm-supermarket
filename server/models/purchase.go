@@ -7,7 +7,7 @@ import (
 )
 
 type CartProduct struct {
-	ProductUUID uuid.UUID `json:"product_uuid"`
+	ProductUUID uuid.UUID `json:"uuid"`
 	Quantity    int       `json:"quantity"`
 }
 

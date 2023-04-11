@@ -29,6 +29,7 @@ type User struct {
 	PublicKey            string             `json:"public_key" validate:"required"`
 	AccumulatedValue     float64            `json:"accumulated_value"`
 	AccumulatedPaidValue float64            `json:"accumulated_paid_value"`
+	ActiveCoupons        []uuid.UUID        `json:"active_coupons"`
 	IsAdmin              bool               `json:"is_admin"`
 	UserImg              *string            `json:"user_img"`
 	CreatedAt            time.Time          `json:"created_at"`

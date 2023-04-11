@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"encoding/base64"
+	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"math"
 	"net/http"
@@ -40,6 +42,11 @@ func Purchase(context *gin.Context) {
 		return
 	}
 
+	if err := verifyActiveCoupon(purchase, user); err != nil {
+		helpers.SetStatusBadRequest(context, "error message: "+err.Error())
+		return
+	}
+
 	totalPrice, paidPrice, err := payment(context, purchase, user)
 	if err != nil {
 		return
@@ -56,6 +63,29 @@ func Purchase(context *gin.Context) {
 		return
 	}
 	context.JSON(http.StatusOK, gin.H{"total_value": totalPrice, "paid_value": paidPrice})
+}
+
+func verifyActiveCoupon(purchase *models.Purchase, user models.User) error {
+	if purchase.Coupon == nil {
+		return nil
+	}
+
+	for _, coupon := range user.ActiveCoupons {
+		if coupon == *purchase.Coupon {
+			return nil
+		}
+	}
+	return errors.New("invalid coupon")
+}
+
+func removeCoupon(coupon uuid.UUID, user models.User) {
+	index := 0
+	for i, activeCoupon := range user.ActiveCoupons {
+		if activeCoupon == coupon {
+			index = i
+		}
+	}
+	user.ActiveCoupons = append(user.ActiveCoupons[:index], user.ActiveCoupons[index+1:]...)
 }
 
 func payment(context *gin.Context, purchase *models.Purchase, user models.User) (totalPrice float64, paidPrice float64, err error) {
@@ -81,6 +111,7 @@ func payment(context *gin.Context, purchase *models.Purchase, user models.User) 
 
 	if purchase.Coupon != nil {
 		user.AccumulatedValue += paidPrice * 0.15
+		removeCoupon(*purchase.Coupon, user)
 	}
 
 	user.AccumulatedPaidValue += paidPrice
