@@ -16,7 +16,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func CreateUpdateProduct(context *gin.Context) {
+func CreateOrReplaceProduct(context *gin.Context) {
 	db := database.GetDatabase()
 	productsCollection := db.Collection("products")
 
