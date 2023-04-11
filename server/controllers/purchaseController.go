@@ -89,6 +89,10 @@ func removeCoupon(coupon uuid.UUID, user models.User) {
 	user.ActiveCoupons = append(user.ActiveCoupons[:index], user.ActiveCoupons[index+1:]...)
 }
 
+func addCoupon(user models.User) {
+	user.ActiveCoupons = append(user.ActiveCoupons, uuid.New())
+}
+
 func payment(context *gin.Context, purchase *models.Purchase, user models.User) (totalPrice float64, paidPrice float64, err error) {
 	totalPrice = 0
 	paidPrice = 0
@@ -113,7 +117,12 @@ func payment(context *gin.Context, purchase *models.Purchase, user models.User) 
 		user.AccumulatedValue += paidPrice * 0.15
 		removeCoupon(*purchase.Coupon, user)
 	}
-
+	previousAccumulatedPaidValue := user.AccumulatedPaidValue
 	user.AccumulatedPaidValue += paidPrice
+
+	newCopounsNumber := int(user.AccumulatedPaidValue/100) - int(previousAccumulatedPaidValue/100)
+	for i := 0; i < newCopounsNumber; i++ {
+		addCoupon(user)
+	}
 	return
 }
