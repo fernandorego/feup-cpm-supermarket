@@ -12,8 +12,7 @@ import (
 )
 
 func GetUser(context *gin.Context) {
-	database := db.GetDatabase()
-	usersCollection := database.Collection("users")
+	usersCollection := db.GetDatabase().Collection("users")
 
 	id, exists := context.Get("user_id")
 	if !exists {

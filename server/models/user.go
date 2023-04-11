@@ -13,6 +13,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+type Card struct {
+	CardNumber string `json:"card_number" validate:"required,min=16,max=16"`
+	CardCVV    string `json:"card_cvv" validate:"required,min=3,max=3"`
+	CardDate   string `json:"card_date" validate:"required"`
+}
+
 type User struct {
 	ID               primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	UUID             uuid.UUID          `json:"uuid"`
