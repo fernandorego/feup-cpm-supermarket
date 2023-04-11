@@ -1,10 +1,12 @@
 package org.feup.group4.supermarket.fragments.terminal
 
+import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import org.feup.group4.supermarket.R
 
@@ -34,8 +36,14 @@ class CheckoutFragment : Fragment() {
 
         val nfcButton = view.findViewById<Button>(R.id.nfc_fab)
         nfcButton.setOnClickListener {
-            // TODO: NFC
-            println("TODO: NFC")
+            val hasNfc = NfcAdapter.getDefaultAdapter(context) != null
+            if (!hasNfc) {
+                Toast.makeText(context, "NFC not supported", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            ReceiveNFCPurchaseDialogFragment().show(
+                childFragmentManager, "ReceiveNFCPurchaseDialogFragment"
+            )
         }
     }
 }

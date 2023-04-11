@@ -1,24 +1,28 @@
 package org.feup.group4.supermarket.activities.terminal
 
-import android.content.Intent
-import android.nfc.NdefMessage
+import android.app.Activity
 import android.nfc.NfcAdapter
-import androidx.appcompat.app.AppCompatActivity
+import android.nfc.tech.Ndef
+import android.widget.Toast
 
-class ReceiveNFCPurchaseActivity(private val listener: ((ByteArray) -> Unit)) :
-    AppCompatActivity() {
+class ReceiveNFCPurchaseActivity :
+    Activity() {
+    private val nfcAdapter: NfcAdapter? by lazy { NfcAdapter.getDefaultAdapter(this) }
+
     override fun onResume() {
         super.onResume()
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
-            val ndefMessage =
-                intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)!![0] as NdefMessage
-            val payload = ndefMessage.records[0].payload
-            listener(payload)
-        }
+        Toast.makeText(this, "NFC enabled: ${nfcAdapter != null}", Toast.LENGTH_SHORT).show()
+        nfcAdapter?.enableReaderMode(this, { tag ->
+            val ndef = Ndef.get(tag)
+            ndef.connect()
+            val message = ndef.ndefMessage
+            ndef.close()
+            Toast.makeText(this, String(message.records[0].payload), Toast.LENGTH_SHORT).show()
+        }, NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK, null)
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        setIntent(intent)
+    override fun onPause() {
+        super.onPause()
+        nfcAdapter?.disableReaderMode(this)
     }
 }
