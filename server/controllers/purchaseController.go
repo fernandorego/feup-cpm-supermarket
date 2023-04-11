@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -34,7 +35,8 @@ func GetPurchases(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"purchases": purchases})
+	//TODO: change to custom json instead of Marshal with only the necessary fields
+	context.JSON(http.StatusOK, gin.H{"purchases": json.Marshal(purchases)})
 }
 
 func Purchase(context *gin.Context) {
