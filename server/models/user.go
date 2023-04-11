@@ -51,6 +51,7 @@ func CreateUserFromJSON(context *gin.Context) (*User, error) {
 	user.IsAdmin = user.IsAdmin || false
 	user.AccumulatedValue = 0
 	user.AccumulatedPaidValue = 0
+	user.ActiveCoupons = []uuid.UUID{}
 	user.UserImg = nil
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
