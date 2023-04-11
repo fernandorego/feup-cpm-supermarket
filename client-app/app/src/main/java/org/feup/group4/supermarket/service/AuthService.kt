@@ -3,6 +3,8 @@ package org.feup.group4.supermarket.service
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import android.util.Base64
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import org.feup.group4.supermarket.model.Card
@@ -14,50 +16,29 @@ import javax.security.auth.x500.X500Principal
 
 class AuthService(context: Context, afterRequest: AfterRequest?) :
     HttpService(context, afterRequest) {
+    private val cryptoService = CryptoService(context)
 
-    companion object {
-        const val KEY_SIZE = 512
-        const val ANDROID_KEYSTORE = "AndroidKeyStore"
-        const val KEYNAME = "key_id"
-        const val SERIALNR = 1234567890L
-    }
+    fun setToken(token: String) = sharedPreferencesService.setValue(tokenStoreKey, token)
+    fun setServerPrivateKey(key: String) = cryptoService.setServerPrivateKey(key)
 
-    private fun generateClientKeyPair(): KeyPair {
-        val parameterSpec: KeyGenParameterSpec = KeyGenParameterSpec.Builder(
-            KEYNAME,
-            KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
-        ).run {
-            setDigests(KeyProperties.DIGEST_SHA512, KeyProperties.DIGEST_SHA256)
-            setKeySize(KEY_SIZE)
-            setCertificateSerialNumber(BigInteger.valueOf(SERIALNR))
-            setCertificateSubject(X500Principal("CN=$KEYNAME"))
-            build()
-        }
-        KeyPairGenerator.getInstance(
-            KeyProperties.KEY_ALGORITHM_RSA,
-            ANDROID_KEYSTORE
-        ).run {
-            initialize(parameterSpec)
-            return generateKeyPair()
-        }
-    }
-
-    fun setToken(token: String?) = setValue(tokenStoreKey, token)
-    fun setServerPublicKey(key: String) = setValue(serverPublicKeyStoreKey, key)
-
-    private fun setValue(name: String, value: String?) {
-        val sharedPreferences =
-            context.getSharedPreferences(keyStore, AppCompatActivity.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString(name, value)
-        editor.apply()
-    }
-
-    fun login(nickname: String, password: String) =
+    fun login(nickname: String, password: String) {
+        val publicKey = CryptoService(context).generateKeyPair().public
         post(
             "/getToken",
-            Gson().toJson(User(nickname, password, null, null, null, null, null, null))
+            Gson().toJson(
+                User(
+                    nickname,
+                    password,
+                    null,
+                    null,
+                    Base64.encodeToString(publicKey.encoded, Base64.DEFAULT),
+                    null,
+                    null,
+                    null
+                )
+            )
         )
+    }
 
     fun register(
         name: String,
@@ -66,19 +47,23 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
         card_number: String,
         card_cvv: String,
         card_date: String
-    ) {
-        val clientKeyPair = generateClientKeyPair()
-        // TODO: save clientPrivKey
-        //setValue(clientPrivateKeyStoreKey, clientKeyPair.private.encoded.toString())
+    ) =
         post(
-            "/register", Gson().toJson(
+            "/register",
+            Gson().toJson(
                 User(
-                    nickname, password, name,
+                    nickname,
+                    password,
+                    name,
                     Card(card_number, card_cvv, card_date),
-                    clientKeyPair.public.encoded.toString(),
-                    null, null, null
+                    Base64.encodeToString(
+                        cryptoService.generateKeyPair().public.encoded,
+                        Base64.DEFAULT
+                    ),
+                    null,
+                    null,
+                    null
                 )
             )
         )
-    }
 }

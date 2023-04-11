@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.adapters.ProductsAdapter
 import org.feup.group4.supermarket.model.Product
+import org.feup.group4.supermarket.service.ProductService
+import kotlin.concurrent.thread
 
 private val products = ArrayList<Pair<Product, Int>>()
 
@@ -22,11 +24,21 @@ class ProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Get products from server
+        thread(start = true) {
+            // TODO: Save to local database
+            ProductService(requireContext()).getProducts { remoteProducts ->
+                requireActivity().runOnUiThread {
+                    products.clear()
+                    products.addAll(remoteProducts.map { Pair(it, 1) }.toList())
+                    updateListVisibility()
+                }
+            }
+        }
         updateListVisibility()
-
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_products_list)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = ProductsAdapter(requireContext(), products, adminMode = true)
+        val adapter = ProductsAdapter(requireContext(), products, {updateListVisibility()},true)
         recyclerView.adapter = adapter
 
         val newProductButton = view.findViewById<TextView>(R.id.new_product_fab)
@@ -35,10 +47,9 @@ class ProductsFragment : Fragment() {
                 addProduct(
                     name,
                     title,
+                    adapter,
                     callback
                 )
-                adapter.notifyItemInserted(products.size - 1)
-                updateListVisibility()
             }.show(
                 childFragmentManager,
                 "AddProductDialogFragment"
@@ -62,6 +73,7 @@ class ProductsFragment : Fragment() {
     private fun addProduct(
         productName: String,
         productPrice: Double,
+        adapter: ProductsAdapter,
         successCallBack: DismissCallback
     ) {
         // TODO: Add product to database and verify correctness
@@ -69,7 +81,20 @@ class ProductsFragment : Fragment() {
             productName,
             productPrice
         )
-        products.add(Pair(product, 1))
-        successCallBack()
+
+        thread(start = true) {
+            ProductService(requireContext()).createUpdateProduct(product) {
+                // TODO: Save to local database and update/insert(note that the notifyChanges is diferent for both cases) in products list
+                ProductService(requireContext()).getProducts { remoteProducts ->
+                    requireActivity().runOnUiThread {
+                        products.clear()
+                        products.addAll(remoteProducts.map { Pair(it, 1) }.toList())
+                        adapter.notifyDataSetChanged()
+                        updateListVisibility()
+                        successCallBack()
+                    }
+                }
+            }
+        }
     }
 }

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -13,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.fragments.terminal.ProductQRDialogFragment
 import org.feup.group4.supermarket.model.Product
+import org.feup.group4.supermarket.service.ProductService
+import kotlin.concurrent.thread
 
 class ProductsAdapter(
     private val context: Context,
@@ -34,7 +35,19 @@ class ProductsAdapter(
                     .setTitle(context.resources.getString(R.string.delete_product))
                     .setMessage(context.resources.getString(R.string.delete_product_message))
                     .setPositiveButton(context.resources.getString(R.string.yes)) { _, _ ->
-                        removeItem(view)
+                        thread(start = true) {
+                            for (i in 0 until products.size) {
+                                if (products[i].first.name == view.findViewById<TextView>(R.id.item_name).text) {
+                                    ProductService(context).deleteProduct(products[i].first) {
+                                        context.runOnUiThread {
+                                            removeItem(view)
+                                        }
+                                    }
+                                    break
+                                }
+                            }
+
+                        }
                     }
                     .setNegativeButton(
                         context.resources.getString(R.string.no), null

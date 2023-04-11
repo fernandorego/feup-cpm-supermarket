@@ -37,7 +37,7 @@ class AccountActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         logoutBtn.setOnClickListener {
-            AuthService(this, null).setToken(null)
+            AuthService(this, null).setToken("")
             startActivity(Intent(this, MainActivity::class.java))
             finishAffinity()
         }

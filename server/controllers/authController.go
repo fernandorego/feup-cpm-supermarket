@@ -1,12 +1,13 @@
 package controllers
 
 import (
-	"github.com/google/uuid"
 	"net/http"
 	"os"
 	"server/db"
 	"server/helpers"
 	"server/models"
+
+	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
@@ -36,7 +37,6 @@ func Register(context *gin.Context) {
 		return
 	}
 	provideToken(context, res.InsertedID.(primitive.ObjectID), doc.IsAdmin, gin.H{})
-	return
 }
 
 func GenerateToken(context *gin.Context) {
@@ -45,6 +45,7 @@ func GenerateToken(context *gin.Context) {
 
 	credentials, err := models.GetUserCredentialsFromJSON(context)
 	if err != nil {
+		println(err.Error())
 		helpers.SetStatusBadRequest(context, err.Error())
 		return
 	}
@@ -60,8 +61,12 @@ func GenerateToken(context *gin.Context) {
 		return
 	}
 
-	provideToken(context, user.ID, user.IsAdmin, gin.H{"server_public_key": os.Getenv("PUBLIC_KEY")})
-	return
+	if _, err = usersCollection.UpdateOne(context, bson.M{"_id": user.ID}, bson.M{"$set": bson.M{"publickey": credentials.PublicKey}}); err != nil {
+		helpers.SetStatusInternalServerError(context, "error updating user public key")
+		return
+	}
+
+	provideToken(context, user.ID, user.IsAdmin, gin.H{"server_private_key": os.Getenv("PRIVATE_KEY")})
 }
 
 func provideToken(context *gin.Context, id primitive.ObjectID, isAdmin bool, args map[string]interface{}) {
@@ -75,5 +80,4 @@ func provideToken(context *gin.Context, id primitive.ObjectID, isAdmin bool, arg
 		json[key] = value
 	}
 	context.JSON(http.StatusOK, json)
-	return
 }

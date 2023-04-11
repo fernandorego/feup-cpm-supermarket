@@ -1,12 +1,15 @@
 package models
 
 import (
+	"server/db"
 	"time"
 
 	"github.com/google/uuid"
+	"golang.org/x/net/context"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -46,8 +49,9 @@ func CreateUserFromJSON(context *gin.Context) (*User, error) {
 }
 
 type UserCredentials struct {
-	Nickname string `json:"nickname" validate:"required,min=3"`
-	Password string `json:"password" validate:"required,min=6"`
+	Nickname  string `json:"nickname" validate:"required,min=3"`
+	Password  string `json:"password" validate:"required,min=6"`
+	PublicKey string `json:"public_key" validate:"required"`
 }
 
 func GetUserCredentialsFromJSON(context *gin.Context) (*UserCredentials, error) {
@@ -59,4 +63,17 @@ func GetUserCredentialsFromJSON(context *gin.Context) (*UserCredentials, error) 
 		return nil, err
 	}
 	return credentials, nil
+}
+
+func GetUserFromID(id primitive.ObjectID) (user *User, err error) {
+	database := db.GetDatabase()
+	usersCollection := database.Collection("users")
+
+	ctx := context.Background()
+	user = new(User)
+	if err := usersCollection.FindOne(ctx, bson.M{"_id": id}).Decode(&user); err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }

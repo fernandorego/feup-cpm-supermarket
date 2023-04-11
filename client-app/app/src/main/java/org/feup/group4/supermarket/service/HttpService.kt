@@ -1,7 +1,6 @@
 package org.feup.group4.supermarket.service
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import org.feup.group4.supermarket.R
 import java.io.DataOutputStream
 import java.net.HttpURLConnection
@@ -13,44 +12,39 @@ enum class HttpRequestMethod {
     GET, POST, PUT, DELETE
 }
 
-open class HttpService protected constructor(
+open class HttpService internal constructor(
     protected val context: Context,
-    private val afterRequest: AfterRequest? = null
+    private val afterRequest: AfterRequest? = null,
 ) {
+    protected val sharedPreferencesService =
+        SharedPreferencesService(context, SharedPreferencesService.Companion.KeyStore.AUTH.value)
+
     companion object {
-        const val keyStore = "keystore"
         const val tokenStoreKey = "access_token"
-        const val serverPublicKeyStoreKey = "server_public_key"
-        const val clientPrivateKeyStoreKey = "client_private_key"
     }
 
     fun getToken(): String? {
-        val sharedPreferences =
-            context.getSharedPreferences(keyStore, AppCompatActivity.MODE_PRIVATE)
-        return sharedPreferences.getString(tokenStoreKey, null)
+        return sharedPreferencesService.sharedPreferences.getString(tokenStoreKey, null)
     }
 
-    protected fun getServerPublicKey(): String? {
-        val sharedPreferences =
-            context.getSharedPreferences(keyStore, AppCompatActivity.MODE_PRIVATE)
-        return sharedPreferences.getString(serverPublicKeyStoreKey, null)
-    }
+    internal fun get(urlRoute: String, headers: Map<String, String>? = null) =
+        request(HttpRequestMethod.GET, urlRoute, headers = headers)
 
-    protected fun getClientPrivateKey(): String? {
-        val sharedPreferences =
-            context.getSharedPreferences(keyStore, AppCompatActivity.MODE_PRIVATE)
-        return sharedPreferences.getString(clientPrivateKeyStoreKey, null)
-    }
+    internal fun post(urlRoute: String, json: String, headers: Map<String, String>? = null) =
+        request(HttpRequestMethod.POST, urlRoute, body = json, headers = headers)
 
-    protected fun get(urlRoute: String) = request(HttpRequestMethod.GET, urlRoute)
-    protected fun post(urlRoute: String, json: String) =
-        request(HttpRequestMethod.POST, urlRoute, body = json)
+    internal fun put(urlRoute: String, json: String, headers: Map<String, String>? = null) =
+        request(HttpRequestMethod.PUT, urlRoute, body = json, headers = headers)
 
-    protected fun put(urlRoute: String, json: String) = request(HttpRequestMethod.PUT, urlRoute, body = json)
-    protected fun delete(urlRoute: String, objectId: Int) =
-        request(HttpRequestMethod.DELETE, "$urlRoute/$objectId")
+    internal fun delete(urlRoute: String, headers: Map<String, String>? = null) =
+        request(HttpRequestMethod.DELETE, urlRoute, headers = headers)
 
-    private fun request(requestMethod: HttpRequestMethod, urlRoute: String, body: String? = null) {
+    private fun request(
+        requestMethod: HttpRequestMethod,
+        urlRoute: String,
+        body: String? = null,
+        headers: Map<String, String>? = null
+    ) {
         val baseAddress = context.resources.getString(R.string.server_ip)
         val port = context.resources.getString(R.string.server_port)
         val url = URL("http://$baseAddress:$port$urlRoute")
@@ -78,6 +72,10 @@ open class HttpService protected constructor(
                         this.setRequestProperty("Content-Type", "application/json")
                     }
                 }
+
+                headers?.forEach { (key, value) ->
+                    this.setRequestProperty(key, value)
+                }
             }
 
             if (requestMethod == HttpRequestMethod.POST || requestMethod == HttpRequestMethod.PUT) {
@@ -88,7 +86,7 @@ open class HttpService protected constructor(
             }
 
             val code = urlConnection.responseCode
-            if (code == 200) {
+            if (code in 200..299) {
                 afterRequest?.let { it(code, urlConnection.inputStream.reader().readText()) }
             } else {
                 afterRequest?.let { it(code, urlConnection.errorStream.reader().readText()) }

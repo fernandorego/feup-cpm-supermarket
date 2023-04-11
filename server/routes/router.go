@@ -9,23 +9,30 @@ import (
 func NewRouter() *gin.Engine {
 	router := gin.Default()
 
-	defaultRoutes := router.Group("default/")
-	addDefaultRoutes(defaultRoutes)
-
 	authRoutes := router.Group("/")
 	addAuthRoutes(authRoutes)
 
-	getUserRoute := router.Group("/getUser")
-	getUserRoute.Use(middlewares.AuthMiddleware)
-	addGetTokenRoute(getUserRoute)
+	authenticatedRoutes := router.Group("/")
+	authenticatedRoutes.Use(middlewares.AuthMiddleware)
+	addUserRoutes(authenticatedRoutes)
 
-	userRoutes := router.Group("/user")
-	userRoutes.Use(middlewares.AuthUserMiddleware)
-	addUserRoutes(userRoutes)
+	clientRoutes := authenticatedRoutes.Group("/client")
+	clientRoutes.Use(middlewares.AuthUserMiddleware)
+	addClientRoutes(clientRoutes)
 
-	adminRoutes := router.Group("/admin")
+	adminRoutes := authenticatedRoutes.Group("/admin")
 	adminRoutes.Use(middlewares.AuthAdminMiddleware)
 	addAdminRoutes(adminRoutes)
+
+	adminSignedRoutes := authenticatedRoutes.Group("/")
+	adminSignedRoutes.Use(middlewares.AuthAdminMiddleware)
+	adminSignedRoutes.Use(middlewares.VerifySignature)
+	addAdminSignedRoutes(adminSignedRoutes)
+
+	clientSignedRoutes := authenticatedRoutes.Group("/")
+	clientSignedRoutes.Use(middlewares.AuthUserMiddleware)
+	clientSignedRoutes.Use(middlewares.VerifySignature)
+	//addClientSignedRoutes(clientSignedRoutes)
 
 	return router
 }

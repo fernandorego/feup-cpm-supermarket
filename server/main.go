@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"server/db"
+	"server/helpers"
 	"server/routes"
 
 	"github.com/joho/godotenv"
@@ -12,6 +13,12 @@ import (
 func main() {
 	// Get .env variables ()
 	err := godotenv.Load(".env")
+	if err != nil {
+		panic(err)
+	}
+
+	// Load private key
+	err = helpers.LoadServerPublicKey()
 	if err != nil {
 		panic(err)
 	}

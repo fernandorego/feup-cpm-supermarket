@@ -15,29 +15,22 @@ func AuthMiddleware(context *gin.Context) {
 	}
 
 	context.Set("user_id", claims.UserID)
+	context.Set("is_admin", claims.IsAdmin)
 	context.Next()
 }
 
 func AuthUserMiddleware(context *gin.Context) {
-	claims, err := getClaims(context)
-	if err {
-		return
-	}
-	if claims.IsAdmin {
+	if context.GetBool("is_admin") {
 		helpers.SetStatusUnauthorized(context, "Permission denied for administrator account")
 		context.Abort()
 		return
 	}
-	context.Set("user_id", claims.UserID)
+
 	context.Next()
 }
 
 func AuthAdminMiddleware(context *gin.Context) {
-	claims, err := getClaims(context)
-	if err {
-		return
-	}
-	if !claims.IsAdmin {
+	if !context.GetBool("is_admin") {
 		helpers.SetStatusUnauthorized(context, "Permission denied for non-administrator account")
 		context.Abort()
 		return

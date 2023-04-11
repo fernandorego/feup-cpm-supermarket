@@ -2,6 +2,7 @@ package org.feup.group4.supermarket.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -65,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         AuthService(this, null).setToken(Gson().fromJson(json, Token::class.java).access_token)
-        AuthService(this, null).setServerPublicKey(JSONObject(json!!).getString("server_public_key"))
+        AuthService(this, null).setServerPrivateKey(JSONObject(json!!).getString("server_private_key"))
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
