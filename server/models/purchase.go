@@ -18,6 +18,7 @@ type Purchase struct {
 	Cart     []CartProduct `json:"cart" validate:"required"`
 	Discount bool          `json:"discount"`
 	Coupon   *uuid.UUID    `json:"coupon"`
+	TotalPrice	float64	   `json:"total_price"`
 }
 
 func CreatePurchaseFromJSON(jsonPurchase string) (*Purchase, error) {
@@ -28,5 +29,6 @@ func CreatePurchaseFromJSON(jsonPurchase string) (*Purchase, error) {
 	if err := validator.New().Struct(purchase); err != nil {
 		return nil, err
 	}
+	purchase.UUID = uuid.New()
 	return purchase, nil
 }

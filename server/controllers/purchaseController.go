@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -35,12 +34,12 @@ func GetPurchases(context *gin.Context) {
 		return
 	}
 
-	purchasesJSON, err := json.Marshal(purchases)
-	if err != nil {
-		helpers.SetStatusBadRequest(context, "error encoding message: "+err.Error())
+	if len(purchases) < 1 {
+		context.Status(http.StatusNoContent)
 		return
 	}
-	context.JSON(http.StatusOK, purchasesJSON)
+
+	context.JSON(http.StatusOK, purchases)
 }
 
 func Purchase(context *gin.Context) {
@@ -82,6 +81,7 @@ func Purchase(context *gin.Context) {
 		helpers.SetStatusBadRequest(context, "error payment message: "+err.Error())
 		return
 	}
+	purchase.TotalPrice = totalPrice
 
 	updatedValues := bson.M{"accumulatedvalue": user.AccumulatedValue, "accumulatedpaidvalue": user.AccumulatedPaidValue, "activecoupons": user.ActiveCoupons}
 	if _, err = usersCollection.UpdateOne(context, bson.M{"_id": user.ID}, bson.M{"$set": updatedValues}); err != nil {

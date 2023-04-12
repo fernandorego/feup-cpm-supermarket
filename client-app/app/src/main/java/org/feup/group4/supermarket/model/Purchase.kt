@@ -5,7 +5,9 @@ import java.util.UUID
 class Purchase(
     private val products: ArrayList<Pair<Product, Int>> = ArrayList(),
     var discount: Boolean? = null,
-    var coupon: UUID? = null
+    var coupon: UUID? = null,
+    var uuid: UUID? = null,
+    var total_price: Double = 0.0
 ) {
     fun addProduct(product: Product, quantity: Int = 1) {
         for (i in 0 until products.size) {
