@@ -29,14 +29,7 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
                 User(
                     nickname,
                     password,
-                    null,
-                    null,
-                    Base64.encodeToString(publicKey.encoded, Base64.DEFAULT),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    Base64.encodeToString(publicKey.encoded, Base64.DEFAULT)
                 )
             )
         )
@@ -56,17 +49,12 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
                 User(
                     nickname,
                     password,
-                    name,
-                    Card(card_number, card_cvv, card_date),
                     Base64.encodeToString(
                         cryptoService.generateKeyPair().public.encoded,
                         Base64.DEFAULT
                     ),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    name,
+                    Card(card_number, card_cvv, card_date)
                 )
             )
         )
