@@ -18,7 +18,7 @@ import org.feup.group4.supermarket.model.User
 class TerminalActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTerminalMainBinding
     companion object {
-        var user: User = User("","", null, null, null, null, null, null)
+        var user: User = User("","", null, null, null, null, null, null, null, null)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

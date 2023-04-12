@@ -34,6 +34,8 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
                     Base64.encodeToString(publicKey.encoded, Base64.DEFAULT),
                     null,
                     null,
+                    null,
+                    null,
                     null
                 )
             )
@@ -60,6 +62,8 @@ class AuthService(context: Context, afterRequest: AfterRequest?) :
                         cryptoService.generateKeyPair().public.encoded,
                         Base64.DEFAULT
                     ),
+                    null,
+                    null,
                     null,
                     null,
                     null

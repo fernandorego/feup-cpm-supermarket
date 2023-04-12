@@ -19,6 +19,10 @@ type Card struct {
 	CardDate   string `json:"card_date" validate:"required"`
 }
 
+type Coupon struct {
+	UUID uuid.UUID `json:"uuid"`
+}
+
 type User struct {
 	ID                   primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	UUID                 uuid.UUID          `json:"uuid"`
@@ -29,7 +33,7 @@ type User struct {
 	PublicKey            string             `json:"public_key" validate:"required"`
 	AccumulatedValue     float64            `json:"accumulated_value"`
 	AccumulatedPaidValue float64            `json:"accumulated_paid_value"`
-	ActiveCoupons        []uuid.UUID        `json:"active_coupons"`
+	ActiveCoupons        []Coupon           `json:"active_coupons"`
 	IsAdmin              bool               `json:"is_admin"`
 	UserImg              *string            `json:"user_img"`
 	CreatedAt            time.Time          `json:"created_at"`
@@ -51,7 +55,7 @@ func CreateUserFromJSON(context *gin.Context) (*User, error) {
 	user.IsAdmin = user.IsAdmin || false
 	user.AccumulatedValue = 0
 	user.AccumulatedPaidValue = 0
-	user.ActiveCoupons = []uuid.UUID{}
+	user.ActiveCoupons = nil
 	user.UserImg = nil
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()

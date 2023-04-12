@@ -36,6 +36,11 @@ class HomeFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_coupons_list)
         val emptyRecyclerView = view.findViewById<TextView>(R.id.empty_recyclerview)
 
+        coupons.clear()
+        if (!user.active_coupons.isNullOrEmpty()) {
+            coupons.addAll(user.active_coupons)
+        }
+
         if (coupons.isEmpty()) {
             recyclerView.visibility = View.GONE
             emptyRecyclerView.visibility = View.VISIBLE

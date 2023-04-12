@@ -11,5 +11,6 @@ data class User(
     val accumulated_value: Double?,
     val user_img: String?,
     val is_admin: Boolean?,
-    val uuid: UUID? = null
+    val uuid: UUID? = null,
+    val active_coupons: List<Coupon>?
 )

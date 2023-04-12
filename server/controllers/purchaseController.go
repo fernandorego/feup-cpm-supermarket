@@ -91,33 +91,6 @@ func Purchase(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"total_value": totalPrice, "paid_value": paidPrice})
 }
 
-func verifyActiveCoupon(purchase *models.Purchase, user models.User) error {
-	if purchase.Coupon == nil {
-		return nil
-	}
-
-	for _, coupon := range user.ActiveCoupons {
-		if coupon == *purchase.Coupon {
-			return nil
-		}
-	}
-	return errors.New("invalid coupon")
-}
-
-func removeCoupon(coupon uuid.UUID, user *models.User) {
-	index := 0
-	for i, activeCoupon := range user.ActiveCoupons {
-		if activeCoupon == coupon {
-			index = i
-		}
-	}
-	user.ActiveCoupons = append(user.ActiveCoupons[:index], user.ActiveCoupons[index+1:]...)
-}
-
-func addCoupon(user *models.User) {
-	user.ActiveCoupons = append(user.ActiveCoupons, uuid.New())
-}
-
 func payment(context *gin.Context, purchase *models.Purchase, user *models.User) (totalPrice float64, paidPrice float64, err error) {
 	totalPrice = 0
 	paidPrice = 0
@@ -132,11 +105,10 @@ func payment(context *gin.Context, purchase *models.Purchase, user *models.User)
 		totalPrice += product.Price * float64(cardProduct.Quantity)
 	}
 
+	paidPrice = totalPrice
 	if purchase.Discount {
 		paidPrice = math.Max(0, totalPrice-user.AccumulatedValue)
 		user.AccumulatedValue = math.Max(0, user.AccumulatedValue-totalPrice)
-	} else {
-		paidPrice = totalPrice
 	}
 
 	if purchase.Coupon != nil {
@@ -151,4 +123,32 @@ func payment(context *gin.Context, purchase *models.Purchase, user *models.User)
 		addCoupon(user)
 	}
 	return
+}
+
+func verifyActiveCoupon(purchase *models.Purchase, user models.User) error {
+	if purchase.Coupon == nil {
+		return nil
+	}
+	println(purchase.Coupon.String())
+	for _, coupon := range user.ActiveCoupons {
+		if coupon.UUID == *purchase.Coupon {
+			return nil
+		}
+	}
+	return errors.New("invalid coupon")
+}
+
+func removeCoupon(coupon uuid.UUID, user *models.User) {
+	index := 0
+	for i, activeCoupon := range user.ActiveCoupons {
+		if activeCoupon.UUID == coupon {
+			index = i
+			break
+		}
+	}
+	user.ActiveCoupons = append(user.ActiveCoupons[:index], user.ActiveCoupons[index+1:]...)
+}
+
+func addCoupon(user *models.User) {
+	user.ActiveCoupons = append(user.ActiveCoupons, models.Coupon{UUID: uuid.New()})
 }

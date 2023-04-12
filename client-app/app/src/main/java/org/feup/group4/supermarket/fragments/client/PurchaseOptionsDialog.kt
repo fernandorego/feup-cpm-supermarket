@@ -1,7 +1,6 @@
 package org.feup.group4.supermarket.fragments.client
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
@@ -10,10 +9,8 @@ import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.activities.client.ClientActivity
-import org.feup.group4.supermarket.activities.client.PurchaseActivity
 import org.feup.group4.supermarket.adapters.coupons
 import org.feup.group4.supermarket.model.Purchase
 
@@ -31,17 +28,18 @@ class PurchaseOptionsDialogFragment(private val purchase: Purchase) :
 
             val balanceSwitch = findViewById<SwitchCompat>(R.id.payment_balance)
             val couponSwitch = findViewById<SwitchCompat>(R.id.payment_coupon)
+            val purchaseCopy = Purchase(purchase.getProducts())
 
             findViewById<Button>(R.id.payment_proceed)?.setOnClickListener {
-                purchase.discount = balanceSwitch!!.isChecked
+                purchaseCopy.discount = balanceSwitch!!.isChecked
 
                 if (couponSwitch!!.isChecked) {
                     // TODO: Implement coupon db and use it to apply coupons
                     // CouponRepository().applyCoupon(purchase)
-                    purchase.coupon = coupons[0].uuid
+                    purchaseCopy.coupon = coupons[0].uuid
                 }
 
-                PurchaseQRDialogFragment(purchase).show(
+                PurchaseQRDialogFragment(purchaseCopy).show(
                     activity.supportFragmentManager,
                     "PurchaseQRDialogFragment"
                 )
