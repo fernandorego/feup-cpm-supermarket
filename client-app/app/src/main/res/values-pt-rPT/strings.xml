@@ -62,4 +62,5 @@
     <string name="payment_no_coupons">Não encontramos cupões</string>
     <string name="purchase_qr_code">QR Code da compra</string>
     <string name="purchase_invalid_message">Código de compra inválido</string>
+    <string name="title_admin">Admin</string>
 </resources>
