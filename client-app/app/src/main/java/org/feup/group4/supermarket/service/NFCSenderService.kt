@@ -17,7 +17,7 @@ class NFCSenderService : HostApduService() {
     }
 
     override fun processCommandApdu(command: ByteArray, extra: Bundle?): ByteArray {
-        if (byteArray == null || !PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        if (/*byteArray == null || */!PreferenceManager.getDefaultSharedPreferences(applicationContext)
                 .getBoolean(NFCReaderService.SEND_NFC_PREF, false)
         ) {
             println("Nao deveria receber nada agora")
@@ -25,6 +25,10 @@ class NFCSenderService : HostApduService() {
         }
 
         if (NFCReaderService.SELECT_APDU.contentEquals(command)) {
+            println("Mandei")
+            val str = "Sou bue belo"
+            val byteArray = str.toByteArray()
+            return byteArray + NFCReaderService.OK_SW
             if (byteArray!!.size >= NFCReaderService.MAX_RES_SIZE) {
                 println("Mt grande")
                 return NFCReaderService.UNKNOWN_CMD_SW

@@ -29,9 +29,22 @@ class ReceiveNFCPurchaseDialogFragment : AppCompatDialogFragment() {
                 dismiss()
             }
 
-            nfcAdapter!!.enableReaderMode(ownerActivity, NFCReaderService { bytes: ByteArray ->
-                println("Received bytes")
-            }, NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK, null)
+            NFCReaderService.listener = {
+                println("sou lindo")
+            }
+
+            val nfcReaderService = NFCReaderService()
+            NFCReaderService.listener = { content ->
+                print("recebi cenas")
+                println(content.toString(Charsets.UTF_8))
+            }
+
+            nfcAdapter!!.enableReaderMode(
+                ownerActivity,
+                nfcReaderService,
+                NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
+                null
+            )
 
             setOnDismissListener { nfcAdapter!!.disableReaderMode(ownerActivity) }
         }

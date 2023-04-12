@@ -6,8 +6,10 @@ import android.nfc.tech.IsoDep
 import android.util.Log
 import java.io.IOException
 
-class NFCReaderService(private val listener: (ByteArray) -> Unit) : NfcAdapter.ReaderCallback {
+class NFCReaderService : NfcAdapter.ReaderCallback {
     companion object {
+        var listener: ((ByteArray) -> Unit)? = null
+
         fun byteArrayToHex(byteArray: ByteArray): String {
             val stringBuilder = StringBuilder(byteArray.size * 2)
             for (byte in byteArray) {
@@ -38,9 +40,12 @@ class NFCReaderService(private val listener: (ByteArray) -> Unit) : NfcAdapter.R
     }
 
     override fun onTagDiscovered(tag: Tag) {
+        println("Descobri tag")
         val isoDep = IsoDep.get(tag) ?: return
+        println("Seguiu")
         try {
             isoDep.connect()
+            println("Conectou")
             val result = isoDep.transceive(
                 hexStringToByteArray(
                     CMD_SEL_AID + String.format(
@@ -49,18 +54,22 @@ class NFCReaderService(private val listener: (ByteArray) -> Unit) : NfcAdapter.R
                     ) + CARD_AID
                 )
             )
+            println("Recebeu")
             val rLen = result.size
             val status = byteArrayOf(result[rLen - 2], result[rLen - 1])
             val more = result[0] == 1.toByte()
             if (OK_SW.contentEquals(status)) {
                 if (more) {
+                    println("More")
                     val second = isoDep.transceive(hexStringToByteArray(CMD_GET_SECOND))
                     val len = second.size
                     if (OK_SW.contentEquals(byteArrayOf(second[len - 2], second[len - 1]))) {
-                        listener(result.sliceArray(1..rLen - 3) + second.sliceArray(0..len - 3))
+                        listener?.invoke(result.sliceArray(1..rLen - 3) + second.sliceArray(0..len - 3))
                     }
                 } else {
-                    listener(result.sliceArray(1..rLen - 3))
+                    println("Not more")
+                    println(result.sliceArray(1..rLen - 3).toString())
+                    listener?.invoke(result.sliceArray(1..rLen - 3))
                 }
             }
         } catch (e: IOException) {

@@ -39,9 +39,9 @@ class SendNFCPurchaseDialogFragment(private val purchase: Purchase) : AppCompatD
                     .putBoolean(SEND_NFC_PREF, false).apply()
             }
 
-            val intent = Intent(context, NFCSenderService::class.java)
+           /* val intent = Intent(context, NFCSenderService::class.java)
             intent.putExtra("content", content)
-            context.startService(intent)
+            context.startService(intent)*/
         }
     }
 

@@ -18,7 +18,7 @@
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="33">
         <service
-            android:name=".service.NFCReaderService"
+            android:name=".service.NFCSenderService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_NFC_SERVICE">
@@ -55,7 +55,16 @@
             android:exported="false" />
         <activity
             android:name=".activities.terminal.TerminalActivity"
-            android:exported="false" />
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+        </activity>
         <activity
             android:name=".activities.MainActivity"
             android:exported="true"
