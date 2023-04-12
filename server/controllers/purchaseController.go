@@ -107,7 +107,7 @@ func payment(context *gin.Context, purchase *models.Purchase, user *models.User)
 		if err = productCollection.FindOne(context, bson.M{"uuid": cardProduct.ProductUUID}).Decode(&product); err != nil {
 			return
 		}
-		*cardProduct.Name = product.Name
+		cardProduct.Name = &product.Name
 		totalPrice += product.Price * float64(cardProduct.Quantity)
 	}
 
