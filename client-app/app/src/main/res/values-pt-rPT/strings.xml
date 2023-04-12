@@ -60,4 +60,11 @@
     <string name="scanning_nfc_message_receiver">À espera de um dispositivo cliente…</string>
     <string name="scanning_nfc_message_sender">À espera de um dispositivo terminal…</string>
     <string name="nfc_not_supported">O seu telefone não suporta NFC</string>
+    <string name="payment_current_balance">Saldo atual:</string>
+    <string name="payment_current_coupons">Cupões atuais:</string>
+    <string name="payment_proceed_nfc">Continuar (NFC)</string>
+    <string name="payment_proceed_qr">Continuar (QR)</string>
+    <string name="payment_no_coupons">Não encontramos cupões</string>
+    <string name="purchase_qr_code">QR Code da compra</string>
+    <string name="purchase_invalid_message">Código de compra inválido</string>
 </resources>

@@ -20,7 +20,7 @@ type EncryptedProduct struct {
 	Price []byte `json:"price" validate:"required"`
 }
 
-func CreateProductFromJSONString(jsonProduct string) (*Product, error) {
+func CreateProductFromJSON(jsonProduct string) (*Product, error) {
 	product := new(Product)
 	if err := json.Unmarshal([]byte(jsonProduct), &product); err != nil {
 		return nil, err

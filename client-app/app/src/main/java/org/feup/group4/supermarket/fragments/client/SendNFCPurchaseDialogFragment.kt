@@ -9,10 +9,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import org.feup.group4.supermarket.R
+import org.feup.group4.supermarket.model.Purchase
 import org.feup.group4.supermarket.service.NFCReaderService.Companion.SEND_NFC_PREF
 import org.feup.group4.supermarket.service.NFCSenderService
+import org.feup.group4.supermarket.service.PurchaseService
 
-class SendNFCPurchaseDialogFragment(private val content: String) : AppCompatDialogFragment() {
+class SendNFCPurchaseDialogFragment(private val purchase: Purchase) : AppCompatDialogFragment() {
     class SendNFCPurchaseDialog(context: Context, private val content: String) :
         AppCompatDialog(context) {
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +47,7 @@ class SendNFCPurchaseDialogFragment(private val content: String) : AppCompatDial
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
-        return SendNFCPurchaseDialog(activity as Context, content)
+        val b64PurchaseJson = PurchaseService(activity as Context).getSignedPurchasePayload(purchase)
+        return SendNFCPurchaseDialog(activity as Context, b64PurchaseJson)
     }
 }

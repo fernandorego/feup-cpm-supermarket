@@ -1,7 +1,7 @@
 package org.feup.group4.supermarket.model
 
-import java.time.LocalDate
+import java.util.UUID
 
 data class Coupon (
-    var expiration: LocalDate
+    val uuid: UUID,
 )
