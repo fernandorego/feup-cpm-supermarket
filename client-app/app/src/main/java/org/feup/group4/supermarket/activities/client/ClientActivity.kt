@@ -18,7 +18,7 @@ import org.feup.group4.supermarket.model.User
 class ClientActivity : AppCompatActivity() {
     private lateinit var binding: ActivityClientMainBinding
     companion object {
-        var user: User = User("","", null, null, null, null, null, null)
+        var user: User = User("","")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

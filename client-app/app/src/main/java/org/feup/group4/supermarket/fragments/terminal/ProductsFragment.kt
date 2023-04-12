@@ -83,7 +83,7 @@ class ProductsFragment : Fragment() {
         )
 
         thread(start = true) {
-            ProductService(requireContext()).createUpdateProduct(product) {
+            ProductService(requireContext()).createReplaceProduct(product) {
                 // TODO: Save to local database and update/insert(note that the notifyChanges is diferent for both cases) in products list
                 ProductService(requireContext()).getProducts { remoteProducts ->
                     requireActivity().runOnUiThread {

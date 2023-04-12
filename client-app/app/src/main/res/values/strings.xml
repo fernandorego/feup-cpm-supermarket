@@ -34,7 +34,7 @@
     <string name="shopping_cart_add">Add to cart</string>
     <string name="item_units">unit(s)</string>
     <string name="payment_card">Pay with card</string>
-    <string name="payment_balance">Pay with balance</string>
+    <string name="payment_balance">Use your balance</string>
     <string name="payment_coupon">Apply coupon</string>
     <string name="scan_qr_tip">Point the camera to the QR Code</string>
     <string name="scan_qr_error">Error while scanning QR Code</string>
@@ -65,4 +65,11 @@
     <string name="receipts_empty_recyclerview">No previous purchases. Start one now!</string>
     <string name="money_format" translatable="false">"%.2f€"</string>
     <string name="checkout_complete_purchase">Complete your purchase below</string>
+    <string name="payment_current_balance">Current balance:</string>
+    <string name="payment_current_coupons">Current coupons:</string>
+    <string name="payment_current_coupons_number" translatable="false">"%d"</string>
+    <string name="payment_proceed">Proceed</string>
+    <string name="payment_no_coupons">No coupons found</string>
+    <string name="purchase_qr_code">Purchase QR Code</string>
+    <string name="purchase_invalid_message">Invalid purchase code</string>
 </resources>

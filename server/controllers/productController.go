@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	database "server/db"
+	"server/db"
 	"server/helpers"
 	"server/models"
 
@@ -17,8 +17,7 @@ import (
 )
 
 func CreateOrReplaceProduct(context *gin.Context) {
-	db := database.GetDatabase()
-	productsCollection := db.Collection("products")
+	productsCollection := db.GetDatabase().Collection("products")
 
 	signedMessage, err := models.CreateSignedMessageFromContext(context)
 	if err != nil {
@@ -33,7 +32,7 @@ func CreateOrReplaceProduct(context *gin.Context) {
 	}
 
 	message := string(messageBytes)
-	doc, err := models.CreateProductFromJSONString(message)
+	doc, err := models.CreateProductFromJSON(message)
 	if err != nil {
 		helpers.SetStatusBadRequest(context, err.Error())
 		return
@@ -56,8 +55,7 @@ func DeleteProduct(context *gin.Context) {
 		return
 	}
 
-	db := database.GetDatabase()
-	productsCollection := db.Collection("products")
+	productsCollection := db.GetDatabase().Collection("products")
 
 	_, err = productsCollection.DeleteOne(context, bson.M{"uuid": productUUID})
 	if err != nil {
@@ -70,8 +68,7 @@ func DeleteProduct(context *gin.Context) {
 }
 
 func GetProduct(context *gin.Context) {
-	db := database.GetDatabase()
-	productsCollection := db.Collection("products")
+	productsCollection := db.GetDatabase().Collection("products")
 
 	productUUID, err := uuid.Parse(context.Param("uuid"))
 	if err != nil {
@@ -112,8 +109,7 @@ func GetProduct(context *gin.Context) {
 }
 
 func GetProducts(context *gin.Context) {
-	db := database.GetDatabase()
-	productsCollection := db.Collection("products")
+	productsCollection := db.GetDatabase().Collection("products")
 
 	cursor, err := productsCollection.Find(context, bson.M{})
 	if err != nil {
