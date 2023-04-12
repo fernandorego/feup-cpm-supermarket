@@ -9,6 +9,7 @@ import (
 type CartProduct struct {
 	ProductUUID uuid.UUID `json:"uuid"`
 	Quantity    int       `json:"quantity"`
+	Name        *string   `json:"name"`
 }
 
 type Purchase struct {

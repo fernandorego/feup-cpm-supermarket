@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -34,8 +35,12 @@ func GetPurchases(context *gin.Context) {
 		return
 	}
 
-	//TODO: change to custom json instead of Marshal with only the necessary fields
-	context.JSON(http.StatusOK, gin.H{"purchases": purchases})
+	purchasesJSON, err := json.Marshal(purchases)
+	if err != nil {
+		helpers.SetStatusBadRequest(context, "error encoding message: "+err.Error())
+		return
+	}
+	context.JSON(http.StatusOK, purchasesJSON)
 }
 
 func Purchase(context *gin.Context) {
@@ -102,6 +107,7 @@ func payment(context *gin.Context, purchase *models.Purchase, user *models.User)
 		if err = productCollection.FindOne(context, bson.M{"uuid": cardProduct.ProductUUID}).Decode(&product); err != nil {
 			return
 		}
+		*cardProduct.Name = product.Name
 		totalPrice += product.Price * float64(cardProduct.Quantity)
 	}
 
