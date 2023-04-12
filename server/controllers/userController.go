@@ -12,8 +12,7 @@ import (
 )
 
 func GetUser(context *gin.Context) {
-	database := db.GetDatabase()
-	usersCollection := database.Collection("users")
+	usersCollection := db.GetDatabase().Collection("users")
 
 	id, exists := context.Get("user_id")
 	if !exists {
@@ -34,6 +33,7 @@ func GetUser(context *gin.Context) {
 		"card":              user.Card,
 		"public_key":        user.PublicKey,
 		"accumulated_value": user.AccumulatedValue,
+		"active_coupons":    user.ActiveCoupons,
 		"user_img":          user.UserImg,
 		"is_admin":          user.IsAdmin,
 	})

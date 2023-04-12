@@ -56,5 +56,11 @@
     <string name="purchase_error_message">Compra falhou</string>
     <string name="receipts_empty_recyclerview">Sem compras prévias. Começa uma agora!</string>
     <string name="checkout_complete_purchase">Completa a tua compra em baixo</string>
+    <string name="payment_current_balance">Saldo atual:</string>
+    <string name="payment_current_coupons">Cupões atuais:</string>
+    <string name="payment_proceed">Continuar</string>
+    <string name="payment_no_coupons">Não encontramos cupões</string>
+    <string name="purchase_qr_code">QR Code da compra</string>
+    <string name="purchase_invalid_message">Código de compra inválido</string>
     <string name="title_admin">Admin</string>
 </resources>

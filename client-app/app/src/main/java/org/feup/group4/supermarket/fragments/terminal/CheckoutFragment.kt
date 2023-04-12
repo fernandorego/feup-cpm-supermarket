@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import org.feup.group4.supermarket.R
 
 import org.feup.group4.supermarket.fragments.PurchaseCompletedDialogFragment
+import org.feup.group4.supermarket.service.PurchaseService
 import org.feup.group4.supermarket.service.QRService
+import kotlin.concurrent.thread
 
 
 class CheckoutFragment : Fragment() {
@@ -24,11 +27,27 @@ class CheckoutFragment : Fragment() {
 
         val qrCodeButton = view.findViewById<Button>(R.id.scan_qr_fab)
         qrCodeButton.setOnClickListener {
-            qrService.scanQRCode { _ ->
-                // TODO: Actually do something with the QR code
-                PurchaseCompletedDialogFragment(true).show(
-                    childFragmentManager, "PurchaseCompletedDialogFragment"
-                )
+            qrService.scanQRCode { qrContents ->
+                if (qrContents == null) {
+                    Toast.makeText(requireContext(), R.string.scan_qr_error, Toast.LENGTH_LONG).show()
+                    return@scanQRCode
+                }
+                thread(start = true) {
+                    PurchaseService(requireContext()).forwardClientPurchase(qrContents!!) { statusCode, response ->
+                        requireActivity().runOnUiThread {
+                            if (statusCode == 200) {
+                                PurchaseCompletedDialogFragment(true).show(
+                                    childFragmentManager, "PurchaseCompletedDialogFragment"
+                                )
+                            } else {
+                                PurchaseCompletedDialogFragment(false).show(
+                                    childFragmentManager, "PurchaseCompletedDialogFragment"
+                                )
+                                Toast.makeText(requireContext(), response, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                }
             }
         }
 

@@ -16,6 +16,7 @@ import org.feup.group4.supermarket.service.UserService
 class MainActivity : AppCompatActivity() {
     private lateinit var user: User
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
