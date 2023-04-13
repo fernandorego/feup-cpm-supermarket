@@ -4,21 +4,25 @@ import (
 	"encoding/json"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
+	"time"
 )
 
 type CartProduct struct {
 	ProductUUID uuid.UUID `json:"uuid"`
 	Quantity    int       `json:"quantity"`
+	Price       float64   `json:"price"`
 	Name        *string   `json:"name"`
 }
 
 type Purchase struct {
-	UUID     uuid.UUID     `json:"uuid"`
-	UserUUID uuid.UUID     `json:"user_uuid" validate:"required"`
-	Cart     []CartProduct `json:"cart" validate:"required"`
-	Discount bool          `json:"discount"`
-	Coupon   *uuid.UUID    `json:"coupon"`
-	TotalPrice	float64	   `json:"total_price"`
+	UUID       uuid.UUID     `json:"uuid"`
+	UserUUID   uuid.UUID     `json:"user_uuid" validate:"required"`
+	Cart       []CartProduct `json:"cart" validate:"required"`
+	Discount   bool          `json:"discount"`
+	Coupon     *uuid.UUID    `json:"coupon"`
+	TotalPrice float64       `json:"total_price"`
+	PaidPrice  float64       `json:"paid_price"`
+	CreatedAt  time.Time     `json:"created_at"`
 }
 
 func CreatePurchaseFromJSON(jsonPurchase string) (*Purchase, error) {

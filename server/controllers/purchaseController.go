@@ -11,6 +11,7 @@ import (
 	"server/db"
 	"server/helpers"
 	"server/models"
+	"time"
 )
 
 func GetPurchases(context *gin.Context) {
@@ -82,6 +83,7 @@ func Purchase(context *gin.Context) {
 		return
 	}
 	purchase.TotalPrice = totalPrice
+	purchase.PaidPrice = paidPrice
 
 	updatedValues := bson.M{"accumulatedvalue": user.AccumulatedValue, "accumulatedpaidvalue": user.AccumulatedPaidValue, "activecoupons": user.ActiveCoupons}
 	if _, err = usersCollection.UpdateOne(context, bson.M{"_id": user.ID}, bson.M{"$set": updatedValues}); err != nil {
@@ -89,6 +91,7 @@ func Purchase(context *gin.Context) {
 		return
 	}
 
+	purchase.CreatedAt = time.Now()
 	if _, err := purchaseCollection.InsertOne(context, purchase); err != nil {
 		helpers.SetStatusInternalServerError(context, "error inserting user message: "+err.Error())
 		return
@@ -108,6 +111,7 @@ func payment(context *gin.Context, purchase *models.Purchase, user *models.User)
 			return
 		}
 		cardProduct.Name = &product.Name
+		cardProduct.Price = product.Price
 		totalPrice += product.Price * float64(cardProduct.Quantity)
 	}
 
@@ -135,7 +139,6 @@ func verifyActiveCoupon(purchase *models.Purchase, user models.User) error {
 	if purchase.Coupon == nil {
 		return nil
 	}
-	println(purchase.Coupon.String())
 	for _, coupon := range user.ActiveCoupons {
 		if coupon.UUID == *purchase.Coupon {
 			return nil
