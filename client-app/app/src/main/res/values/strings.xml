@@ -78,4 +78,5 @@
     <string name="purchase_qr_code">Purchase QR Code</string>
     <string name="purchase_invalid_message">Invalid purchase code</string>
     <string name="purchase_may_close">After the terminal confirms the purchase, you may close this window.</string>
+    <string name="paid">Paid</string>
 </resources>
