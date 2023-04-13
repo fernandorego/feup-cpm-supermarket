@@ -23,6 +23,9 @@ class TerminalActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        supportActionBar?.setDisplayShowTitleEnabled(true)
+
         user = Gson().fromJson(intent.getStringExtra("JSON_USER"), User::class.java)
         binding = ActivityTerminalMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

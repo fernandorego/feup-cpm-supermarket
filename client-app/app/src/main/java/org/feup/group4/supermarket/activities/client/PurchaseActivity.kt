@@ -57,6 +57,14 @@ class PurchaseActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        updateView()
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        val adapter = ProductsAdapter(this, purchase.getProducts(), { updateView() })
+        recyclerView.adapter = adapter
+    }
+
+    private fun updateView() {
         updateSubTotal()
 
         if (purchase.getProducts().isEmpty()) {
@@ -68,10 +76,6 @@ class PurchaseActivity : AppCompatActivity() {
             checkoutBtn.visibility = View.VISIBLE
             emptyRecyclerView.visibility = View.GONE
         }
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = ProductsAdapter(this, purchase.getProducts(), { updateSubTotal() })
-        recyclerView.adapter = adapter
     }
 
     private fun updateSubTotal() {
