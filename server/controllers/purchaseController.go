@@ -16,7 +16,6 @@ import (
 
 func GetPurchases(context *gin.Context) {
 	purchaseCollection := db.GetDatabase().Collection("purchases")
-
 	userUUID, err := uuid.Parse(context.Param("uuid"))
 	if err != nil {
 		helpers.SetStatusBadRequest(context, "cannot parse uuid")
@@ -31,6 +30,7 @@ func GetPurchases(context *gin.Context) {
 
 	var purchases []models.Purchase
 	if err = cursor.All(context, &purchases); err != nil {
+		println(err.Error())
 		helpers.SetStatusInternalServerError(context, "error retreiving purchases")
 		return
 	}
@@ -105,14 +105,14 @@ func payment(context *gin.Context, purchase *models.Purchase, user *models.User)
 	err = nil
 
 	productCollection := db.GetDatabase().Collection("products")
-	for _, cardProduct := range purchase.Cart {
+	for i, _ := range purchase.Cart {
 		var product models.Product
-		if err = productCollection.FindOne(context, bson.M{"uuid": cardProduct.ProductUUID}).Decode(&product); err != nil {
+		if err = productCollection.FindOne(context, bson.M{"uuid": purchase.Cart[i].ProductUUID}).Decode(&product); err != nil {
 			return
 		}
-		cardProduct.Name = &product.Name
-		cardProduct.Price = product.Price
-		totalPrice += product.Price * float64(cardProduct.Quantity)
+		purchase.Cart[i].Name = &product.Name
+		purchase.Cart[i].Price = product.Price
+		totalPrice += product.Price * float64(purchase.Cart[i].Quantity)
 	}
 
 	paidPrice = totalPrice
