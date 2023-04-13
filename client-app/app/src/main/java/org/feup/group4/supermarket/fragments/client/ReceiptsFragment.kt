@@ -1,5 +1,6 @@
 package org.feup.group4.supermarket.fragments.client
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
+import org.feup.group4.supermarket.activities.client.PurchaseActivity
 import org.feup.group4.supermarket.adapters.ReceiptsAdapter
 import org.feup.group4.supermarket.model.Receipt
 import org.feup.group4.supermarket.service.PurchaseService
@@ -46,6 +48,11 @@ class ReceiptsFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter = ReceiptsAdapter(requireContext(), receipts)
         recyclerView.adapter = adapter
+
+        val newPurchaseButton = view.findViewById<TextView>(R.id.empty_recyclerview)
+        newPurchaseButton.setOnClickListener {
+            startActivity(Intent(activity, PurchaseActivity::class.java))
+        }
     }
 
     private fun updateListVisibility() {
