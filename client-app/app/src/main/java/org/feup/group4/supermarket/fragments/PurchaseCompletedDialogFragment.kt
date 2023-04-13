@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import org.feup.group4.supermarket.R
 
-class PurchaseCompletedDialogFragment(private val success: Boolean) : AppCompatDialogFragment() {
+class PurchaseCompletedDialogFragment(private val success: Boolean = true) : AppCompatDialogFragment() {
     class PurchaseCompletedDialog(context: Context, private val success: Boolean) :
         AppCompatDialog(context) {
         override fun onCreate(savedInstanceState: Bundle?) {

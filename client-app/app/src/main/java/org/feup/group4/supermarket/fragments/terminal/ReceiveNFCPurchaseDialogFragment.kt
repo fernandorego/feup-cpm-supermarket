@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.service.NFCReaderService
 
-class ReceiveNFCPurchaseDialogFragment(private val listener: ((String) -> Unit)) :
-    AppCompatDialogFragment() {
-    class ReceiveNFCPurchaseDialog(context: Context, private val listener: ((String) -> Unit)) : AppCompatDialog(context) {
+class ReceiveNFCPurchaseDialogFragment : AppCompatDialogFragment() {
+    class ReceiveNFCPurchaseDialog(context: Context, private val listener: ((String) -> Unit)) :
+        AppCompatDialog(context) {
         private val nfcAdapter: NfcAdapter? by lazy { NfcAdapter.getDefaultAdapter(context) }
 
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +46,19 @@ class ReceiveNFCPurchaseDialogFragment(private val listener: ((String) -> Unit))
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         super.onCreateDialog(savedInstanceState)
-        return ReceiveNFCPurchaseDialog(activity as Context, listener)
+        return ReceiveNFCPurchaseDialog(
+            activity as Context,
+            arguments?.getSerializable("listener") as ((String) -> Unit)
+        )
+    }
+
+    companion object {
+        fun newInstance(listener: ((String) -> Unit)): ReceiveNFCPurchaseDialogFragment {
+            val bundle = Bundle()
+            bundle.putSerializable("listener", listener as java.io.Serializable)
+            val fragment = ReceiveNFCPurchaseDialogFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }

@@ -19,10 +19,13 @@ class NFCSenderService : HostApduService() {
     }
 
     override fun processCommandApdu(command: ByteArray, extra: Bundle?): ByteArray {
-        if (index == numberOfSlices || byteArray == null || !PreferenceManager.getDefaultSharedPreferences(
+        if (index == numberOfSlices) {
+            index = 0
+        }
+
+        if (byteArray == null || !PreferenceManager.getDefaultSharedPreferences(
                 applicationContext
-            )
-                .getBoolean(NFCReaderService.NFC_PREF_SEND, false)
+            ).getBoolean(NFCReaderService.NFC_PREF_SEND, false)
         ) {
             return NFCReaderService.NFC_CMD_UNKNOWN
         }
@@ -46,9 +49,5 @@ class NFCSenderService : HostApduService() {
         return NFCReaderService.NFC_CMD_ERROR
     }
 
-    override fun onDeactivated(p0: Int) {
-        byteArray = null
-        index = 0
-        numberOfSlices = 0
-    }
+    override fun onDeactivated(p0: Int) {}
 }

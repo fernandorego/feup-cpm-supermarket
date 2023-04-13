@@ -38,7 +38,7 @@ class CheckoutFragment : Fragment() {
                 Toast.makeText(context, "NFC not supported", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            ReceiveNFCPurchaseDialogFragment(::addProduct).show(
+            ReceiveNFCPurchaseDialogFragment.newInstance(::addProduct).show(
                 childFragmentManager, "ReceiveNFCPurchaseDialogFragment"
             )
         }

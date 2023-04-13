@@ -7,13 +7,14 @@ import android.preference.PreferenceManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
+import com.google.gson.Gson
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Purchase
 import org.feup.group4.supermarket.service.NFCReaderService.Companion.NFC_PREF_SEND
 import org.feup.group4.supermarket.service.NFCSenderService
 import org.feup.group4.supermarket.service.PurchaseService
 
-class SendNFCPurchaseDialogFragment(private val purchase: Purchase) : AppCompatDialogFragment() {
+class SendNFCPurchaseDialogFragment : AppCompatDialogFragment() {
     class SendNFCPurchaseDialog(context: Context, private val content: String) :
         AppCompatDialog(context) {
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +44,19 @@ class SendNFCPurchaseDialogFragment(private val purchase: Purchase) : AppCompatD
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
-        val b64PurchaseJson = PurchaseService(activity as Context).getSignedPurchasePayload(purchase)
+        val b64PurchaseJson = PurchaseService(activity as Context).getSignedPurchasePayload(
+            arguments?.getString("purchase")?.let { Gson().fromJson(it, Purchase::class.java) }!!,
+        )
         return SendNFCPurchaseDialog(activity as Context, b64PurchaseJson)
+    }
+
+    companion object {
+        fun newInstance(purchase: Purchase): SendNFCPurchaseDialogFragment {
+            val bundle = Bundle()
+            bundle.putString("purchase", Gson().toJson(purchase))
+            val fragment = SendNFCPurchaseDialogFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }
