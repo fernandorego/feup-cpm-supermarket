@@ -41,11 +41,13 @@
             android:name=".activities.RegisterActivity"
             android:exported="false"
             android:screenOrientation="userPortrait"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".activities.LoginActivity" />
         <activity
             android:name=".activities.LoginActivity"
             android:exported="false"
             android:screenOrientation="userPortrait"
+            android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTop"/>
         <activity
             android:name=".activities.client.ClientActivity"

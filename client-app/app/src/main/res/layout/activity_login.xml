@@ -15,9 +15,11 @@
         android:alpha=".7"
         android:scaleType="fitXY"
         android:src="@drawable/produce_section"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
         android:id="@+id/panel"
@@ -29,24 +31,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/produce_img"
+        app:layout_constraintTop_toTopOf="@id/linearLayout"
         app:tint="@color/dark_blue" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingHorizontal="40dp"
+        app:layout_constraintVertical_chainStyle="spread_inside"
         app:layout_constraintEnd_toEndOf="@id/panel"
         app:layout_constraintStart_toStartOf="@id/panel"
-        app:layout_constraintTop_toTopOf="@id/panel">
+        app:layout_constraintTop_toBottomOf="@id/produce_img"
+        app:layout_constraintBottom_toTopOf="@id/btn_register">
 
         <EditText
             android:id="@+id/login_input_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             app:backgroundTint="#FFFFFF"
             android:hint="@string/onboarding_nickname"
             android:inputType="textShortMessage"
@@ -86,21 +91,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/btn_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/onboarding_registration"
-            android:textColor="#ffffff" />
-
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/btn_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/onboarding_registration"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
