@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/payment_current_balance"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/payment_balance"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/money_format"
-        android:textSize="28sp"
+        android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@id/payment_current_balance_text"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/payment_current_coupons"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/payment_coupon"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/payment_current_coupons_number"
-        android:textSize="28sp"
+        android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@id/payment_current_coupons_text"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -81,13 +81,13 @@
         android:id="@+id/payment_proceed_qr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/payment_proceed_qr"
+        android:layout_marginEnd="8dp"
+        android:text="@string/scan_qr_code"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:backgroundTint="@color/dark_blue"
-        app:icon="@drawable/nfc"
+        app:icon="@drawable/qr_code_scanner"
         app:iconTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/payment_proceed_nfc"
@@ -99,9 +99,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="@string/payment_proceed_nfc"
+        android:text="@string/use_nfc"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:backgroundTint="@color/dark_blue"
         app:icon="@drawable/nfc"
         app:iconTint="#FFFFFF"

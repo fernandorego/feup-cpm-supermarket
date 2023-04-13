@@ -24,12 +24,10 @@ class NFCSenderService : HostApduService() {
             )
                 .getBoolean(NFCReaderService.NFC_PREF_SEND, false)
         ) {
-            println("Nao deveria receber nada agora")
             return NFCReaderService.NFC_CMD_UNKNOWN
         }
 
         if (NFCReaderService.NFC_CMD_SELECT_APDU.contentEquals(command)) {
-            println("Mandei")
             val slice = byteArray!!.sliceArray(
                 index * NFCReaderService.NFC_MAX_RES_SIZE until kotlin.math.min(
                     index * NFCReaderService.NFC_MAX_RES_SIZE + NFCReaderService.NFC_MAX_RES_SIZE,
@@ -45,7 +43,6 @@ class NFCSenderService : HostApduService() {
             }
         }
 
-        println("Ai")
         return NFCReaderService.NFC_CMD_ERROR
     }
 

@@ -45,8 +45,6 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun addProduct(productString: String?) {
-        println("addProduct: $productString")
-        println("addProduct: ${productString == null}")
         if (productString == null) {
             Toast.makeText(requireContext(), R.string.scan_qr_error, Toast.LENGTH_LONG).show()
             return
