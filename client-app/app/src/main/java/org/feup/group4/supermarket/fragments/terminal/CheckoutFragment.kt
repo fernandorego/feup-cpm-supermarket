@@ -28,28 +28,7 @@ class CheckoutFragment : Fragment() {
 
         val qrCodeButton = view.findViewById<Button>(R.id.scan_qr_fab)
         qrCodeButton.setOnClickListener {
-            qrService.scanQRCode { qrContents ->
-                if (qrContents == null) {
-                    Toast.makeText(requireContext(), R.string.scan_qr_error, Toast.LENGTH_LONG).show()
-                    return@scanQRCode
-                }
-                thread(start = true) {
-                    PurchaseService(requireContext()).forwardClientPurchase(qrContents!!) { statusCode, response ->
-                        requireActivity().runOnUiThread {
-                            if (statusCode == 200) {
-                                PurchaseCompletedDialogFragment(true).show(
-                                    childFragmentManager, "PurchaseCompletedDialogFragment"
-                                )
-                            } else {
-                                PurchaseCompletedDialogFragment(false).show(
-                                    childFragmentManager, "PurchaseCompletedDialogFragment"
-                                )
-                                Toast.makeText(requireContext(), response, Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                }
-            }
+            qrService.scanQRCode(::addProduct)
         }
 
         val nfcButton = view.findViewById<Button>(R.id.nfc_fab)
@@ -59,9 +38,34 @@ class CheckoutFragment : Fragment() {
                 Toast.makeText(context, "NFC not supported", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            ReceiveNFCPurchaseDialogFragment().show(
+            ReceiveNFCPurchaseDialogFragment(::addProduct).show(
                 childFragmentManager, "ReceiveNFCPurchaseDialogFragment"
             )
+        }
+    }
+
+    private fun addProduct(productString: String?) {
+        println("addProduct: $productString")
+        println("addProduct: ${productString == null}")
+        if (productString == null) {
+            Toast.makeText(requireContext(), R.string.scan_qr_error, Toast.LENGTH_LONG).show()
+            return
+        }
+        thread(start = true) {
+            PurchaseService(requireContext()).forwardClientPurchase(productString) { statusCode, response ->
+                requireActivity().runOnUiThread {
+                    if (statusCode == 200) {
+                        PurchaseCompletedDialogFragment(true).show(
+                            childFragmentManager, "PurchaseCompletedDialogFragment"
+                        )
+                    } else {
+                        PurchaseCompletedDialogFragment(false).show(
+                            childFragmentManager, "PurchaseCompletedDialogFragment"
+                        )
+                        Toast.makeText(requireContext(), response, Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
         }
     }
 }

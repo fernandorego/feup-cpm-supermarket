@@ -6,19 +6,9 @@ import android.nfc.tech.IsoDep
 import android.util.Log
 import java.io.IOException
 
-class NFCReaderService : NfcAdapter.ReaderCallback {
+class NFCReaderService(private val listener: ((ByteArray) -> Unit)) : NfcAdapter.ReaderCallback {
     companion object {
-        var listener: ((ByteArray) -> Unit)? = null
-
-        fun byteArrayToHex(byteArray: ByteArray): String {
-            val stringBuilder = StringBuilder(byteArray.size * 2)
-            for (byte in byteArray) {
-                stringBuilder.append(String.format("%02x", byte))
-            }
-            return stringBuilder.toString()
-        }
-
-        fun hexStringToByteArray(s: String): ByteArray {
+        private fun hexStringToByteArray(s: String): ByteArray {
             val data = ByteArray(s.length / 2)
             var k = 0
             while (k < s.length) {
@@ -29,47 +19,50 @@ class NFCReaderService : NfcAdapter.ReaderCallback {
             return data
         }
 
-        const val SEND_NFC_PREF = "send_nfc"
-        const val CARD_AID = "F012233445"
-        const val CMD_SEL_AID = "00A40400"
-        const val CMD_GET_SECOND = "80010000"
-        const val MAX_RES_SIZE = 250
-        val SELECT_APDU = hexStringToByteArray(CMD_SEL_AID + String.format("%02X", CARD_AID.length/2) + CARD_AID)
-        val OK_SW = hexStringToByteArray("9000")             // "OK" status word (0x9000)
-        val UNKNOWN_CMD_SW = hexStringToByteArray("0000")    // "UNKNOWN" command status word (0X0000)
+        const val NFC_PREF_SEND = "send_nfc"
+        private const val NFC_CARD_AID = "F012233445"
+        private const val NFC_SEL_AID = "00A40400"
+        const val NFC_MAX_RES_SIZE = 250
+        val NFC_CMD_SELECT_APDU = hexStringToByteArray(
+            NFC_SEL_AID + String.format(
+                "%02X",
+                NFC_CARD_AID.length / 2
+            ) + NFC_CARD_AID
+        )
+        val NFC_CMD_OK_FINISHED = hexStringToByteArray("9000")
+        val NFC_CMD_OK_MORE = hexStringToByteArray("6100")
+        val NFC_CMD_ERROR = hexStringToByteArray("6F00")
+        val NFC_CMD_UNKNOWN = hexStringToByteArray("0000")
     }
 
     override fun onTagDiscovered(tag: Tag) {
-        println("Descobri tag")
         val isoDep = IsoDep.get(tag) ?: return
-        println("Seguiu")
         try {
             isoDep.connect()
-            println("Conectou")
-            val result = isoDep.transceive(
-                hexStringToByteArray(
-                    CMD_SEL_AID + String.format(
-                        "%02X",
-                        CARD_AID.length / 2
-                    ) + CARD_AID
+
+            var content = byteArrayOf()
+            while (true) {
+                val meetResult = isoDep.transceive(
+                    NFC_CMD_SELECT_APDU
                 )
-            )
-            println("Recebeu")
-            val rLen = result.size
-            val status = byteArrayOf(result[rLen - 2], result[rLen - 1])
-            val more = result[0] == 1.toByte()
-            if (OK_SW.contentEquals(status)) {
-                if (more) {
-                    println("More")
-                    val second = isoDep.transceive(hexStringToByteArray(CMD_GET_SECOND))
-                    val len = second.size
-                    if (OK_SW.contentEquals(byteArrayOf(second[len - 2], second[len - 1]))) {
-                        listener?.invoke(result.sliceArray(1..rLen - 3) + second.sliceArray(0..len - 3))
-                    }
+                val meetResultLength = meetResult.size
+                if (meetResultLength < 2) {
+                    Log.w("CardReader", "Unknown response: $meetResult")
+                    break
+                }
+                val status =
+                    byteArrayOf(meetResult[meetResultLength - 2], meetResult[meetResultLength - 1])
+                if (NFC_CMD_OK_FINISHED.contentEquals(status)) {
+                    content += meetResult.sliceArray(0..meetResultLength - 3)
+                    listener.invoke(content)
+                    break
+                } else if (NFC_CMD_OK_MORE.contentEquals(status)) {
+                    content += meetResult.sliceArray(0..meetResultLength - 3)
+                } else if (NFC_CMD_ERROR.contentEquals(status)) {
+                    content = byteArrayOf()
                 } else {
-                    println("Not more")
-                    println(result.sliceArray(1..rLen - 3).toString())
-                    listener?.invoke(result.sliceArray(1..rLen - 3))
+                    Log.w("CardReader", "Unknown status: $status")
+                    break
                 }
             }
         } catch (e: IOException) {

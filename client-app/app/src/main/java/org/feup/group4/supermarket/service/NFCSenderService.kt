@@ -1,48 +1,57 @@
 package org.feup.group4.supermarket.service
 
-import android.content.Intent
 import android.nfc.cardemulation.HostApduService
 import android.os.Bundle
 import android.preference.PreferenceManager
+import kotlin.math.ceil
 
 class NFCSenderService : HostApduService() {
-    private var byteArray: ByteArray? = null
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        super.onStartCommand(intent, flags, startId)
-        if (intent!!.extras != null) {
-            byteArray = intent.getByteArrayExtra("content")
+    companion object {
+        private var byteArray: ByteArray? = null
+        private var index = 0
+        private var numberOfSlices = 0
+        fun setByteArray(byteArray: ByteArray) {
+            NFCSenderService.byteArray = byteArray
+            index = 0
+            numberOfSlices =
+                ceil(byteArray.size.toDouble() / NFCReaderService.NFC_MAX_RES_SIZE).toInt()
         }
-        return START_NOT_STICKY
     }
 
     override fun processCommandApdu(command: ByteArray, extra: Bundle?): ByteArray {
-        if (/*byteArray == null || */!PreferenceManager.getDefaultSharedPreferences(applicationContext)
-                .getBoolean(NFCReaderService.SEND_NFC_PREF, false)
+        if (index == numberOfSlices || byteArray == null || !PreferenceManager.getDefaultSharedPreferences(
+                applicationContext
+            )
+                .getBoolean(NFCReaderService.NFC_PREF_SEND, false)
         ) {
             println("Nao deveria receber nada agora")
-            return NFCReaderService.UNKNOWN_CMD_SW
+            return NFCReaderService.NFC_CMD_UNKNOWN
         }
 
-        if (NFCReaderService.SELECT_APDU.contentEquals(command)) {
+        if (NFCReaderService.NFC_CMD_SELECT_APDU.contentEquals(command)) {
             println("Mandei")
-            val str = "Sou bue belo"
-            val byteArray = str.toByteArray()
-            return byteArray + NFCReaderService.OK_SW
-            if (byteArray!!.size >= NFCReaderService.MAX_RES_SIZE) {
-                println("Mt grande")
-                return NFCReaderService.UNKNOWN_CMD_SW
+            val slice = byteArray!!.sliceArray(
+                index * NFCReaderService.NFC_MAX_RES_SIZE until kotlin.math.min(
+                    index * NFCReaderService.NFC_MAX_RES_SIZE + NFCReaderService.NFC_MAX_RES_SIZE,
+                    byteArray!!.size
+                )
+            )
+            index += 1
+
+            return if (index == numberOfSlices) {
+                slice + NFCReaderService.NFC_CMD_OK_FINISHED
+            } else {
+                slice + NFCReaderService.NFC_CMD_OK_MORE
             }
-            println("Sent nfc stuff!")
-            return byteArray!!
         }
 
-        println("Tensei nfc")
-        return NFCReaderService.UNKNOWN_CMD_SW
+        println("Ai")
+        return NFCReaderService.NFC_CMD_ERROR
     }
 
     override fun onDeactivated(p0: Int) {
-        // TODO: Implement this
-        println("Sou um serviço nfc send desativado")
+        byteArray = null
+        index = 0
+        numberOfSlices = 0
     }
 }

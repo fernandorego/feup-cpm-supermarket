@@ -11,8 +11,9 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.service.NFCReaderService
 
-class ReceiveNFCPurchaseDialogFragment : AppCompatDialogFragment() {
-    class ReceiveNFCPurchaseDialog(context: Context) : AppCompatDialog(context) {
+class ReceiveNFCPurchaseDialogFragment(private val listener: ((String) -> Unit)) :
+    AppCompatDialogFragment() {
+    class ReceiveNFCPurchaseDialog(context: Context, private val listener: ((String) -> Unit)) : AppCompatDialog(context) {
         private val nfcAdapter: NfcAdapter? by lazy { NfcAdapter.getDefaultAdapter(context) }
 
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,19 +30,12 @@ class ReceiveNFCPurchaseDialogFragment : AppCompatDialogFragment() {
                 dismiss()
             }
 
-            NFCReaderService.listener = {
-                println("sou lindo")
-            }
-
-            val nfcReaderService = NFCReaderService()
-            NFCReaderService.listener = { content ->
-                print("recebi cenas")
-                println(content.toString(Charsets.UTF_8))
-            }
-
             nfcAdapter!!.enableReaderMode(
                 ownerActivity,
-                nfcReaderService,
+                NFCReaderService { content ->
+                    listener.invoke(content.toString(Charsets.UTF_8))
+                    dismiss()
+                },
                 NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
                 null
             )
@@ -52,6 +46,6 @@ class ReceiveNFCPurchaseDialogFragment : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         super.onCreateDialog(savedInstanceState)
-        return ReceiveNFCPurchaseDialog(activity as Context)
+        return ReceiveNFCPurchaseDialog(activity as Context, listener)
     }
 }
