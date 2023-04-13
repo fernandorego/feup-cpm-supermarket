@@ -47,9 +47,7 @@ class TerminalActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.account_details -> {
-            val intent = Intent(this, AccountActivity::class.java)
-            intent.putExtra("FROM", "TERMINAL")
-            startActivity(intent)
+            startActivity(Intent(this, AccountActivity::class.java))
             true
         }
         else -> {

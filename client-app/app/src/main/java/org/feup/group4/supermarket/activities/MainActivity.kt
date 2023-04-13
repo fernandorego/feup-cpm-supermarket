@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         user = Gson().fromJson(json, User::class.java)
+        UserService(this, null).saveUser(user)
         if (user.is_admin == true) {
             startActivity(
                 Intent(this, TerminalActivity::class.java).putExtra("JSON_USER", json)
