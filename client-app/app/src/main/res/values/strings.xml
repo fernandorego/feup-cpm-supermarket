@@ -63,7 +63,6 @@
     <string name="purchase_success_message">Purchase successful</string>
     <string name="purchase_error_message">Purchase failed</string>
     <string name="receipts_empty_recyclerview">No previous purchases. Start one now!</string>
-    <string name="money_format" translatable="false">"%.2f€"</string>
     <string name="checkout_complete_purchase">Complete your purchase below</string>
     <string name="payment_current_balance">Current balance:</string>
     <string name="payment_current_coupons">Current coupons:</string>
@@ -73,4 +72,5 @@
     <string name="purchase_qr_code">Purchase QR Code</string>
     <string name="purchase_invalid_message">Invalid purchase code</string>
     <string name="title_admin">Admin</string>
+    <string name="cart_product_format" translatable="false">"%dx %s"</string>
 </resources>

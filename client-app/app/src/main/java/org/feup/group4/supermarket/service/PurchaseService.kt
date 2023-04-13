@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.activities.client.ClientActivity
 import org.feup.group4.supermarket.model.Purchase
+import org.feup.group4.supermarket.model.Receipt
 
 class PurchaseService(private val context: Context) {
     companion object {
@@ -56,7 +57,7 @@ class PurchaseService(private val context: Context) {
         )
     }
 
-    fun getPurchases(callback: (List<Purchase>) -> Unit) {
+    fun getReceipts(callback: (List<Receipt>) -> Unit) {
         fun afterRequest(statusCode: Int, body: String?) {
             if (statusCode != 200) {
                 if (statusCode == 204) {
@@ -68,7 +69,7 @@ class PurchaseService(private val context: Context) {
                 return
             }
 
-            val receipts = Gson().fromJson(body, Array<Purchase>::class.java).toList()
+            val receipts = Gson().fromJson(body, Array<Receipt>::class.java).toList()
             callback(receipts)
         }
         val userUUID = ClientActivity.user.uuid

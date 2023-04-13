@@ -1,8 +1,7 @@
 package org.feup.group4.supermarket.model
 
-import java.time.LocalDate
-
 data class Receipt (
-    val date: LocalDate,
-    val total: Double
+    var created_at: String? = null,
+    var total_price: Double = 0.0,
+    val cart: ArrayList<Product>
 )

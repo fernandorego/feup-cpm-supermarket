@@ -4,8 +4,8 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import org.feup.group4.supermarket.model.Receipt
-import java.time.LocalDate
 
+// TODO: Refactor this
 class ReceiptsRepository private constructor(context: android.content.Context) :
     SQLiteOpenHelper(context, "receipts.db", null, 1) {
     companion object {
@@ -41,8 +41,8 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
         val db = writableDatabase
         val values = ContentValues()
 //        values.put("id", receipt.id)
-        values.put("date", receipt.date.toString())
-        values.put("total", receipt.total)
+        values.put("date", receipt.created_at)
+        values.put("total", receipt.total_price)
         db.insert("receipts", null, values)
         db.close()
 
@@ -54,8 +54,9 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
         val cursor = db.query("receipts", arrayOf("date", "total"), "id = ?", arrayOf(id.toString()), null, null, null)
         if (cursor.moveToFirst()) {
             val receipt = Receipt(
-                LocalDate.parse(cursor.getString(0)),
-                cursor.getDouble(1)
+                cursor.getString(0),
+                cursor.getDouble(1),
+                arrayListOf()
             )
             cursor.close()
             db.close()
@@ -74,8 +75,9 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
             do {
                 val receipt = Receipt(
 //                    cursor.getInt(cursor.getColumnIndex("id")),
-                    LocalDate.parse(cursor.getString(1)),
-                    cursor.getDouble(2)
+                    cursor.getString(1),
+                    cursor.getDouble(2),
+                    arrayListOf()
                 )
                 receipts.add(receipt)
             } while (cursor.moveToNext())
