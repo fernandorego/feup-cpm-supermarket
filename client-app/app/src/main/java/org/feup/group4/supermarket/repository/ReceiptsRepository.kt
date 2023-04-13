@@ -26,7 +26,7 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
         db?.execSQL(
             "CREATE TABLE IF NOT EXISTS receipts (" +
                     "id INTEGER NOT NULL PRIMARY KEY," +
-//                    "date TEXT NOT NULL," +
+                    "date TEXT NOT NULL," +
                     "total REAL NOT NULL" +
                     ")"
         )
@@ -41,7 +41,7 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
         val db = writableDatabase
         val values = ContentValues()
 //        values.put("id", receipt.id)
-//        values.put("date", receipt.date.toString())
+        values.put("date", receipt.date.toString())
         values.put("total", receipt.total)
         db.insert("receipts", null, values)
         db.close()
@@ -51,10 +51,11 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
 
     fun getReceipt(id: Int): Receipt? {
         val db = readableDatabase
-        val cursor = db.query("receipts", arrayOf("total"), "id = ?", arrayOf(id.toString()), null, null, null)
+        val cursor = db.query("receipts", arrayOf("date", "total"), "id = ?", arrayOf(id.toString()), null, null, null)
         if (cursor.moveToFirst()) {
             val receipt = Receipt(
-                cursor.getDouble(0)
+                LocalDate.parse(cursor.getString(0)),
+                cursor.getDouble(1)
             )
             cursor.close()
             db.close()
@@ -73,8 +74,8 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
             do {
                 val receipt = Receipt(
 //                    cursor.getInt(cursor.getColumnIndex("id")),
-//                    java.time.LocalDate.parse(cursor.getString(cursor.getColumnIndex("date"))),
-                    cursor.getDouble(0)
+                    LocalDate.parse(cursor.getString(1)),
+                    cursor.getDouble(2)
                 )
                 receipts.add(receipt)
             } while (cursor.moveToNext())

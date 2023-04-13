@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
-	"time"
 )
 
 type CartProduct struct {
@@ -22,7 +21,7 @@ type Purchase struct {
 	Coupon     *uuid.UUID    `json:"coupon"`
 	TotalPrice float64       `json:"total_price"`
 	PaidPrice  float64       `json:"paid_price"`
-	CreatedAt  time.Time     `json:"created_at"`
+	CreatedAt  string     `json:"created_at"`
 }
 
 func CreatePurchaseFromJSON(jsonPurchase string) (*Purchase, error) {

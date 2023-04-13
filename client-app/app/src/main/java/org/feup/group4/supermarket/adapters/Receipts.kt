@@ -20,11 +20,11 @@ class ReceiptsAdapter(private val ctx: Context, private val receipts: ArrayList<
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(receipts[position]) {
-//            holder.receiptDate.text = ctx.getString(
-//                R.string.date_format_with_year,
-//                date.month.name.lowercase().replaceFirstChar { it.uppercaseChar() },
-//                date.dayOfMonth,
-//                date.year)
+            holder.receiptDate.text = ctx.getString(
+                R.string.date_format_with_year,
+                date.month.name.lowercase().replaceFirstChar { it.uppercaseChar() },
+                date.dayOfMonth,
+                date.year)
             holder.receiptTotal.text = ctx.getString(R.string.price_format, total)
         }
     }
@@ -34,7 +34,7 @@ class ReceiptsAdapter(private val ctx: Context, private val receipts: ArrayList<
     }
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-//        val receiptDate: TextView = itemView.findViewById(R.id.receipt_tv_date)
+        val receiptDate: TextView = itemView.findViewById(R.id.receipt_tv_date)
         val receiptTotal: TextView = itemView.findViewById(R.id.receipt_tv_total)
     }
 }

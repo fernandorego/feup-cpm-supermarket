@@ -91,7 +91,7 @@ func Purchase(context *gin.Context) {
 		return
 	}
 
-	purchase.CreatedAt = time.Now()
+	purchase.CreatedAt = time.Now().Format(time.RFC3339)
 	if _, err := purchaseCollection.InsertOne(context, purchase); err != nil {
 		helpers.SetStatusInternalServerError(context, "error inserting user message: "+err.Error())
 		return

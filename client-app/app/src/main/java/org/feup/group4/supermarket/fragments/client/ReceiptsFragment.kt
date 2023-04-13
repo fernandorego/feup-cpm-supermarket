@@ -12,6 +12,8 @@ import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.adapters.ReceiptsAdapter
 import org.feup.group4.supermarket.model.Receipt
 import org.feup.group4.supermarket.service.PurchaseService
+import java.time.Instant
+import java.time.ZoneId
 import kotlin.concurrent.thread
 
 private val receipts = ArrayList<Receipt>()
@@ -33,7 +35,7 @@ class ReceiptsFragment : Fragment() {
                 requireActivity().runOnUiThread {
                     receipts.clear()
                     purchases.forEach { purchase ->
-                        receipts.add(Receipt(purchase.total_price))
+                        receipts.add(Receipt(Instant.parse(purchase.created_at).atZone(ZoneId.systemDefault()).toLocalDate(), purchase.total_price))
                     }
                     updateListVisibility()
                 }
