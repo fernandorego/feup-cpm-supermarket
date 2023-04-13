@@ -1,6 +1,7 @@
 package org.feup.group4.supermarket.service
 
 import android.content.Context
+import android.util.Log
 import org.feup.group4.supermarket.R
 import java.io.DataOutputStream
 import java.net.HttpURLConnection
@@ -92,7 +93,7 @@ open class HttpService internal constructor(
                 afterRequest?.let { it(code, urlConnection.errorStream.reader().readText()) }
             }
         } catch (e: java.lang.Exception) {
-            println(e.toString())
+            Log.w("HttpService", e.toString())
             afterRequest?.let { it(500, e.toString()) }
         } finally {
             urlConnection.disconnect()

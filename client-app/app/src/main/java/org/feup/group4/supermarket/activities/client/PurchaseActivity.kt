@@ -38,9 +38,6 @@ class PurchaseActivity : AppCompatActivity() {
                         this, resources.getString(R.string.scan_qr_error), Toast.LENGTH_LONG
                     ).show()
                 } else {
-                    Toast.makeText(
-                        this, "Scanned: $content", Toast.LENGTH_LONG
-                    ).show()
                     val product = ProductService(this).decryptProduct(content)
                     Log.w("PurchaseActivity", "Scanned: $product")
                     purchase.addProduct(product)
@@ -50,7 +47,7 @@ class PurchaseActivity : AppCompatActivity() {
         }
 
         checkoutBtn.setOnClickListener {
-            PurchaseOptionsDialogFragment(purchase).show(
+            PurchaseOptionsDialogFragment.newInstance(purchase).show(
                 supportFragmentManager,
                 "PurchaseOptionsDialogFragment"
             )

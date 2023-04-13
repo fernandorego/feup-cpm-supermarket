@@ -8,14 +8,15 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.FragmentActivity
+import com.google.gson.Gson
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Purchase
 import org.feup.group4.supermarket.service.PurchaseService
 import org.feup.group4.supermarket.service.QRService
 
-class PurchaseQRDialogFragment(private val purchase: Purchase) : AppCompatDialogFragment() {
+class PurchaseQRDialogFragment : AppCompatDialogFragment() {
     class PurchaseQRDialog(
-        private val activity: FragmentActivity,
+        activity: FragmentActivity,
         private val purchase: Purchase
     ) :
         AppCompatDialog(activity) {
@@ -44,7 +45,20 @@ class PurchaseQRDialogFragment(private val purchase: Purchase) : AppCompatDialog
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
         return PurchaseQRDialog(
-            requireActivity(), purchase
+            requireActivity(), Gson().fromJson(
+                arguments?.getString("purchase"),
+                Purchase::class.java
+            )
         )
+    }
+
+    companion object {
+        fun newInstance(purchase: Purchase): PurchaseQRDialogFragment {
+            val bundle = Bundle()
+            bundle.putString("purchase", Gson().toJson(purchase))
+            val fragment = PurchaseQRDialogFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }
