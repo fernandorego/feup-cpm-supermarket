@@ -88,9 +88,7 @@ class ProductsAdapter(
         }
     }
 
-    override fun getItemCount(): Int {
-        return products.size
-    }
+    override fun getItemCount(): Int = products.size
 
     private fun removeItem(view: View) {
         for (i in 0 until products.size) {

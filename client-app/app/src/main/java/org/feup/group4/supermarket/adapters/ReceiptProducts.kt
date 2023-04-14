@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Product
 
-val products = ArrayList<Product>()
-
 class ReceiptProductsAdapter(private val ctx: Context, private val products: ArrayList<Product>): RecyclerView.Adapter<ReceiptProductsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = (ctx as Activity).layoutInflater.inflate(R.layout.recyclerview_receipt_cart, parent, false)

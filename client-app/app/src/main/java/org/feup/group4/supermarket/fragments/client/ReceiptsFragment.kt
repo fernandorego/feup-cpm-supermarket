@@ -13,10 +13,11 @@ import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.activities.client.PurchaseActivity
 import org.feup.group4.supermarket.adapters.ReceiptsAdapter
 import org.feup.group4.supermarket.model.Receipt
+import org.feup.group4.supermarket.repository.ReceiptsRepository
 import org.feup.group4.supermarket.service.PurchaseService
 import kotlin.concurrent.thread
 
-private val receipts = ArrayList<Receipt>()
+private var receipts = ArrayList<Receipt>()
 
 class ReceiptsFragment : Fragment() {
     override fun onCreateView(
@@ -26,6 +27,7 @@ class ReceiptsFragment : Fragment() {
     ): View = inflater.inflate(R.layout.fragment_client_receipts, container, false)
 
     private val recyclerView: RecyclerView by lazy { view?.findViewById(R.id.receipts_list)!! }
+    private val receiptsRepository by lazy { ReceiptsRepository.getInstance(requireContext()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,15 +36,23 @@ class ReceiptsFragment : Fragment() {
             PurchaseService(requireContext()).getReceipts { remoteReceipts ->
                 requireActivity().runOnUiThread {
                     receipts.clear()
-                    remoteReceipts.forEach {
-                        receipts.add(it)
+                    if (remoteReceipts.isEmpty()) {
+                        receiptsRepository.getAll().forEach { receipt ->
+                            receipts.add(receipt)
+                        }
+                    } else {
+                        remoteReceipts.forEach { receipt ->
+                            val receiptInDatabase = receipt.uuid?.let { receiptsRepository.getReceipt(it) }
+                            if (receiptInDatabase == null)
+                                receiptsRepository.addReceipt(receipt)
+                            receipts.add(receipt)
+                        }
                     }
                     updateListVisibility()
                 }
             }
         }
 
-        updateListVisibility()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter = ReceiptsAdapter(requireContext(), receipts)
         recyclerView.adapter = adapter
@@ -51,6 +61,8 @@ class ReceiptsFragment : Fragment() {
         newPurchaseButton.setOnClickListener {
             startActivity(Intent(activity, PurchaseActivity::class.java))
         }
+
+        updateListVisibility()
     }
 
     private fun updateListVisibility() {

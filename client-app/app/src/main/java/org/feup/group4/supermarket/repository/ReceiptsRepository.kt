@@ -4,8 +4,8 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import org.feup.group4.supermarket.model.Receipt
+import java.util.*
 
-// TODO: Refactor this
 class ReceiptsRepository private constructor(context: android.content.Context) :
     SQLiteOpenHelper(context, "receipts.db", null, 1) {
     companion object {
@@ -25,7 +25,7 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(
             "CREATE TABLE IF NOT EXISTS receipts (" +
-                    "id INTEGER NOT NULL PRIMARY KEY," +
+                    "uuid TEXT NOT NULL PRIMARY KEY," +
                     "date TEXT NOT NULL," +
                     "total REAL NOT NULL" +
                     ")"
@@ -37,10 +37,16 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
         onCreate(db)
     }
 
+    fun deleteDatabase() {
+        writableDatabase.execSQL("DROP TABLE IF EXISTS receipts")
+        onCreate(writableDatabase)
+        receipts.clear()
+    }
+
     fun addReceipt(receipt: Receipt) {
         val db = writableDatabase
         val values = ContentValues()
-//        values.put("id", receipt.id)
+        values.put("uuid", receipt.uuid.toString())
         values.put("date", receipt.created_at)
         values.put("total", receipt.total_price)
         db.insert("receipts", null, values)
@@ -49,14 +55,15 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
         receipts.add(receipt)
     }
 
-    fun getReceipt(id: Int): Receipt? {
+    fun getReceipt(uuid: UUID): Receipt? {
         val db = readableDatabase
-        val cursor = db.query("receipts", arrayOf("date", "total"), "id = ?", arrayOf(id.toString()), null, null, null)
+        val cursor = db.query("receipts", arrayOf("date", "total"), "uuid = ?", arrayOf(uuid.toString()), null, null, null)
         if (cursor.moveToFirst()) {
             val receipt = Receipt(
                 cursor.getString(0),
                 cursor.getDouble(1),
-                arrayListOf()
+                arrayListOf(),
+                uuid
             )
             cursor.close()
             db.close()
@@ -74,10 +81,10 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
         if (cursor.moveToFirst()) {
             do {
                 val receipt = Receipt(
-//                    cursor.getInt(cursor.getColumnIndex("id")),
                     cursor.getString(1),
                     cursor.getDouble(2),
-                    arrayListOf()
+                    arrayListOf(),
+                    cursor.getString(0).let { UUID.fromString(it) }
                 )
                 receipts.add(receipt)
             } while (cursor.moveToNext())

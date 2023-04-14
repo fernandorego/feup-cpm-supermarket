@@ -7,14 +7,13 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Receipt
 import java.time.Instant
 import java.time.ZoneId
-
-val receipts = ArrayList<Receipt>()
 
 class ReceiptsAdapter(private val ctx: Context, private val receipts: ArrayList<Receipt>): RecyclerView.Adapter<ReceiptsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -51,6 +50,7 @@ class ReceiptsAdapter(private val ctx: Context, private val receipts: ArrayList<
                         .setDuration(150).setInterpolator(AccelerateDecelerateInterpolator())
                 }
             }
+            holder.background.setOnClickListener { holder.expandProducts.callOnClick() }
         }
     }
 
@@ -61,5 +61,6 @@ class ReceiptsAdapter(private val ctx: Context, private val receipts: ArrayList<
         val receiptTotal: TextView = itemView.findViewById(R.id.receipt_tv_total)
         val receiptProducts: RecyclerView = itemView.findViewById(R.id.receipt_rv_products_list)
         val expandProducts: ImageButton = itemView.findViewById(R.id.expand_btn)
+        val background: ConstraintLayout = itemView.findViewById(R.id.receipt_cl_background)
     }
 }
