@@ -50,7 +50,8 @@
         android:layout_marginEnd="10dp"
         app:layout_constraintTop_toTopOf="@id/receipt_tv_total"
         app:layout_constraintBottom_toBottomOf="@id/receipt_tv_total"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/receipt_rv_products_list"

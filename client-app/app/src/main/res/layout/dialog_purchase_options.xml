@@ -37,7 +37,7 @@
         app:layout_constraintBaseline_toBaselineOf="@id/payment_current_balance_text"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/payment_balance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
         app:layout_constraintBaseline_toBaselineOf="@id/payment_current_coupons_text"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/payment_coupon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

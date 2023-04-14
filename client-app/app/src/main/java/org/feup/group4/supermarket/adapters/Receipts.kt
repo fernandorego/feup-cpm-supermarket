@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,11 +33,24 @@ class ReceiptsAdapter(private val ctx: Context, private val receipts: ArrayList<
                 date.year)
             holder.receiptTotal.text = ctx.getString(R.string.price_format, total_price)
 
-            // TODO: Add expand button functionality
-            holder.receiptProducts.visibility = View.VISIBLE
             holder.receiptProducts.layoutManager = LinearLayoutManager(ctx)
             val adapter = ReceiptProductsAdapter(ctx, cart)
             holder.receiptProducts.adapter = adapter
+
+            if (cart.isNotEmpty()) {
+                holder.expandProducts.visibility = View.VISIBLE
+            }
+            holder.expandProducts.setOnClickListener {
+                if (holder.receiptProducts.visibility == View.VISIBLE) {
+                    holder.receiptProducts.visibility = View.GONE
+                    holder.expandProducts.animate().rotation(0f)
+                        .setDuration(150).setInterpolator(AccelerateDecelerateInterpolator())
+                } else {
+                    holder.receiptProducts.visibility = View.VISIBLE
+                    holder.expandProducts.animate().rotation(180f)
+                        .setDuration(150).setInterpolator(AccelerateDecelerateInterpolator())
+                }
+            }
         }
     }
 
