@@ -43,7 +43,7 @@ class ProductsFragment : Fragment() {
 
         val newProductButton = view.findViewById<TextView>(R.id.new_product_fab)
         newProductButton.setOnClickListener {
-            AddProductDialogFragment { name, title, callback ->
+            AddProductDialogFragment.newInstance { name, title, callback ->
                 addProduct(
                     name,
                     title,
