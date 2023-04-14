@@ -1,13 +1,18 @@
 package org.feup.group4.supermarket.fragments.terminal
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.dhaval2404.imagepicker.ImagePicker
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.adapters.ProductsAdapter
 import org.feup.group4.supermarket.model.Product
@@ -38,7 +43,7 @@ class ProductsFragment : Fragment() {
         updateListVisibility()
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_products_list)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = ProductsAdapter(requireContext(), products, {updateListVisibility()},true)
+        val adapter = ProductsAdapter(requireContext(), products, { updateListVisibility() }, true)
         recyclerView.adapter = adapter
 
         val newProductButton = view.findViewById<TextView>(R.id.new_product_fab)
