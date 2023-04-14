@@ -13,7 +13,9 @@
         android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/image_not_supported"
+        app:tint="#000000"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/product_add_image"

@@ -131,3 +131,29 @@ func GetProducts(context *gin.Context) {
 
 	context.JSON(http.StatusOK, products)
 }
+
+func GetProductImage(context *gin.Context) {
+	productsCollection := db.GetDatabase().Collection("products")
+
+	productUUID, err := uuid.Parse(context.Param("uuid"))
+	if err != nil {
+		helpers.SetStatusBadRequest(context, "cannot parse uuid")
+		return
+	}
+
+	doc := productsCollection.FindOne(context, bson.M{"uuid": productUUID})
+	if doc.Err() != nil {
+		context.JSON(http.StatusNotFound, doc.Err().Error())
+		return
+	}
+
+	var product models.Product
+	doc.Decode(&product)
+
+	if product.Image == "" {
+		context.Status(http.StatusNoContent)
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"b64Image":product.Image})
+}

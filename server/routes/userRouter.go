@@ -12,4 +12,5 @@ func addUserRoutes(rg *gin.RouterGroup) {
 
 	rg.GET("/product", controllers.GetProducts)
 	rg.GET("/product/:uuid", controllers.GetProduct)
+	rg.GET("/product/:uuid/image", controllers.GetProductImage)
 }

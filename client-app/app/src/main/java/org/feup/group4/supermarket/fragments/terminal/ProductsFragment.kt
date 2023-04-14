@@ -3,6 +3,7 @@ package org.feup.group4.supermarket.fragments.terminal
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -48,10 +49,11 @@ class ProductsFragment : Fragment() {
 
         val newProductButton = view.findViewById<TextView>(R.id.new_product_fab)
         newProductButton.setOnClickListener {
-            AddProductDialogFragment { name, title, callback ->
+            AddProductDialogFragment { name, title, imageBytes, callback ->
                 addProduct(
                     name,
                     title,
+                    imageBytes,
                     adapter,
                     callback
                 )
@@ -78,13 +80,15 @@ class ProductsFragment : Fragment() {
     private fun addProduct(
         productName: String,
         productPrice: Double,
+        imageBytes: ByteArray,
         adapter: ProductsAdapter,
         successCallBack: DismissCallback
     ) {
         // TODO: Add product to database and verify correctness
         val product = Product(
             productName,
-            productPrice
+            productPrice,
+            image = Base64.encodeToString(imageBytes, Base64.DEFAULT)
         )
 
         thread(start = true) {

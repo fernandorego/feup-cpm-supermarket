@@ -4,15 +4,16 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import com.github.dhaval2404.imagepicker.ImagePicker
 import org.feup.group4.supermarket.R
 
-typealias AddProductListener = (String, Double, DismissCallback) -> Unit
+typealias AddProductListener = (String, Double, ByteArray, DismissCallback) -> Unit
 typealias DismissCallback = () -> Unit
 
 class AddProductDialogFragment(private val listener: AddProductListener) :
@@ -25,8 +26,9 @@ class AddProductDialogFragment(private val listener: AddProductListener) :
         private val productPrice by lazy { findViewById<android.widget.EditText>(R.id.product_cost) }
         private val cancelButton by lazy { findViewById<android.widget.Button>(R.id.cancel_button) }
         private val addButton by lazy { findViewById<android.widget.Button>(R.id.add_button) }
-        private val image by lazy { findViewById<android.widget.ImageView>(R.id.product_image) }
-        private val addImage by lazy { findViewById<android.widget.ImageView>(R.id.product_add_image) }
+        private val image by lazy { findViewById<ImageView>(R.id.product_image) }
+        private val addImage by lazy { findViewById<ImageView>(R.id.product_add_image) }
+        private var imageURI: android.net.Uri? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -51,13 +53,21 @@ class AddProductDialogFragment(private val listener: AddProductListener) :
             }
         }
 
-        fun setProductImage(imageUri: android.net.Uri) {
-            image?.setImageURI(imageUri)
+        fun setProductImage(imageURI: android.net.Uri) {
+            this.imageURI = imageURI
+            image?.setImageURI(imageURI)
+            image?.imageTintList = null
         }
 
         private fun addProduct() {
             val name = productName!!.text.toString()
             val price = productPrice!!.text.toString().toDoubleOrNull()
+            var imageBytes = ByteArray(0)
+            if (imageURI != null) {
+                val inputStream = imageURI?.let { context.contentResolver.openInputStream(it) }
+                 imageBytes = inputStream?.buffered().use { it!!.readBytes() }
+                inputStream?.close()
+            }
 
             if (price == null || name.isEmpty() || price <= 0) {
                 Toast.makeText(
@@ -68,7 +78,7 @@ class AddProductDialogFragment(private val listener: AddProductListener) :
                 return
             }
 
-            listener(name, price) {
+            listener(name, price, imageBytes) {
                 dismiss()
             }
         }

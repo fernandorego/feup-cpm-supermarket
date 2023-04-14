@@ -16,6 +16,7 @@ import org.feup.group4.supermarket.fragments.client.PurchaseOptionsDialogFragmen
 import org.feup.group4.supermarket.model.Purchase
 import org.feup.group4.supermarket.service.ProductService
 import org.feup.group4.supermarket.service.QRService
+import kotlin.concurrent.thread
 
 private val purchase = Purchase()
 
@@ -42,9 +43,23 @@ class PurchaseActivity : AppCompatActivity() {
                         this, "Scanned: $content", Toast.LENGTH_LONG
                     ).show()
                     val product = ProductService(this).decryptProduct(content)
-                    Log.w("PurchaseActivity", "Scanned: $product")
-                    purchase.addProduct(product)
-                    recyclerView.adapter?.notifyItemInserted(purchase.getProducts().size - 1)
+                    val res = purchase.addProduct(product)
+
+                    if (res.first == purchase.getProducts().size - 1) {
+                        recyclerView.adapter?.notifyItemInserted(res.first)
+                    } else {
+                        recyclerView.adapter?.notifyItemChanged(res.first)
+                    }
+
+                    if (res.second.image.isEmpty()) {
+                        thread(start = true) {
+                            ProductService(this).getProductImage(product.uuid!!) {
+                                res.second.image = it
+                                recyclerView.adapter?.notifyItemChanged(res.first)
+                            }
+                        }
+                    }
+
                 }
             }
         }
