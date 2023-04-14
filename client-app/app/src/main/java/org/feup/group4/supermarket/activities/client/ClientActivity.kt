@@ -35,6 +35,8 @@ class ClientActivity : AppCompatActivity() {
 
         if (intent.action == "org.feup.group4.supermarket.receipts") {
             binding.navView.selectedItemId = R.id.navigation_receipts
+        } else if (intent.action == "org.feup.group4.supermarket.newPurchase") {
+            startActivity(Intent(this, PurchaseActivity::class.java))
         }
     }
 
