@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/base64"
 	"net/http"
 	"os"
 	"server/db"
@@ -29,6 +30,16 @@ func Register(context *gin.Context) {
 
 	doc.Password = helpers.HashPassword(doc.Password)
 	doc.UUID = uuid.New()
+
+	if doc.IsAdmin {
+		println("admin key: " + doc.AdminKey)
+		keyBytes, _ := base64.StdEncoding.DecodeString(os.Getenv("ADMIN_KEY"))
+
+		if !helpers.CheckPasswordHash(doc.AdminKey, string(keyBytes)) {
+			helpers.SetStatusBadRequest(context, "incorrect password")
+			return
+		}
+	}
 
 	res, err := usersCollection.InsertOne(context, doc)
 	if err != nil {

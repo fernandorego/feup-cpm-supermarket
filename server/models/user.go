@@ -38,6 +38,7 @@ type User struct {
 	UserImg              *string            `json:"user_img"`
 	CreatedAt            time.Time          `json:"created_at"`
 	UpdatedAt            time.Time          `json:"updated_at"`
+	AdminKey             string             `json:"admin_key"`
 }
 
 func CreateUserFromJSON(context *gin.Context) (*User, error) {
