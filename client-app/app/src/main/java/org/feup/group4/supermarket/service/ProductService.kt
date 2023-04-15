@@ -28,7 +28,7 @@ class ProductService(val context: Context) {
         HttpService(context, ::afterRequest).get("/product/$uuid")
     }
 
-    fun getDecryptedProduct(uuid: UUID, callback: (Product) -> Unit) {
+    fun getDecryptedProduct(uuid: UUID, callback: (Product?) -> Unit) {
         fun afterRequest(encryptedProduct: String) {
             val product = decryptProduct(encryptedProduct)
 
@@ -37,38 +37,44 @@ class ProductService(val context: Context) {
         getEncryptedProduct(uuid, ::afterRequest)
     }
 
-    fun decryptProduct(encryptedProduct: String): Product {
+    fun decryptProduct(encryptedProduct: String): Product? {
         val cryptoService = CryptoService(context)
-        val encryptedProductMap =
-            Gson().fromJson(encryptedProduct, Map::class.java)
+        try {
+            val encryptedProductMap =
+                Gson().fromJson(encryptedProduct, Map::class.java)
 
-        val decryptedUUID =
-            cryptoService.decryptMessage(
-                Base64.decode(
-                    (encryptedProductMap["uuid"] as String).toByteArray(),
-                    Base64.DEFAULT
+            val decryptedUUID =
+                cryptoService.decryptMessage(
+                    Base64.decode(
+                        (encryptedProductMap["uuid"] as String).toByteArray(),
+                        Base64.DEFAULT
+                    )
                 )
-            )
-        val name =
-            cryptoService.decryptMessage(
-                Base64.decode(
-                    (encryptedProductMap["name"] as String).toByteArray(),
-                    Base64.DEFAULT
+            val name =
+                cryptoService.decryptMessage(
+                    Base64.decode(
+                        (encryptedProductMap["name"] as String).toByteArray(),
+                        Base64.DEFAULT
+                    )
                 )
-            )
-        val price =
-            cryptoService.decryptMessage(
-                Base64.decode(
-                    (encryptedProductMap["price"] as String).toByteArray(),
-                    Base64.DEFAULT
+            val price =
+                cryptoService.decryptMessage(
+                    Base64.decode(
+                        (encryptedProductMap["price"] as String).toByteArray(),
+                        Base64.DEFAULT
+                    )
                 )
-            )
 
-        return Product(
-            String(name),
-            String(price).toDouble(),
-            UUID.fromString(String(decryptedUUID))
-        )
+            return Product(
+                String(name),
+                String(price).toDouble(),
+                UUID.fromString(String(decryptedUUID))
+            )
+        }
+        catch (e: Exception) {
+            Log.w("ProductService", "Error decrypting product: $e")
+        }
+        return null
     }
 
     fun getProducts(callback: (List<Product>) -> Unit) {

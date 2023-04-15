@@ -40,6 +40,13 @@ class PurchaseActivity : AppCompatActivity() {
                     ).show()
                 } else {
                     val product = ProductService(this).decryptProduct(content)
+                    if (product == null) {
+                        Toast.makeText(
+                            this, resources.getString(R.string.scan_qr_error), Toast.LENGTH_LONG
+                        ).show()
+                        return@scanQRCode
+                    }
+
                     val res = purchase.addProduct(product)
 
                     if (res.first == purchase.getProducts().size - 1) {
