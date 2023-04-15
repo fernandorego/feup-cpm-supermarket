@@ -95,6 +95,8 @@ class HomeFragment : Fragment() {
         ClientActivity.user = Gson().fromJson(json, User::class.java)
         val adapter = view?.findViewById<RecyclerView>(R.id.home_coupons_list)?.adapter as CouponsAdapter
         adapter.setCoupons(ClientActivity.user.active_coupons as ArrayList<Coupon>)
-        adapter.notifyDataSetChanged()
+        activity?.runOnUiThread {
+            adapter.notifyDataSetChanged()
+        }
     }
 }

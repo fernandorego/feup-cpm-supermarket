@@ -1,24 +1,32 @@
 package org.feup.group4.supermarket.activities.terminal
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
+import androidx.fragment.app.findFragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.Gson
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.activities.AccountActivity
 import org.feup.group4.supermarket.databinding.ActivityTerminalMainBinding
+import org.feup.group4.supermarket.fragments.terminal.ProductsFragment
 import org.feup.group4.supermarket.model.User
 
 class TerminalActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTerminalMainBinding
+
     companion object {
-        var user: User = User("","")
+        var user: User = User("", "")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

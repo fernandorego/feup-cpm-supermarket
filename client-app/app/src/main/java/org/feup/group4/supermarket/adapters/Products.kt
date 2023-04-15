@@ -2,9 +2,12 @@ package org.feup.group4.supermarket.adapters
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -107,10 +110,25 @@ class ProductsAdapter(
                 first.price
             )
             holder.quantity.text = second.toString()
+
             if (second == 1) {
-                holder.itemView.findViewById<ImageButton>(R.id.quantity_remove).visibility= View.INVISIBLE
+                holder.itemView.findViewById<ImageButton>(R.id.quantity_remove).visibility =
+                    View.INVISIBLE
             } else {
-                holder.itemView.findViewById<ImageButton>(R.id.quantity_remove).visibility= View.VISIBLE
+                holder.itemView.findViewById<ImageButton>(R.id.quantity_remove).visibility =
+                    View.VISIBLE
+            }
+
+            if (first.image != "") {
+                val imageBytes = Base64.decode(first.image, Base64.DEFAULT)
+                holder.image.setImageBitmap(
+                    BitmapFactory.decodeByteArray(
+                        imageBytes,
+                        0,
+                        imageBytes.size
+                    )
+                )
+                holder.image.imageTintList = null
             }
         }
     }
@@ -131,9 +149,9 @@ class ProductsAdapter(
     }
 
     private fun addQuantity(i: Int) {
-            products[i] = products[i].copy(second = products[i].second + 1)
-            notifyItemChanged(i)
-            onChangeCallBack(i)
+        products[i] = products[i].copy(second = products[i].second + 1)
+        notifyItemChanged(i)
+        onChangeCallBack(i)
     }
 
     private fun removeQuantity(i: Int) {
@@ -148,5 +166,6 @@ class ProductsAdapter(
         val name: TextView = itemView.findViewById(R.id.item_name)
         val price: TextView = itemView.findViewById(R.id.item_price)
         val quantity: TextView = itemView.findViewById(R.id.item_quantity)
+        val image: ImageView = itemView.findViewById(R.id.item_image)
     }
 }
