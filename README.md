@@ -16,6 +16,12 @@ You may use the server by getting its dependencies and then firing up the Go app
     go run .
 ```
 
+If you plan on using the admin functionalities of the application you might also want to add admin users to add products and register purchases. To do so run: 
+```bash
+    ./server/add_admin.sh <nickname> <password>
+```
+
+
 Then, fire up the Android application using your preferred method (we recommend sideloading with `Android Studio`). Since we did not deploy the web server in the cloud, make sure to change the server IP address in `res/values/string_config.xml` to your machine's.
 
 ## Overview
