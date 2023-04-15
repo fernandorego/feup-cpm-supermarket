@@ -49,7 +49,6 @@ class ProductsAdapter(
                                     break
                                 }
                             }
-
                         }
                     }
                     .setNegativeButton(
@@ -70,7 +69,30 @@ class ProductsAdapter(
             )
         }
 
+        val addQuantity = view.findViewById<ImageButton>(R.id.quantity_add)
+        addQuantity.setOnClickListener {
+            for (i in 0 until products.size) {
+                if (products[i].first.name == view.findViewById<TextView>(R.id.item_name).text) {
+                    addQuantity(i)
+                    break
+                }
+            }
+        }
+
+        val rmQuantity = view.findViewById<ImageButton>(R.id.quantity_remove)
+        rmQuantity.setOnClickListener {
+            for (i in 0 until products.size) {
+                if (products[i].first.name == view.findViewById<TextView>(R.id.item_name).text) {
+                    removeQuantity(i)
+                    break
+                }
+            }
+        }
+
+
         if (adminMode) {
+            rmQuantity.visibility = View.GONE
+            addQuantity.visibility = View.GONE
             view.findViewById<TextView>(R.id.item_quantity).visibility = View.GONE
             view.findViewById<TextView>(R.id.item_units).visibility = View.GONE
         } else {
@@ -88,9 +110,24 @@ class ProductsAdapter(
                 first.price
             )
             holder.quantity.text = second.toString()
-            if (first.image != ""){
+
+            if (second == 1) {
+                holder.itemView.findViewById<ImageButton>(R.id.quantity_remove).visibility =
+                    View.INVISIBLE
+            } else {
+                holder.itemView.findViewById<ImageButton>(R.id.quantity_remove).visibility =
+                    View.VISIBLE
+            }
+
+            if (first.image != "") {
                 val imageBytes = Base64.decode(first.image, Base64.DEFAULT)
-                holder.image.setImageBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size))
+                holder.image.setImageBitmap(
+                    BitmapFactory.decodeByteArray(
+                        imageBytes,
+                        0,
+                        imageBytes.size
+                    )
+                )
                 holder.image.imageTintList = null
             }
         }
@@ -108,6 +145,20 @@ class ProductsAdapter(
                 onChangeCallBack(i)
                 break
             }
+        }
+    }
+
+    private fun addQuantity(i: Int) {
+        products[i] = products[i].copy(second = products[i].second + 1)
+        notifyItemChanged(i)
+        onChangeCallBack(i)
+    }
+
+    private fun removeQuantity(i: Int) {
+        if (products[i].second > 1) {
+            products[i] = products[i].copy(second = products[i].second - 1)
+            notifyItemChanged(i)
+            onChangeCallBack(i)
         }
     }
 

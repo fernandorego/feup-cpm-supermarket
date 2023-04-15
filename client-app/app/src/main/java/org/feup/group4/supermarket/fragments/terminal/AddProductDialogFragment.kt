@@ -65,7 +65,7 @@ class AddProductDialogFragment(private val listener: AddProductListener) :
             var imageBytes = ByteArray(0)
             if (imageURI != null) {
                 val inputStream = imageURI?.let { context.contentResolver.openInputStream(it) }
-                 imageBytes = inputStream?.buffered().use { it!!.readBytes() }
+                imageBytes = inputStream?.buffered().use { it!!.readBytes() }
                 inputStream?.close()
             }
 
