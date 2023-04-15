@@ -2,6 +2,7 @@ package org.feup.group4.supermarket.adapters
 
 import android.app.Activity
 import android.content.Context
+import android.text.format.DateFormat
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -12,8 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Receipt
-import java.time.Instant
-import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ReceiptsAdapter(private val ctx: Context, private val receipts: ArrayList<Receipt>): RecyclerView.Adapter<ReceiptsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,12 +26,9 @@ class ReceiptsAdapter(private val ctx: Context, private val receipts: ArrayList<
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(receipts[position]) {
-            val date = Instant.parse(created_at).atZone(ZoneId.systemDefault()).toLocalDate()
-            holder.receiptDate.text = ctx.getString(
-                R.string.date_format_with_year,
-                date.month.name.lowercase().replaceFirstChar { it.uppercaseChar() },
-                date.dayOfMonth,
-                date.year)
+            val date = Date.from(ZonedDateTime.parse(created_at).toInstant())
+
+            holder.receiptDate.text = DateFormat.getMediumDateFormat(ctx).format(date)
             holder.receiptTotal.text = ctx.getString(R.string.price_format, total_price)
 
             holder.receiptProducts.layoutManager = LinearLayoutManager(ctx)
