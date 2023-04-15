@@ -19,6 +19,7 @@ import kotlin.concurrent.thread
 
 
 class CheckoutFragment : Fragment() {
+    @Transient
     private val qrService = QRService(this)
 
     override fun onCreateView(
@@ -37,7 +38,11 @@ class CheckoutFragment : Fragment() {
         nfcButton.setOnClickListener {
             val hasNfc = NfcAdapter.getDefaultAdapter(context) != null
             if (!hasNfc) {
-                Toast.makeText(context, resources.getString(R.string.nfc_not_supported), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    resources.getString(R.string.nfc_not_supported),
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
             ReceiveNFCPurchaseDialogFragment.newInstance(::addProduct).show(
@@ -56,9 +61,10 @@ class CheckoutFragment : Fragment() {
                 requireActivity().runOnUiThread {
                     if (statusCode == 200) {
                         val paymentInfo = Gson().fromJson(response, PaymentResult::class.java)
-                        PurchaseCompletedDialogFragment.newInstance(true, paymentInfo.paid_value).show(
-                            childFragmentManager, "PurchaseCompletedDialogFragment"
-                        )
+                        PurchaseCompletedDialogFragment.newInstance(true, paymentInfo.paid_value)
+                            .show(
+                                childFragmentManager, "PurchaseCompletedDialogFragment"
+                            )
                     } else {
                         PurchaseCompletedDialogFragment.newInstance(false, 0.0).show(
                             childFragmentManager, "PurchaseCompletedDialogFragment"
