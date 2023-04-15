@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"math"
 	"net/http"
 	"server/db"
@@ -22,7 +23,8 @@ func GetPurchases(context *gin.Context) {
 		return
 	}
 
-	cursor, err := purchaseCollection.Find(context, bson.M{"useruuid": userUUID})
+	opts := options.Find().SetSort(bson.D{{"createdat", -1}})
+	cursor, err := purchaseCollection.Find(context, bson.M{"useruuid": userUUID}, opts)
 	if err != nil {
 		helpers.SetStatusInternalServerError(context, "error retreiving purchases")
 		return
