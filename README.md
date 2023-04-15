@@ -10,15 +10,18 @@ By:
 
 You may use the server by getting its dependencies and then firing up the Go application, with the MongoDB database up:
 
+Inside the `server` folder, run:
 ```bash
     docker-compose up -d
     go get .
     go run .
 ```
 
-If you plan on using the admin functionalities of the application you might also want to add admin users to add products and register purchases. To do so run: 
+If you plan on using the admin functionalities of the application you might also want to add admin users to add products and register purchases. To do so run:
+
+Inside the `server` folder, run:
 ```bash
-    ./server/add_admin.sh <nickname> <password>
+    ./add_admin.sh <nickname> <password>
 ```
 
 
