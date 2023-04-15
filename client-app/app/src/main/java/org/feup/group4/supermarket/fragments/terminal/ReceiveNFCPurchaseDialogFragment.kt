@@ -1,6 +1,7 @@
 package org.feup.group4.supermarket.fragments.terminal
 
 import android.content.Context
+import android.content.DialogInterface
 import android.nfc.NfcAdapter
 import android.nfc.tech.Ndef
 import android.os.Bundle
@@ -12,10 +13,11 @@ import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.service.NFCReaderService
 
 class ReceiveNFCPurchaseDialogFragment : AppCompatDialogFragment() {
-    class ReceiveNFCPurchaseDialog(context: Context, private val listener: ((String) -> Unit)) :
-        AppCompatDialog(context) {
-        private val nfcAdapter: NfcAdapter? by lazy { NfcAdapter.getDefaultAdapter(context) }
-
+    class ReceiveNFCPurchaseDialog(
+        context: Context,
+        private val listener: ((String) -> Unit),
+        private val dismissHandler: (() -> Unit),
+    ) : AppCompatDialog(context) {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setCancelable(false)
@@ -30,17 +32,18 @@ class ReceiveNFCPurchaseDialogFragment : AppCompatDialogFragment() {
                 dismiss()
             }
 
+            val nfcAdapter = NfcAdapter.getDefaultAdapter(context)
             nfcAdapter!!.enableReaderMode(
-                ownerActivity,
-                NFCReaderService { content ->
+                ownerActivity, NFCReaderService { content ->
                     listener.invoke(content.toString(Charsets.UTF_8))
                     dismiss()
-                },
-                NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
-                null
+                }, NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK, null
             )
 
-            setOnDismissListener { nfcAdapter!!.disableReaderMode(ownerActivity) }
+            setOnDismissListener {
+                nfcAdapter.disableReaderMode(ownerActivity);
+                dismissHandler.invoke()
+            }
         }
     }
 
@@ -49,7 +52,9 @@ class ReceiveNFCPurchaseDialogFragment : AppCompatDialogFragment() {
         return ReceiveNFCPurchaseDialog(
             activity as Context,
             arguments?.getSerializable("listener") as ((String) -> Unit)
-        )
+        ) {
+            dismiss()
+        }
     }
 
     companion object {

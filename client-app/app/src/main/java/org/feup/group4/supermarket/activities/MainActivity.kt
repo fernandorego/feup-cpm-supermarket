@@ -73,5 +73,13 @@ class MainActivity : AppCompatActivity() {
                     .setAction(intent.action)
             )
         }
+        runOnUiThread {
+            Toast.makeText(
+                applicationContext,
+                "nickname: ${user.nickname}\nname: ${user.name}\nuser_img: ${user.user_img}\n" +
+                        "is_admin: ${user.is_admin}\naccumulated_value: ${user.accumulated_value}\n",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

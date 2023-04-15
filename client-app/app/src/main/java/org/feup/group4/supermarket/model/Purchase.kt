@@ -7,14 +7,15 @@ class Purchase(
     var discount: Boolean? = null,
     var coupon: UUID? = null
 ) {
-    fun addProduct(product: Product, quantity: Int = 1) {
+    fun addProduct(product: Product, quantity: Int = 1) : Pair<Int, Product> {
         for (i in 0 until products.size) {
             if (products[i].first == product) {
                 products[i] = Pair(products[i].first, products[i].second + quantity)
-                return
+                return Pair(i, products[i].first)
             }
         }
         products.add(Pair(product, quantity))
+        return Pair(products.size - 1, product)
     }
 
     fun removeProduct(product: Product, quantity: Int? = null) {

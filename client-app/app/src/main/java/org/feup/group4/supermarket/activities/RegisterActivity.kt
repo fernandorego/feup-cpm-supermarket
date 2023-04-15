@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Token
 import org.feup.group4.supermarket.service.AuthService
+import org.json.JSONObject
 import kotlin.concurrent.thread
 
 class RegisterActivity : AppCompatActivity() {
@@ -77,6 +78,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         AuthService(this, null).setToken(Gson().fromJson(json, Token::class.java).access_token)
+        AuthService(this, null).setServerPrivateKey(JSONObject(json!!).getString("server_private_key"))
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

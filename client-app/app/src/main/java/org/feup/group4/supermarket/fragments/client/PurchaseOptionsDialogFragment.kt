@@ -13,16 +13,23 @@ import com.google.gson.Gson
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.activities.client.ClientActivity
 import org.feup.group4.supermarket.adapters.coupons
+import org.feup.group4.supermarket.fragments.terminal.DismissCallback
 import org.feup.group4.supermarket.model.Purchase
 
 class PurchaseOptionsDialogFragment : AppCompatDialogFragment() {
     class PurchaseOptionsDialog(
-        private val activity: FragmentActivity, private val purchase: Purchase?
+        private val activity: FragmentActivity,
+        private val purchase: Purchase?,
+        private val dismissCallback: DismissCallback
     ) : AppCompatDialog(activity) {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
             setContentView(R.layout.dialog_purchase_options)
+
+            setOnDismissListener {
+                dismissCallback.invoke()
+            }
 
             if (purchase == null) {
                 dismiss()
@@ -60,6 +67,7 @@ class PurchaseOptionsDialogFragment : AppCompatDialogFragment() {
                 SendNFCPurchaseDialogFragment.newInstance(purchaseCopy).show(
                     activity.supportFragmentManager, "PurchaseNFCDialogFragment"
                 )
+                dismiss()
             }
 
             if (ClientActivity.user.accumulated_value == 0.0) {
@@ -83,7 +91,9 @@ class PurchaseOptionsDialogFragment : AppCompatDialogFragment() {
             Gson().fromJson(
                 it, Purchase::class.java
             )
-        })
+        }) {
+            dismiss()
+        }
     }
 
     companion object {
