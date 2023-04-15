@@ -59,7 +59,6 @@ class ReceiveNFCPurchaseDialogFragment : AppCompatDialogFragment() {
 
     companion object {
         fun newInstance(listener: ((String) -> Unit)): ReceiveNFCPurchaseDialogFragment {
-            println("newInstance")
             val bundle = Bundle()
             bundle.putSerializable("listener", listener as java.io.Serializable)
             val fragment = ReceiveNFCPurchaseDialogFragment()
