@@ -19,7 +19,6 @@ import kotlin.concurrent.thread
 
 
 class CheckoutFragment : Fragment() {
-    @Transient
     private val qrService = QRService(this)
 
     override fun onCreateView(
@@ -46,7 +45,7 @@ class CheckoutFragment : Fragment() {
                 return@setOnClickListener
             }
             ReceiveNFCPurchaseDialogFragment.newInstance(::addProduct).show(
-                childFragmentManager, "ReceiveNFCPurchaseDialogFragment"
+                requireFragmentManager(), "ReceiveNFCPurchaseDialogFragment"
             )
         }
     }

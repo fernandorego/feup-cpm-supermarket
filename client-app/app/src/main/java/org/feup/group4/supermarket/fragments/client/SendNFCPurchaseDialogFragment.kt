@@ -9,13 +9,18 @@ import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.google.gson.Gson
 import org.feup.group4.supermarket.R
+import org.feup.group4.supermarket.fragments.terminal.DismissCallback
 import org.feup.group4.supermarket.model.Purchase
 import org.feup.group4.supermarket.service.NFCReaderService.Companion.NFC_PREF_SEND
 import org.feup.group4.supermarket.service.NFCSenderService
 import org.feup.group4.supermarket.service.PurchaseService
 
 class SendNFCPurchaseDialogFragment : AppCompatDialogFragment() {
-    class SendNFCPurchaseDialog(context: Context, private val content: String) :
+    class SendNFCPurchaseDialog(
+        context: Context,
+        private val content: String,
+        private val dismissCallback: DismissCallback
+    ) :
         AppCompatDialog(context) {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -39,6 +44,10 @@ class SendNFCPurchaseDialogFragment : AppCompatDialogFragment() {
                 PreferenceManager.getDefaultSharedPreferences(ownerActivity).edit()
                     .putBoolean(NFC_PREF_SEND, false).apply()
             }
+
+            setOnDismissListener {
+                dismissCallback.invoke()
+            }
         }
     }
 
@@ -47,7 +56,9 @@ class SendNFCPurchaseDialogFragment : AppCompatDialogFragment() {
         val b64PurchaseJson = PurchaseService(activity as Context).getSignedPurchasePayload(
             arguments?.getString("purchase")?.let { Gson().fromJson(it, Purchase::class.java) }!!,
         )
-        return SendNFCPurchaseDialog(activity as Context, b64PurchaseJson)
+        return SendNFCPurchaseDialog(activity as Context, b64PurchaseJson) {
+            dismiss()
+        }
     }
 
     companion object {
