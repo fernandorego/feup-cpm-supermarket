@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.adapters.ProductsAdapter
 import org.feup.group4.supermarket.model.Product
+import org.feup.group4.supermarket.repository.ProductsRepository
 import org.feup.group4.supermarket.service.ProductService
 import kotlin.concurrent.thread
 
@@ -21,24 +22,39 @@ class ProductsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.fragment_terminal_products, container, false)
 
+    private val productRepository by lazy { ProductsRepository.getInstance(requireContext()) }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Get products from server
         thread(start = true) {
-            // TODO: Save to local database
             ProductService(requireContext()).getProducts { remoteProducts ->
                 requireActivity().runOnUiThread {
                     products.clear()
-                    products.addAll(remoteProducts.map { Pair(it, 1) }.toList())
+                    if (remoteProducts.isEmpty()) {
+                        productRepository.getAll().forEach { product ->
+                            products.add(Pair(product, 1))
+                        }
+                    } else {
+                        remoteProducts.forEach { remoteProduct ->
+                            val productInDatabase = productRepository.getProduct(remoteProduct.name)
+                            if (productInDatabase == null) {
+                                productRepository.addProduct(remoteProduct)
+                            } else if (productInDatabase != remoteProduct) {
+                                productRepository.updateProduct(remoteProduct)
+                            }
+                            products.add(Pair(remoteProduct, 1))
+                        }
+                    }
                     updateListVisibility()
                 }
             }
         }
-        updateListVisibility()
+
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_products_list)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = ProductsAdapter(requireContext(), products, {updateListVisibility()},true)
+        val adapter = ProductsAdapter(requireContext(), products, {updateListVisibility()},true, productRepository)
         recyclerView.adapter = adapter
 
         val newProductButton = view.findViewById<TextView>(R.id.new_product_fab)
@@ -55,6 +71,8 @@ class ProductsFragment : Fragment() {
                 "AddProductDialogFragment"
             )
         }
+
+        updateListVisibility()
     }
 
     private fun updateListVisibility() {
@@ -76,7 +94,6 @@ class ProductsFragment : Fragment() {
         adapter: ProductsAdapter,
         successCallBack: DismissCallback
     ) {
-        // TODO: Add product to database and verify correctness
         val product = Product(
             productName,
             productPrice
@@ -84,15 +101,21 @@ class ProductsFragment : Fragment() {
 
         thread(start = true) {
             ProductService(requireContext()).createReplaceProduct(product) {
-                // TODO: Save to local database and update/insert(note that the notifyChanges is diferent for both cases) in products list
-                ProductService(requireContext()).getProducts { remoteProducts ->
-                    requireActivity().runOnUiThread {
-                        products.clear()
-                        products.addAll(remoteProducts.map { Pair(it, 1) }.toList())
-                        adapter.notifyDataSetChanged()
-                        updateListVisibility()
-                        successCallBack()
+                requireActivity().runOnUiThread {
+                    val productInDatabase = productRepository.getProduct(it.name)
+
+                    if (productInDatabase == null) {
+                        productRepository.addProduct(it)
+                        products.add(Pair(it, 1))
+                        adapter.notifyItemInserted(products.size - 1)
+                    } else if (productInDatabase != it) {
+                        productRepository.updateProduct(it)
+                        products[productRepository.getAll().indexOf(it)] = Pair(it, 1)
+                        adapter.notifyItemChanged(productRepository.getAll().indexOf(it))
                     }
+
+                    updateListVisibility()
+                    successCallBack()
                 }
             }
         }

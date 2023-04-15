@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.repository.ReceiptsRepository
+import org.feup.group4.supermarket.repository.ProductsRepository
 import org.feup.group4.supermarket.service.AuthService
 
 class AccountActivity : AppCompatActivity() {
@@ -31,6 +32,7 @@ class AccountActivity : AppCompatActivity() {
         super.onStart()
         logoutBtn.setOnClickListener {
             AuthService(this, null).setToken("")
+            ProductsRepository.getInstance(this).deleteDatabase()
             ReceiptsRepository.getInstance(this).deleteDatabase()
             startActivity(Intent(this, MainActivity::class.java))
             finishAffinity()

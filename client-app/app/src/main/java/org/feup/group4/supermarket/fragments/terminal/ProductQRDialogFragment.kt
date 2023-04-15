@@ -1,17 +1,16 @@
 package org.feup.group4.supermarket.fragments.terminal
 
-import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Environment
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Product
@@ -31,8 +30,13 @@ class ProductQRDialogFragment(private val product: Product) : AppCompatDialogFra
                 ProductService(context).getEncryptedProduct(product.uuid!!) {
                     contents = it
                 }
+                if (contents.isEmpty())
+                    return@thread
+
                 bitmap = QRService.generateQRCode(contents, 600, 600)
                 activity.runOnUiThread {
+                    val qrSpinner = findViewById<ProgressBar>(R.id.qr_spinner)
+                    qrSpinner?.visibility = View.GONE
                     val qrCodeImage = findViewById<ImageView>(R.id.qr_image)
                     qrCodeImage?.setImageBitmap(bitmap)
                 }
