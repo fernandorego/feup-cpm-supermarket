@@ -57,7 +57,7 @@ class ProductsFragment : Fragment() {
 
         val newProductButton = view.findViewById<TextView>(R.id.new_product_fab)
         newProductButton.setOnClickListener {
-            AddProductDialogFragment { name, title, callback ->
+            AddProductDialogFragment.newInstance { name, title, callback ->
                 addProduct(
                     name,
                     title,
@@ -96,17 +96,15 @@ class ProductsFragment : Fragment() {
         )
 
         thread(start = true) {
-            ProductService(requireContext()).createUpdateProduct(product) {
-                requireActivity().runOnUiThread {
-                    val productInDatabase = productRepository.getProduct(it.name)
-                    if (productInDatabase == null) {
-                        productRepository.addProduct(it)
-                        products.add(Pair(it, 1))
-                        adapter.notifyItemInserted(productRepository.getAll().size - 1)
-                    } else if (productInDatabase != it) {
-                        productRepository.updateProduct(it)
-                        products[productRepository.getAll().indexOf(Pair(it, 1))] = Pair(it, 1)
-                        adapter.notifyItemChanged(productRepository.getAll().indexOf(Pair(it, 1)))
+            ProductService(requireContext()).createReplaceProduct(product) {
+                // TODO: Save to local database and update/insert(note that the notifyChanges is diferent for both cases) in products list
+                ProductService(requireContext()).getProducts { remoteProducts ->
+                    requireActivity().runOnUiThread {
+                        products.clear()
+                        products.addAll(remoteProducts.map { Pair(it, 1) }.toList())
+                        adapter.notifyDataSetChanged()
+                        updateListVisibility()
+                        successCallBack()
                     }
                     updateListVisibility()
                     successCallBack()

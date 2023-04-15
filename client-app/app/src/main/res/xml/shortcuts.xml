@@ -1,5 +1,16 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
+        android:shortcutId="newPurchase"
+        android:enabled="true"
+        android:icon="@drawable/add"
+        android:shortcutShortLabel="@string/home_fab">
+        <intent
+            android:action="org.feup.group4.supermarket.newPurchase"
+            android:targetPackage="org.feup.group4.supermarket"
+            android:targetClass="org.feup.group4.supermarket.activities.MainActivity" />
+    </shortcut>
+
+    <shortcut
         android:shortcutId="receipts"
         android:enabled="true"
         android:icon="@drawable/receipt"
@@ -10,5 +21,4 @@
             android:targetPackage="org.feup.group4.supermarket"
             android:targetClass="org.feup.group4.supermarket.activities.MainActivity" />
     </shortcut>
-    <!-- Specify more shortcuts here. -->
 </shortcuts>

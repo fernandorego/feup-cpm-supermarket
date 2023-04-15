@@ -7,12 +7,29 @@
     android:padding="16dp">
 
     <ImageView
-        android:src="@drawable/success_done"
         android:id="@+id/hint_image"
-        android:layout_gravity="center"
         android:layout_width="120dp"
         android:layout_height="100dp"
-        app:tint="@color/dark_green"
-        android:contentDescription="@string/purchase_success_message">
-    </ImageView>
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/purchase_success_message"
+        android:src="@drawable/success_done"
+        app:tint="@color/dark_green" />
+
+    <TextView
+        android:id="@+id/purchase_paid_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:text="@string/paid"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/close" />
 </LinearLayout>

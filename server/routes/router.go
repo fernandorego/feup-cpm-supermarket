@@ -24,15 +24,20 @@ func NewRouter() *gin.Engine {
 	adminRoutes.Use(middlewares.AuthAdminMiddleware)
 	addAdminRoutes(adminRoutes)
 
-	adminSignedRoutes := authenticatedRoutes.Group("/")
-	adminSignedRoutes.Use(middlewares.AuthAdminMiddleware)
-	adminSignedRoutes.Use(middlewares.VerifySignature)
-	addAdminSignedRoutes(adminSignedRoutes)
+	adminSelfSignedRoutes := authenticatedRoutes.Group("/")
+	adminSelfSignedRoutes.Use(middlewares.AuthAdminMiddleware)
+	adminSelfSignedRoutes.Use(middlewares.VerifyOwnSignature)
+	addAdminSelfSignedRoutes(adminSelfSignedRoutes)
+
+	adminOthersSignedRoutes := authenticatedRoutes.Group("/")
+	adminOthersSignedRoutes.Use(middlewares.AuthAdminMiddleware)
+	adminOthersSignedRoutes.Use(middlewares.VerifyOthersSignature)
+	addAdminOthersSignedRoutes(adminOthersSignedRoutes)
 
 	clientSignedRoutes := authenticatedRoutes.Group("/")
 	clientSignedRoutes.Use(middlewares.AuthUserMiddleware)
-	clientSignedRoutes.Use(middlewares.VerifySignature)
-	//addClientSignedRoutes(clientSignedRoutes)
+	clientSignedRoutes.Use(middlewares.VerifyOwnSignature)
+	addClientSignedRoutes(clientSignedRoutes)
 
 	return router
 }

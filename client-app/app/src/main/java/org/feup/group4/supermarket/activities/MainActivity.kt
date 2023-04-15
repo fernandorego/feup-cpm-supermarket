@@ -25,7 +25,11 @@ class MainActivity : AppCompatActivity() {
             finish()
         } else {
             runBlocking(Dispatchers.Default) {
-                UserService(this@MainActivity, ::afterHttpRequest).getUser()
+                UserService(
+                    this@MainActivity,
+                    ::afterHttpRequest,
+                    ::afterConnectException
+                ).getUserFromServer()
             }
             finish()
         }
@@ -46,24 +50,28 @@ class MainActivity : AppCompatActivity() {
         }
 
         user = Gson().fromJson(json, User::class.java)
+        UserService(this, null, null).saveUser(user)
+        dispatchActivity()
+    }
+
+    private fun afterConnectException() {
+        user = UserService(this, null, null).getUserFromStorage()
+        dispatchActivity()
+    }
+
+    private fun dispatchActivity() {
         if (user.is_admin == true) {
             startActivity(
-                Intent(this, TerminalActivity::class.java).putExtra("JSON_USER", json)
+                Intent(this, TerminalActivity::class.java).putExtra(
+                    "JSON_USER",
+                    Gson().toJson(user)
+                )
             )
         } else {
             startActivity(
-                Intent(this, ClientActivity::class.java).putExtra("JSON_USER", json)
+                Intent(this, ClientActivity::class.java).putExtra("JSON_USER", Gson().toJson(user))
                     .setAction(intent.action)
             )
         }
-        runOnUiThread {
-            Toast.makeText(
-                applicationContext,
-                "nickname: ${user.nickname}\nname: ${user.name}\nuser_img: ${user.user_img}\n" +
-                        "is_admin: ${user.is_admin}\naccumulated_value: ${user.accumulated_value}\n",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        return
     }
 }

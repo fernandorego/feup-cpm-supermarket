@@ -3,7 +3,7 @@
     <style name="Theme.ACMESupermarket" parent="Theme.Material3.DayNight">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/dark_blue</item>
-        <item name="colorOnPrimary">@color/background</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/light_blue</item>
         <!-- Status bar color. -->
@@ -18,6 +18,8 @@
         <item name="android:windowBackground">@color/background</item>
         <item name="android:navigationBarColor">@color/dark_blue</item>
         <item name="actionBarStyle">@style/CustomAppBar</item>
+        <item name="actionBarTheme">@style/CustomAppBarTheme</item>
+        <item name="titleTextColor">@color/light_blue</item>
     </style>
     <!-- Base application theme for screens with no bottom nav bar or no solid blue background. -->
     <style name="Theme.ACMESupermarketNoNavBar" parent="Theme.ACMESupermarket">
@@ -35,5 +37,9 @@
         <item name="background">@drawable/actionbar_background</item>
         <item name="elevation">0dp</item>
         <item name="displayOptions">showHome|useLogo</item>
+    </style>
+    <!-- CustomAppBar's Theme-->
+    <style name="CustomAppBarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/light_blue</item>
     </style>
 </resources>

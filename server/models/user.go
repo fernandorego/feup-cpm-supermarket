@@ -13,19 +13,31 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+type Card struct {
+	CardNumber string `json:"card_number" validate:"required,min=16,max=16"`
+	CardCVV    string `json:"card_cvv" validate:"required,min=3,max=3"`
+	CardDate   string `json:"card_date" validate:"required"`
+}
+
+type Coupon struct {
+	UUID uuid.UUID `json:"uuid"`
+}
+
 type User struct {
-	ID               primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	UUID             uuid.UUID          `json:"uuid"`
-	Nickname         string             `json:"nickname" validate:"required,min=3"`
-	Password         string             `json:"password" validate:"required,min=6"`
-	Name             string             `json:"name" validate:"required,min=3,max=100"`
-	Card             Card               `json:"card" validate:"required"`
-	PublicKey        string             `json:"public_key" validate:"required"`
-	AccumulatedValue float64            `json:"accumulated_value"`
-	IsAdmin          bool               `json:"is_admin"`
-	UserImg          *string            `json:"user_img"`
-	CreatedAt        time.Time          `json:"created_at"`
-	UpdatedAt        time.Time          `json:"updated_at"`
+	ID                   primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	UUID                 uuid.UUID          `json:"uuid"`
+	Nickname             string             `json:"nickname" validate:"required,min=3"`
+	Password             string             `json:"password" validate:"required,min=6"`
+	Name                 string             `json:"name" validate:"required,min=3,max=100"`
+	Card                 Card               `json:"card" validate:"required"`
+	PublicKey            string             `json:"public_key" validate:"required"`
+	AccumulatedValue     float64            `json:"accumulated_value"`
+	AccumulatedPaidValue float64            `json:"accumulated_paid_value"`
+	ActiveCoupons        []Coupon           `json:"active_coupons"`
+	IsAdmin              bool               `json:"is_admin"`
+	UserImg              *string            `json:"user_img"`
+	CreatedAt            time.Time          `json:"created_at"`
+	UpdatedAt            time.Time          `json:"updated_at"`
 }
 
 func CreateUserFromJSON(context *gin.Context) (*User, error) {
@@ -42,6 +54,8 @@ func CreateUserFromJSON(context *gin.Context) (*User, error) {
 	// security check
 	user.IsAdmin = user.IsAdmin || false
 	user.AccumulatedValue = 0
+	user.AccumulatedPaidValue = 0
+	user.ActiveCoupons = nil
 	user.UserImg = nil
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
@@ -72,6 +86,19 @@ func GetUserFromID(id primitive.ObjectID) (user *User, err error) {
 	ctx := context.Background()
 	user = new(User)
 	if err := usersCollection.FindOne(ctx, bson.M{"_id": id}).Decode(&user); err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func GetUserFromUUID(uuid uuid.UUID) (user *User, err error) {
+	database := db.GetDatabase()
+	usersCollection := database.Collection("users")
+
+	ctx := context.Background()
+	user = new(User)
+	if err := usersCollection.FindOne(ctx, bson.M{"uuid": uuid}).Decode(&user); err != nil {
 		return nil, err
 	}
 

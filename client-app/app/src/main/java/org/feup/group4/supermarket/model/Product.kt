@@ -6,4 +6,5 @@ data class Product(
     val name: String,
     val price: Double,
     val uuid: UUID? = null,
+    val quantity: Int = 1
 )

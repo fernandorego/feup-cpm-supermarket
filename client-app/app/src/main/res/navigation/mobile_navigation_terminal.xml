@@ -8,12 +8,12 @@
     <fragment
         android:id="@+id/navigation_products"
         android:name="org.feup.group4.supermarket.fragments.terminal.ProductsFragment"
-        android:label="@string/title_products"
+        android:label="@string/title_admin"
         tools:layout="@layout/fragment_terminal_products" />
 
     <fragment
         android:id="@+id/navigation_checkout"
         android:name="org.feup.group4.supermarket.fragments.terminal.CheckoutFragment"
-        android:label="@string/title_checkout"
+        android:label="@string/title_admin"
         tools:layout="@layout/fragment_terminal_checkout" />
 </navigation>

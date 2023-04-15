@@ -1,5 +1,6 @@
 package org.feup.group4.supermarket.fragments.client
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,17 +25,26 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sharedPreferences = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
+        val userName = sharedPreferences.getString("name", "")
+        val userBalance = sharedPreferences.getFloat("accumulated_value", 0f)
+
         val homeHelloTv: TextView = view.findViewById(R.id.home_text_hello)
-        homeHelloTv.text = getString(R.string.home_hello, this.user.name)
+        homeHelloTv.text = getString(R.string.home_hello, userName)
 
         val homeBalanceValueTv: TextView = view.findViewById(R.id.home_text_balance_value)
         homeBalanceValueTv.text = getString(
             R.string.price_format,
-            this.user.accumulated_value
+            userBalance
         )
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_coupons_list)
         val emptyRecyclerView = view.findViewById<TextView>(R.id.empty_recyclerview)
+
+        coupons.clear()
+        if (!user.active_coupons.isNullOrEmpty()) {
+            coupons.addAll(user.active_coupons)
+        }
 
         if (coupons.isEmpty()) {
             recyclerView.visibility = View.GONE

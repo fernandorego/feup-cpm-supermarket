@@ -12,7 +12,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.adapters.ProductsAdapter
-import org.feup.group4.supermarket.model.Product
+import org.feup.group4.supermarket.fragments.client.PurchaseOptionsDialogFragment
 import org.feup.group4.supermarket.model.Purchase
 import org.feup.group4.supermarket.service.ProductService
 import org.feup.group4.supermarket.service.QRService
@@ -38,9 +38,6 @@ class PurchaseActivity : AppCompatActivity() {
                         this, resources.getString(R.string.scan_qr_error), Toast.LENGTH_LONG
                     ).show()
                 } else {
-                    Toast.makeText(
-                        this, "Scanned: $content", Toast.LENGTH_LONG
-                    ).show()
                     val product = ProductService(this).decryptProduct(content)
                     Log.w("PurchaseActivity", "Scanned: $product")
                     purchase.addProduct(product)
@@ -48,11 +45,26 @@ class PurchaseActivity : AppCompatActivity() {
                 }
             }
         }
+
+        checkoutBtn.setOnClickListener {
+            PurchaseOptionsDialogFragment.newInstance(purchase).show(
+                supportFragmentManager,
+                "PurchaseOptionsDialogFragment"
+            )
+        }
     }
 
     override fun onResume() {
         super.onResume()
 
+        updateView()
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        val adapter = ProductsAdapter(this, purchase.getProducts(), { updateView() })
+        recyclerView.adapter = adapter
+    }
+
+    private fun updateView() {
         updateSubTotal()
 
         if (purchase.getProducts().isEmpty()) {
@@ -64,10 +76,6 @@ class PurchaseActivity : AppCompatActivity() {
             checkoutBtn.visibility = View.VISIBLE
             emptyRecyclerView.visibility = View.GONE
         }
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = ProductsAdapter(this, purchase.getProducts(), { updateSubTotal() })
-        recyclerView.adapter = adapter
     }
 
     private fun updateSubTotal() {

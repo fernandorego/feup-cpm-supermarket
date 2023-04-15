@@ -37,8 +37,6 @@ class ProductQRDialogFragment(private val product: Product) : AppCompatDialogFra
                     qrCodeImage?.setImageBitmap(bitmap)
                 }
             }
-
-
         }
 
         private fun exportImage() {
@@ -75,7 +73,7 @@ class ProductQRDialogFragment(private val product: Product) : AppCompatDialogFra
             setTitle(product.name)
             setContentView(R.layout.dialog_product_qr)
 
-            val bitmap = setQRImage()
+            setQRImage()
 
             val closeButton = findViewById<Button>(R.id.close_button)
             closeButton?.setOnClickListener {

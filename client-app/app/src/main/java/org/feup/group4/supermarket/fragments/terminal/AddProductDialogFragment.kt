@@ -11,7 +11,7 @@ import org.feup.group4.supermarket.R
 typealias AddProductListener = (String, Double, DismissCallback) -> Unit
 typealias DismissCallback = () -> Unit
 
-class AddProductDialogFragment(private val listener: AddProductListener) :
+class AddProductDialogFragment :
     AppCompatDialogFragment() {
 
     class AddProductDialog(context: Context, private val listener: AddProductListener) :
@@ -58,7 +58,17 @@ class AddProductDialogFragment(private val listener: AddProductListener) :
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
         return AddProductDialog(
-            activity as Context, listener
+            activity as Context, arguments?.getSerializable("listener") as AddProductListener
         )
+    }
+
+    companion object {
+        fun newInstance(listener: AddProductListener): AddProductDialogFragment {
+            val bundle = Bundle()
+            bundle.putSerializable("listener", listener as java.io.Serializable)
+            val fragment = AddProductDialogFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }
