@@ -77,7 +77,7 @@ class ReceiptsRepository private constructor(context: android.content.Context) :
     fun getAllReceipts(): MutableList<Receipt> {
         val receipts = mutableListOf<Receipt>()
         val db = readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM receipts", null)
+        val cursor = db.rawQuery("SELECT * FROM receipts ORDER BY date desc", null)
         if (cursor.moveToFirst()) {
             do {
                 val receipt = Receipt(

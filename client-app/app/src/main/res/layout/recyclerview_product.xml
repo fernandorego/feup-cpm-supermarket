@@ -68,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="108dp"
         android:background="@null"
+        android:tint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/item_remove"
         app:layout_constraintTop_toTopOf="@id/item_units"
