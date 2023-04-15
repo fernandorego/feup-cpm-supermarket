@@ -10,10 +10,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.adapters.ProductsAdapter
 import org.feup.group4.supermarket.model.Product
 import org.feup.group4.supermarket.service.ProductService
+import org.feup.group4.supermarket.service.UserService
 import kotlin.concurrent.thread
 
 private val products = ArrayList<Pair<Product, Int>>()
@@ -59,6 +61,21 @@ class ProductsFragment : Fragment() {
         }
 
         updateListVisibility()
+
+        val swipe: SwipeRefreshLayout = view.findViewById(R.id.swipe_refresh)
+        swipe.setOnRefreshListener {
+            thread(start = true) {
+                ProductService(requireContext()).getProducts { remoteProducts ->
+                    requireActivity().runOnUiThread {
+                        products.clear()
+                        products.addAll(remoteProducts.map { Pair(it, 1) }.toList())
+                        adapter.notifyDataSetChanged()
+                        updateListVisibility()
+                    }
+                }
+                swipe.isRefreshing = false
+            }
+        }
     }
 
     private fun updateListVisibility() {
