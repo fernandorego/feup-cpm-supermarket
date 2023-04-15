@@ -32,7 +32,6 @@ func Register(context *gin.Context) {
 	doc.UUID = uuid.New()
 
 	if doc.IsAdmin {
-		println("admin key: " + doc.AdminKey)
 		keyBytes, _ := base64.StdEncoding.DecodeString(os.Getenv("ADMIN_KEY"))
 
 		if !helpers.CheckPasswordHash(doc.AdminKey, string(keyBytes)) {

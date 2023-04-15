@@ -50,9 +50,6 @@ func CreateUserFromJSON(context *gin.Context) (*User, error) {
 		return nil, err
 	}
 
-	// TODO:
-	// Admins should be created using another endopoint with some
-	// security check
 	user.IsAdmin = user.IsAdmin || false
 	user.AccumulatedValue = 0
 	user.AccumulatedPaidValue = 0
