@@ -1,10 +1,10 @@
 # Practical Assignment #1 - The Acme Electronic Supermarket  
 
 By:
-- Bruno Mendes [up201906166](mailto:up201906166@up.pt)
-- Fernando Rego [up201905951](mailto:up201905951)
-- Gustavo Santos [up201907397](mailto:up201907397)
-- José Costa [up201907216](mailto:up201907216)
+- Bruno Mendes [up201906166](mailto:up201906166@edu.up.pt)
+- Fernando Rego [up201905951](mailto:up201905951@edu.up.pt)
+- Gustavo Santos [up201907397](mailto:up201907397@edu.up.pt)
+- José Costa [up201907216](mailto:up201907216@edu.up.pt)
 
 ## How to run
 
@@ -20,9 +20,9 @@ Then, fire up the Android application using your preferred method (we recommend 
 
 ## Overview
 
-(UML simples da arquitetura)
+![architecture diagram](docs/architecture_diagram.drawio.png)
 
-We have developed two artifacts: an Android application and a web server to support its operations. The Android app, upon login, disambiguates to client or admin mode given the user type that is registered on the server.
+We have developed two artifacts: an Android application and a web server to support its operations. The Android app, upon login, disambiguates to client or admin mode accordingly to the user type that is registered on the server.
 
 ### Customer App
 
@@ -42,7 +42,7 @@ Tapping `New Purchase`, the user may initiate a purchase and start scanning prod
 
 ### Terminal App
 
-The customer app is a more pragmatic one, allowing at the home page the generation of new supermarket products, with name, image and price, and respective QR codes.
+The customer app is a more pragmatic one, allowing at the home page the generation of new supermarket products, with name, image and price, and displaying the respective QR codes.
 
 |       |        |        |        |
 | -------------- | -------------- | -------------- | -------------- |
@@ -55,7 +55,7 @@ On the `Checkout` tab, the terminal is able to listen for a QR code or NFC purch
 | ![client purchase nfc](docs/img/terminal_checkout.jpg) | ![client purchase nfc](docs/img/terminal_purchase_check.jpg)
 
 ### Web Service
-To support the several operations of the application, we developed a `REST` service using the *Go* language and also a non-relational database using *MongoDB*.
+To support the several operations of the application, we developed a `RESTful` service using the *Go* language and also a non-relational database using *MongoDB*.
 
 The server provides several endpoints that the application can use to add or retrieve information. This endpoints are divided by groups, each group with the right middlware to verify that the authentication used is valid to the correspondent request.
 
@@ -70,10 +70,10 @@ Registering the user means registering them on the database, and allow their ope
 Due to the way we have implemented session with JWT (see below), this also allows the user to exchange phones and maintain their history.
 
 ### Adding to the shopping basket
-In this digital future, it's the user's responsability to scan their products' references while picking them from the shelves. They can do so by scanning the QR codes printed all over the place in the market.
+In this digital future, it's the user's responsability to scan their products' references while picking them from the shelves. They can do so by scanning the QR codes printed next to the products in the market.
 
 ### Checkout
-When they are ready to leave, the user must complete their purchase by using NFC or a QR code (containing transaction data) to validate it in the market terminals. The money will be extracted from their account (of course, this was not implemented, actually) and then the doors will open.
+When they are ready to leave, the user must complete their purchase by using NFC or a QR code (containing transaction data) to validate it in the market terminals. The money will then be billed to their account (of course, this was not implemented, actually) and then the doors will open.
 
 ### Payment and Result
 The terminal validates the purchase with the web server and displays a success message, with total amount paid (already discounting the coupons and balance), or an error message. In case of the latter, the customer should ask for the assitance of a human operator.
@@ -84,7 +84,54 @@ The registered transactions in the server associated with the logged in user are
 ### Coupons
 
 ### Cryptography
-Sou o josé costa @sirze
+In addition to the HMAC encryption used in the JWT's, that already identify and encode the user ids and roles, 512-bit RSA keys were used for encrypting or signing messages, further preventing ill intended actors of interfering with normal operation.
+
+Product QR codes contain a message that is encrypted with the public key of the store. The store's private key is shared with the application uppon registration or login, so the application can decrypt the QR code and add the product to the cart. This is put in place to prevent the user from adding products that are not in the store, or that are not in the store's database, or that have conflicting information. As encrypting with a 512 bit key and PKCS1 v1.5 padding only allows for 53 bytes of data, we had to split the message in fields. Each product field contains a base64 encoded string with the encrypted field value. The message reads as follows:
+
+```json
+{
+    "uuid": "base64 encoded encrypted product uuid",
+    "name": "base64 encoded encrypted product name",
+    "price": "base64 encoded encrypted product price",
+}
+```
+
+To validate purchases are being made by the user, the purchase messages shared between client and server, through the terminal (either by QR code of NFC), are signed with the private key, also with 512 bit, of the user using PKCS1 v1.5. The server then validates the signature with the public key of the user, shared in the login process, and if it is valid, it proceeds to validate the purchase. The message shared with the terminal has the following format: 
+```json
+{
+    "b64MessageString": {
+        "user_uuid" : "user uuid",
+        "discount" : true | false, // whether the user is using available balance
+        "coupon" : true | false, // whether the user is using a coupon
+        "cart" : [
+            {
+                "uuid" : "product uuid",
+                "quantity" : "product quantity"
+            },
+            ...
+        ],
+    },
+    
+    "Signature": "base64 encoded signature"
+}
+```
+
+The format of signed messages shared with the server is as follows:
+
+Signature HTTP header set with the base64 encoded signature of the message body.
+
+- For HTTP request that allow body:
+```json
+{
+    "b64MessageString" : "base 64 encoded message string",
+}
+``` 
+
+- For HTTP request that do not allow body:
+
+Signed-Message HTTP header set with the base64 encoded signature of the message body. Here the message is a small string with throwaway data, as the signature is what matters.
+
+To validate product creation/deletion on the admin mode, this method is also employed, preventing non-admin users from creating or deleting products.
 
 ## Additional Features
 
@@ -110,7 +157,7 @@ The admin products, client balance, receipts and coupons are saved in the local 
 Every string in the application, including programatic ones (such as dialog titles) are both in Portuguese and English, so that the application can be used in both Portuguese and British setups across the world.
 
 ## Performed Tests
-We have tested the app througly with manual acceptance tests and across several devices, with and without NFC (the main hardware differentiatior than influences our app's operation). This could be improved with unit testing, in the future.
+We have tested the app througly with manual acceptance tests and across several devices, with and without NFC (the main hardware differentiatior than influences our app's operation), as well as different Android API levels (26, 29, 30, 31, 32, 33, Android 14(Beta) ). This could be improved with unit testing and acceptance testing, in the future.
 
 ## References
 
