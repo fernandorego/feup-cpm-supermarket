@@ -28,28 +28,29 @@ We have developed two artifacts: an Android application and a web server to supp
 
 The customer app starts by greeting the user with their accumulated balance, available to be used in purchases, and display their earned coupons, also to be used in purchases. If they want to, they can review their transaction history, which includes paid price and product list, on the `Receipts` tab of the bottom navigation bar.
 
-(imagem da home)
+![client home](docs/img/client_home.jpg)
 (imagem dos recibos)
 
 Tapping `New Purchase`, the user may initiate a purchase and start scanning product QR codes, printed on the physical supermarket. When they are about to leave the supermarket, they should tap `Checkout`, choose whether to use available balance and coupons, and then conclude the operation by checking out on a terminal, with QR code or NFC.
 
-(imagem de uma purchase em progresso)
-(imagem do dialog de checkout options)
-(imagem do dialog de checkout c QR)
-(imagem do dialog de checkout c NFC)
+![client purchase](docs/img/client_purchase.jpg)
+![client purchase checkout](docs/img/client_purchase_checkout.jpg)
+![client purchase qr](docs/img/client_purchase_qr.jpg)
+![client purchase nfc](docs/img/client_purchase_nfc.jpg)
 
 ### Terminal App
 
 The customer app is a more pragmatic one, allowing at the home page the generation of new supermarket products, with name, image and price, and respective QR codes.
 
-(imagem da geraçao de produtos home)
-(imagem do dialogo geraçao produtos)
-(imagem de um produto QR)
+![client purchase nfc](docs/img/terminal_products.jpg)
+![client purchase nfc](docs/img/terminal_new_product.jpg)
+![client purchase nfc](docs/img/terminal_new_product_img.jpg)
+![client purchase nfc](docs/img/terminal_product_qr.jpg)
 
 On the `Checkout` tab, the terminal is able to listen for a QR code or NFC purchase. After receiving the purchase payload from the client, it validates it with the server and displays a result message.
 
-(imagem do checkout mode)
-(imagem de compra efetuada)
+![client purchase nfc](docs/img/terminal_checkout.jpg)
+![client purchase nfc](docs/img/terminal_purchase_check.jpg)
 
 ### Web Service
 To support the several operations of the application, we developed a `REST` service using the *Go* language and also a non-relational database using *MongoDB*.
