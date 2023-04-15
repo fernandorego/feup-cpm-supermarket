@@ -1,6 +1,8 @@
 package org.feup.group4.supermarket.service
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
 import com.google.gson.Gson
@@ -141,5 +143,19 @@ class ProductService(val context: Context) {
             "/product/${product.uuid}",
             mapOf("Signature" to base64Signature, "Signed-Message" to b64Message)
         )
+    }
+
+    fun getProductImage(product: UUID, callback: (String) -> Unit) {
+        fun afterRequest(statusCode: Int, body: String?) {
+            if (statusCode != 200) {
+                Log.w("ProductService", "Error getting product image: $statusCode: $body")
+                return
+            }
+            val imageJson =
+                Gson().fromJson(body!!, Map::class.java)
+            callback(imageJson["b64Image"] as String)
+        }
+
+        HttpService(context, ::afterRequest).get("/product/${product}/image")
     }
 }
