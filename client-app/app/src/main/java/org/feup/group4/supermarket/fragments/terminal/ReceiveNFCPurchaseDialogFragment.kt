@@ -1,12 +1,9 @@
 package org.feup.group4.supermarket.fragments.terminal
 
 import android.content.Context
-import android.content.DialogInterface
 import android.nfc.NfcAdapter
-import android.nfc.tech.Ndef
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import org.feup.group4.supermarket.R

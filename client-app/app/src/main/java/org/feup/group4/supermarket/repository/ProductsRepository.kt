@@ -27,7 +27,8 @@ class ProductsRepository private constructor(context: android.content.Context) :
             "CREATE TABLE IF NOT EXISTS products (" +
                     "name TEXT NOT NULL PRIMARY KEY," +
                     "price REAL NOT NULL," +
-                    "uuid TEXT NOT NULL" +
+                    "uuid TEXT NOT NULL," +
+                    "image TEXT NOT NULL" +
                     ")"
         )
     }
@@ -49,6 +50,7 @@ class ProductsRepository private constructor(context: android.content.Context) :
         values.put("name", product.name)
         values.put("price", product.price)
         values.put("uuid", product.uuid.toString())
+        values.put("image", product.image)
         db.insert("products", null, values)
         db.close()
 
@@ -61,6 +63,7 @@ class ProductsRepository private constructor(context: android.content.Context) :
         values.put("name", product.name)
         values.put("price", product.price)
         values.put("uuid", product.uuid.toString())
+        values.put("image", product.image)
         db.update("products", values, "name = ?", arrayOf(product.name))
         db.close()
 
@@ -87,7 +90,7 @@ class ProductsRepository private constructor(context: android.content.Context) :
         val db = readableDatabase
         val cursor = db.query(
             "products",
-            arrayOf("name", "price", "uuid"),
+            arrayOf("name", "price", "uuid", "image"),
             "name = ?",
             arrayOf(productName),
             null,
@@ -98,9 +101,10 @@ class ProductsRepository private constructor(context: android.content.Context) :
             val name = cursor.getString(0)
             val price = cursor.getDouble(1)
             val uuid = UUID.fromString(cursor.getString(2))
+            val image = cursor.getString(3)
             cursor.close()
             db.close()
-            return Product(name, price, uuid)
+            return Product(name, price, uuid, image)
         }
         cursor.close()
         db.close()
@@ -116,7 +120,8 @@ class ProductsRepository private constructor(context: android.content.Context) :
                 val name = cursor.getString(0)
                 val price = cursor.getDouble(1)
                 val uuid = UUID.fromString(cursor.getString(2))
-                products.add(Product(name, price, uuid))
+                val image = cursor.getString(3)
+                products.add(Product(name, price, uuid, image))
             } while (cursor.moveToNext())
         }
         cursor.close()
