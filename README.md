@@ -30,7 +30,7 @@ The customer app starts by greeting the user with their accumulated balance, ava
 
 |       |        |
 | -------------- | -------------- |
-| ![client home](docs/img/client_home.jpg) | (imagem dos recibos)
+| ![client home](docs/img/client_home.jpg) | ![client home](docs/img/client_receipts.jpg)
 
 Tapping `New Purchase`, the user may initiate a purchase and start scanning product QR codes, printed on the physical supermarket. When they are about to leave the supermarket, they should tap `Checkout`, choose whether to use available balance and coupons, and then conclude the operation by checking out on a terminal, with QR code or NFC.
 
