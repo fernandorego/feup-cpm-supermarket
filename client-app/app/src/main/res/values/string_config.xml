@@ -1,4 +1,4 @@
 <resources>
-    <string name="server_ip" translatable="false">192.168.1.13</string>
+    <string name="server_ip" translatable="false">10.0.2.2</string>
     <string name="server_port" translatable="false">8000</string>
 </resources>
