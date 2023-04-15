@@ -14,7 +14,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/purchase_success_message"
         android:src="@drawable/success_done"
-        app:tint="@color/dark_green"></ImageView>
+        app:tint="@color/dark_green" />
 
     <TextView
         android:id="@+id/purchase_paid_text"

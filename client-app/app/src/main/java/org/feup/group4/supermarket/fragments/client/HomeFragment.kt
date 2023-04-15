@@ -1,5 +1,6 @@
 package org.feup.group4.supermarket.fragments.client
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,15 +15,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.activities.LoginActivity
-import org.feup.group4.supermarket.activities.MainActivity
 import org.feup.group4.supermarket.activities.client.ClientActivity
 import org.feup.group4.supermarket.activities.client.PurchaseActivity
-import org.feup.group4.supermarket.activities.terminal.TerminalActivity
 import org.feup.group4.supermarket.adapters.CouponsAdapter
 import org.feup.group4.supermarket.adapters.coupons
 import org.feup.group4.supermarket.model.Coupon
 import org.feup.group4.supermarket.model.User
-import org.feup.group4.supermarket.service.AuthService
 import org.feup.group4.supermarket.service.UserService
 import kotlin.concurrent.thread
 
@@ -34,13 +32,17 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sharedPreferences = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
+        val userName = sharedPreferences.getString("name", "")
+        val userBalance = sharedPreferences.getFloat("accumulated_value", 0f)
+
         val homeHelloTv: TextView = view.findViewById(R.id.home_text_hello)
-        homeHelloTv.text = getString(R.string.home_hello, this.user.name)
+        homeHelloTv.text = getString(R.string.home_hello, userName)
 
         val homeBalanceValueTv: TextView = view.findViewById(R.id.home_text_balance_value)
         homeBalanceValueTv.text = getString(
             R.string.price_format,
-            this.user.accumulated_value
+            userBalance
         )
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_coupons_list)
@@ -72,7 +74,7 @@ class HomeFragment : Fragment() {
         val swipe:SwipeRefreshLayout = view.findViewById(R.id.swipe_refresh)
         swipe.setOnRefreshListener {
             thread(start = true) {
-                activity?.let { UserService(it.applicationContext, ::updateUser).getUser() }
+                activity?.let { UserService(it.applicationContext, ::updateUser).getUserFromServer() }
                 swipe.isRefreshing = false
             }
         }
@@ -94,7 +96,8 @@ class HomeFragment : Fragment() {
 
         ClientActivity.user = Gson().fromJson(json, User::class.java)
         val adapter = view?.findViewById<RecyclerView>(R.id.home_coupons_list)?.adapter as CouponsAdapter
-        adapter.setCoupons(ClientActivity.user.active_coupons as ArrayList<Coupon>)
+        if (ClientActivity.user.active_coupons != null)
+            adapter.setCoupons(ClientActivity.user.active_coupons as ArrayList<Coupon>)
         activity?.runOnUiThread {
             adapter.notifyDataSetChanged()
         }

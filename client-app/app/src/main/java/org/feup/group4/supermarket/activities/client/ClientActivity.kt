@@ -35,6 +35,8 @@ class ClientActivity : AppCompatActivity() {
 
         if (intent.action == "org.feup.group4.supermarket.receipts") {
             binding.navView.selectedItemId = R.id.navigation_receipts
+        } else if (intent.action == "org.feup.group4.supermarket.newPurchase") {
+            startActivity(Intent(this, PurchaseActivity::class.java))
         }
     }
 
@@ -45,9 +47,7 @@ class ClientActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.account_details -> {
-            val intent = Intent(this, AccountActivity::class.java)
-            intent.putExtra("FROM", "CLIENT")
-            startActivity(intent)
+            startActivity(Intent(this, AccountActivity::class.java))
             true
         }
         else -> {

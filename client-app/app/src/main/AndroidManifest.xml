@@ -14,7 +14,6 @@
         android:localeConfig="@xml/locales_config"
         android:supportsRtl="true"
         android:theme="@style/Theme.ACMESupermarket"
-        android:screenOrientation="portrait"
         android:usesCleartextTraffic="true"
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="33">
@@ -33,29 +32,37 @@
         </service>
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="userPortrait"
             tools:replace="screenOrientation" />
         <activity
             android:name=".activities.AccountActivity"
             android:exported="false"
+            android:screenOrientation="userPortrait"
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.client.PurchaseActivity"
             android:exported="false"
+            android:screenOrientation="userPortrait"
             android:theme="@style/Theme.ACMESupermarketNoNavBar" />
         <activity
             android:name=".activities.RegisterActivity"
             android:exported="false"
+            android:screenOrientation="userPortrait"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".activities.LoginActivity" />
         <activity
             android:name=".activities.LoginActivity"
             android:exported="false"
+            android:screenOrientation="userPortrait"
+            android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTop"/>
         <activity
             android:name=".activities.client.ClientActivity"
+            android:screenOrientation="userPortrait"
             android:exported="false" />
         <activity
             android:name=".activities.terminal.TerminalActivity"
+            android:screenOrientation="userPortrait"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
@@ -69,6 +76,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:exported="true"
+            android:screenOrientation="userPortrait"
             android:theme="@style/Theme.ACMESupermarket.Splash"
             android:launchMode="singleTop">
             <intent-filter>

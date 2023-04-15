@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import org.feup.group4.supermarket.R
 import java.io.DataOutputStream
+import java.net.ConnectException
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -16,6 +17,7 @@ enum class HttpRequestMethod {
 open class HttpService internal constructor(
     protected val context: Context,
     private val afterRequest: AfterRequest? = null,
+    private val afterConnectException: (() -> Unit)? = null
 ) {
     protected val sharedPreferencesService =
         SharedPreferencesService(context, SharedPreferencesService.Companion.KeyStore.AUTH.value)
@@ -91,6 +93,13 @@ open class HttpService internal constructor(
                 afterRequest?.let { it(code, urlConnection.inputStream.reader().readText()) }
             } else {
                 afterRequest?.let { it(code, urlConnection.errorStream.reader().readText()) }
+            }
+        } catch (e: ConnectException) {
+            Log.w("HttpService", e.toString())
+            if (afterConnectException != null) {
+                afterConnectException.invoke()
+            } else {
+                afterRequest?.let { it(500, e.toString()) }
             }
         } catch (e: java.lang.Exception) {
             Log.w("HttpService", e.toString())

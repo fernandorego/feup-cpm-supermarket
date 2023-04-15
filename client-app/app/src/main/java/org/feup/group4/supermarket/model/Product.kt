@@ -6,7 +6,8 @@ data class Product(
     val name: String,
     val price: Double,
     val uuid: UUID? = null,
-    var image: String = ""
+    var image: String = "",
+    val quantity: Int = 1
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

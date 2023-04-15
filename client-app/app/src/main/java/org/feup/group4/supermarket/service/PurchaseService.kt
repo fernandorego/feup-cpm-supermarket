@@ -3,11 +3,11 @@ package org.feup.group4.supermarket.service
 import android.content.Context
 import android.util.Base64
 import android.util.Log
-import android.widget.Toast
 import com.google.gson.Gson
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.activities.client.ClientActivity
 import org.feup.group4.supermarket.model.Purchase
+import org.feup.group4.supermarket.model.Receipt
 
 class PurchaseService(private val context: Context) {
     companion object {
@@ -55,5 +55,32 @@ class PurchaseService(private val context: Context) {
             Gson().toJson(mapOf("b64MessageString" to (messageJSON["b64MessageString"] as String))),
             mapOf("Signature" to messageJSON["Signature"] as String)
         )
+    }
+
+    fun getReceipts(callback: (List<Receipt>) -> Unit) {
+        fun afterRequest(statusCode: Int, body: String?) {
+            if (statusCode != 200) {
+                if (statusCode == 204) {
+                    Log.w("PurchaseService", "No receipts found")
+                } else {
+                    Log.w("PurchaseService", "Error getting receipts: $statusCode: $body")
+                }
+                callback(emptyList())
+                return
+            }
+
+            val receipts = Gson().fromJson(body, Array<Receipt>::class.java).toList()
+            callback(receipts)
+        }
+        val userUUID = ClientActivity.user.uuid
+        val message = Gson().toJson(userUUID)
+        val b64Message =
+            Base64.encodeToString(message.toByteArray(charset = Charsets.UTF_8), Base64.NO_WRAP)
+        val signature =
+            CryptoService(context).getMessageSignature(b64Message.toByteArray(charset = Charsets.UTF_8))
+        val base64Signature = Base64.encodeToString(signature, Base64.NO_WRAP)
+        HttpService(context, ::afterRequest)
+            .get("/purchases/$userUUID",
+                mapOf("Signature" to base64Signature, "Signed-Message" to b64Message))
     }
 }

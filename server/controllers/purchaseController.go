@@ -2,28 +2,29 @@ package controllers
 
 import (
 	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"math"
 	"net/http"
 	"server/db"
 	"server/helpers"
 	"server/models"
+	"time"
 )
 
 func GetPurchases(context *gin.Context) {
 	purchaseCollection := db.GetDatabase().Collection("purchases")
-
 	userUUID, err := uuid.Parse(context.Param("uuid"))
 	if err != nil {
 		helpers.SetStatusBadRequest(context, "cannot parse uuid")
 		return
 	}
 
-	cursor, err := purchaseCollection.Find(context, bson.M{"useruuid": userUUID})
+	opts := options.Find().SetSort(bson.D{{"createdat", -1}})
+	cursor, err := purchaseCollection.Find(context, bson.M{"useruuid": userUUID}, opts)
 	if err != nil {
 		helpers.SetStatusInternalServerError(context, "error retreiving purchases")
 		return
@@ -31,16 +32,17 @@ func GetPurchases(context *gin.Context) {
 
 	var purchases []models.Purchase
 	if err = cursor.All(context, &purchases); err != nil {
+		println(err.Error())
 		helpers.SetStatusInternalServerError(context, "error retreiving purchases")
 		return
 	}
 
-	purchasesJSON, err := json.Marshal(purchases)
-	if err != nil {
-		helpers.SetStatusBadRequest(context, "error encoding message: "+err.Error())
+	if len(purchases) < 1 {
+		context.Status(http.StatusNoContent)
 		return
 	}
-	context.JSON(http.StatusOK, purchasesJSON)
+
+	context.JSON(http.StatusOK, purchases)
 }
 
 func Purchase(context *gin.Context) {
@@ -82,6 +84,8 @@ func Purchase(context *gin.Context) {
 		helpers.SetStatusBadRequest(context, "error payment message: "+err.Error())
 		return
 	}
+	purchase.TotalPrice = totalPrice
+	purchase.PaidPrice = paidPrice
 
 	updatedValues := bson.M{"accumulatedvalue": user.AccumulatedValue, "accumulatedpaidvalue": user.AccumulatedPaidValue, "activecoupons": user.ActiveCoupons}
 	if _, err = usersCollection.UpdateOne(context, bson.M{"_id": user.ID}, bson.M{"$set": updatedValues}); err != nil {
@@ -89,6 +93,7 @@ func Purchase(context *gin.Context) {
 		return
 	}
 
+	purchase.CreatedAt = time.Now().Format(time.RFC3339)
 	if _, err := purchaseCollection.InsertOne(context, purchase); err != nil {
 		helpers.SetStatusInternalServerError(context, "error inserting user message: "+err.Error())
 		return
@@ -102,13 +107,14 @@ func payment(context *gin.Context, purchase *models.Purchase, user *models.User)
 	err = nil
 
 	productCollection := db.GetDatabase().Collection("products")
-	for _, cardProduct := range purchase.Cart {
+	for i, _ := range purchase.Cart {
 		var product models.Product
-		if err = productCollection.FindOne(context, bson.M{"uuid": cardProduct.ProductUUID}).Decode(&product); err != nil {
+		if err = productCollection.FindOne(context, bson.M{"uuid": purchase.Cart[i].ProductUUID}).Decode(&product); err != nil {
 			return
 		}
-		cardProduct.Name = &product.Name
-		totalPrice += product.Price * float64(cardProduct.Quantity)
+		purchase.Cart[i].Name = &product.Name
+		purchase.Cart[i].Price = product.Price
+		totalPrice += product.Price * float64(purchase.Cart[i].Quantity)
 	}
 
 	paidPrice = totalPrice
@@ -135,7 +141,6 @@ func verifyActiveCoupon(purchase *models.Purchase, user models.User) error {
 	if purchase.Coupon == nil {
 		return nil
 	}
-	println(purchase.Coupon.String())
 	for _, coupon := range user.ActiveCoupons {
 		if coupon.UUID == *purchase.Coupon {
 			return nil

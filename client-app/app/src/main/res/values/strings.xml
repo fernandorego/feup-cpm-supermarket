@@ -20,7 +20,7 @@
     <string name="receipts_hello">Previous Purchases</string>
     <string name="coupons_expiration">Valid until:</string>
     <string name="date_format" translatable="false">"%s %d"</string>
-    <string name="date_format_with_year" translatable="false">"%s %d, %d"</string>
+    <string name="date_format_with_year" translatable="false" />
     <string name="home_empty_recyclerview">Get a 15% discount coupon for every 100€ spent</string>
     <string name="appbar_menu_account">Account</string>
     <string name="title_products">Products</string>
@@ -63,7 +63,6 @@
     <string name="purchase_success_message">Purchase successful</string>
     <string name="purchase_error_message">Purchase failed</string>
     <string name="receipts_empty_recyclerview">No previous purchases. Start one now!</string>
-    <string name="money_format" translatable="false">"%.2f€"</string>
     <string name="checkout_complete_purchase">Complete your purchase below</string>
     <string name="scanning_nfc_title">NFC Scan</string>
     <string name="scanning_nfc_message_receiver">Looking for a client phone…</string>
@@ -80,4 +79,5 @@
     <string name="purchase_may_close">After the terminal confirms the purchase, you may close this window.</string>
     <string name="paid">Paid</string>
     <string name="title_admin">Admin</string>
+    <string name="cart_product_format" translatable="false">"%dx %s"</string>
 </resources>

@@ -4,11 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.feup.group4.supermarket.R
 import org.feup.group4.supermarket.model.Coupon
-import java.time.LocalDate
 
 val coupons = ArrayList<Coupon>()
 
@@ -20,14 +18,12 @@ class CouponsAdapter(private val ctx: Context, val coupons: ArrayList<Coupon>): 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {}
 
-    override fun getItemCount(): Int {
-        return coupons.size
-    }
+    override fun getItemCount(): Int = coupons.size
 
     fun setCoupons(newCoupons:ArrayList<Coupon>) {
         coupons.clear()
         coupons.addAll(newCoupons)
     }
 
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {}
+    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView)
 }

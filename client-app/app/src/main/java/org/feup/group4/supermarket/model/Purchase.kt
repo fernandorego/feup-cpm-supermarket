@@ -1,6 +1,6 @@
 package org.feup.group4.supermarket.model
 
-import java.util.UUID
+import java.util.*
 
 class Purchase(
     private val products: ArrayList<Pair<Product, Int>> = ArrayList(),
