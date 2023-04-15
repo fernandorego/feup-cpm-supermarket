@@ -1,28 +1,28 @@
 package org.feup.group4.supermarket.repository
 
-import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 import org.feup.group4.supermarket.model.Product
+import java.util.*
 
-class ProductRepository private constructor(context: android.content.Context) :
+class ProductsRepository private constructor(context: android.content.Context) :
     SQLiteOpenHelper(context, "products.db", null, 1) {
     companion object {
-        private var instance: ProductRepository? = null
+        private var instance: ProductsRepository? = null
 
-        fun getInstance(context: android.content.Context): ProductRepository {
+        fun getInstance(context: android.content.Context): ProductsRepository {
             if (instance == null) {
-                instance = ProductRepository(context)
+                instance = ProductsRepository(context)
                 instance!!.products = instance!!.getAllProducts()
             }
             return instance!!
         }
     }
 
-    private var products: MutableList<Pair<Product, Int>> = arrayListOf()
+    private var products: MutableList<Product> = arrayListOf()
 
-    override fun onCreate(db: android.database.sqlite.SQLiteDatabase?) {
+    override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(
             "CREATE TABLE IF NOT EXISTS products (" +
                     "name TEXT NOT NULL PRIMARY KEY," +
@@ -32,15 +32,14 @@ class ProductRepository private constructor(context: android.content.Context) :
         )
     }
 
-    override fun onUpgrade(db: android.database.sqlite.SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.execSQL("DROP TABLE IF EXISTS products")
         onCreate(db)
     }
 
-    fun removeAll() {
-        val db = writableDatabase
-        db.execSQL("DELETE FROM products")
-        db.close()
+    fun deleteDatabase() {
+        writableDatabase.execSQL("DROP TABLE IF EXISTS products")
+        onCreate(writableDatabase)
         products.clear()
     }
 
@@ -53,7 +52,7 @@ class ProductRepository private constructor(context: android.content.Context) :
         db.insert("products", null, values)
         db.close()
 
-        products.add(Pair(product, 1))
+        products.add(product)
     }
 
     fun updateProduct(product: Product) {
@@ -61,13 +60,13 @@ class ProductRepository private constructor(context: android.content.Context) :
         val values = ContentValues()
         values.put("name", product.name)
         values.put("price", product.price)
+        values.put("uuid", product.uuid.toString())
         db.update("products", values, "name = ?", arrayOf(product.name))
         db.close()
 
         products.forEach {
-            if (it.first.name == product.name) {
-                products[products.indexOf(it)] = Pair(product, it.second)
-                Log.w("ProductRepository", products.toString())
+            if (it.name == product.name) {
+                products[products.indexOf(it)] = product
             }
         }
     }
@@ -78,7 +77,7 @@ class ProductRepository private constructor(context: android.content.Context) :
         db.close()
 
         products.forEach {
-            if (it.first.name == product.name) {
+            if (it.name == product.name) {
                 products.remove(it)
             }
         }
@@ -98,7 +97,7 @@ class ProductRepository private constructor(context: android.content.Context) :
         if (cursor.moveToFirst()) {
             val name = cursor.getString(0)
             val price = cursor.getDouble(1)
-            val uuid = java.util.UUID.fromString(cursor.getString(2))
+            val uuid = UUID.fromString(cursor.getString(2))
             cursor.close()
             db.close()
             return Product(name, price, uuid)
@@ -108,17 +107,16 @@ class ProductRepository private constructor(context: android.content.Context) :
         return null
     }
 
-    @SuppressLint("Range")
-    fun getAllProducts(): MutableList<Pair<Product, Int>> {
-        val products = mutableListOf<Pair<Product, Int>>()
+    fun getAllProducts(): MutableList<Product> {
+        val products = mutableListOf<Product>()
         val db = readableDatabase
         val cursor = db.rawQuery("SELECT * FROM products", null)
         if (cursor.moveToFirst()) {
             do {
-                val name = cursor.getString(cursor.getColumnIndex("name"))
-                val price = cursor.getDouble(cursor.getColumnIndex("price"))
-                val uuid = java.util.UUID.fromString(cursor.getString(cursor.getColumnIndex("uuid")))
-                products.add(Pair(Product(name, price, uuid), 1))
+                val name = cursor.getString(0)
+                val price = cursor.getDouble(1)
+                val uuid = UUID.fromString(cursor.getString(2))
+                products.add(Product(name, price, uuid))
             } while (cursor.moveToNext())
         }
         cursor.close()
@@ -126,7 +124,7 @@ class ProductRepository private constructor(context: android.content.Context) :
         return products
     }
 
-    fun getAll(): List<Pair<Product, Int>> {
+    fun getAll(): List<Product> {
         return products
     }
 }
