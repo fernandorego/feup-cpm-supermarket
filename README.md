@@ -1,15 +1,13 @@
-# The Acme Electronic Supermarket  
+# Practical Assignment #1 - The Acme Electronic Supermarket  
 
-## Practical Assignment #1 - Design and Development Shop and pay Android app for a supermarket
-
-### Developers
+## Developers
 
 - Bruno Mendes up201906166
 - Fernando Rego up201905951
 - Gustavo Santos up201907397
 - José Costa up201907216
 
-### Acme Electronic Mobile Application
+## Acme Electronic Mobile Application
 
 #### Technologies and IDE:
 - Kotlin
@@ -17,19 +15,59 @@
 - SQL
 - Android Studio
 
-### Acme Eletronic Server and Database
+### Costumer App perspective
+
+[comment]: <> (Small description of costumer app)
+
+### Supermarket Checkout Terminal
+
+[comment]: <> (Small description of terminal app)
+
+- Generate Products
+- Checkout using NFC
+
+## Acme Eletronic Remote Service
 
 #### Technologies and IDE:
 - MongoDB
 - Go
 - GoLand or VSCode
 
-#### Database
+### Server
 
-We choose to use a mongoDB database due to bla bla bla
+[comment]: <> (Small description of server)
 
-##### Collections
+### Database
+
+[comment]: <> (Small description of database)
+
+#### Collections
 
 ![mongodb collections](docs/mongodb.svg)
 
+## Features
+
+### Registration
+
+### Adding to the shopping basket
+
+### Checkout
+
+### Payment and Result
+
+### Past Transactions and Coupons
+
+### Additional Features
+
+- NFC
+- JWT
+- Swipe to refresh
+- Product Generation
+- Product Images
+- Persistency
+
 ### References and bibliography
+
+- [Android API Reference](https://developer.android.com/reference)
+- [Class Slides](https://moodle.up.pt/course/view.php?id=2244)
+  
