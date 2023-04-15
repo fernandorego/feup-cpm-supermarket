@@ -57,6 +57,8 @@ class ProductsFragment : Fragment() {
                 }
             }
         }
+
+        updateListVisibility()
     }
 
     private fun updateListVisibility() {
