@@ -1,10 +1,10 @@
 # Practical Assignment #1 - The Acme Electronic Supermarket  
 
 By:
-- Bruno Mendes [up201906166](mailto:up201906166@edu.up.pt)
-- Fernando Rego [up201905951](mailto:up201905951@edu.up.pt)
-- Gustavo Santos [up201907397](mailto:up201907397@edu.up.pt)
-- José Costa [up201907216](mailto:up201907216@edu.up.pt)
+- Bruno Mendes [up201906166](mailto:up201906166@edu.fe.up.pt)
+- Fernando Rego [up201905951](mailto:up201905951@edu.fe.up.pt)
+- Gustavo Santos [up201907397](mailto:up201907397@edu.fe.up.pt)
+- José Costa [up201907216](mailto:up201907216@edu.fe.up.pt)
 
 ## How to run
 
