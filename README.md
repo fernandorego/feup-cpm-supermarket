@@ -1,10 +1,10 @@
 # Practical Assignment #1 - The Acme Electronic Supermarket  
 
 By:
-- Bruno Mendes [up201906166](mailto:up201906166@edu.up.pt)
-- Fernando Rego [up201905951](mailto:up201905951@edu.up.pt)
-- Gustavo Santos [up201907397](mailto:up201907397@edu.up.pt)
-- José Costa [up201907216](mailto:up201907216@edu.up.pt)
+- Bruno Mendes [up201906166](mailto:up201906166@edu.fe.up.pt)
+- Fernando Rego [up201905951](mailto:up201905951@edu.fe.up.pt)
+- Gustavo Santos [up201907397](mailto:up201907397@edu.fe.up.pt)
+- José Costa [up201907216](mailto:up201907216@edu.fe.up.pt)
 
 ## How to run
 
@@ -17,13 +17,10 @@ Inside the `server` folder, run:
     go run .
 ```
 
-If you plan on using the admin functionalities of the application you might also want to add admin users to add products and register purchases. To do so run:
-
-Inside the `server` folder, run:
+If you plan on using the admin functionalities of the application you might also want to add admin users to add products and register purchases. To do so, inside the `server` directory, run:
 ```bash
     ./add_admin.sh <nickname> <password>
 ```
-
 
 Then, fire up the Android application using your preferred method (we recommend sideloading with `Android Studio`). Since we did not deploy the web server in the cloud, make sure to change the server IP address in `res/values/string_config.xml` to your machine's.
 
@@ -35,7 +32,7 @@ We have developed two artifacts: an Android application and a web server to supp
 
 ### Customer App
 
-The customer app starts by greeting the user with their accumulated balance, available to be used in purchases, and display their earned coupons, also to be used in purchases. If they want to, they can review their transaction history, which includes paid price and product list, on the `Receipts` tab of the bottom navigation bar.
+The customer app starts by greeting the user with their accumulated balance, available to be used in purchases, and display their earned coupons, also to be used in purchases. If they want to, they can review their transaction history, which includes paid price and product list, on the `Receipts` tab of the bottom navigation bar. This was made possible by creating a nested `RecyclerView`.
 
 |       |        |
 | -------------- | -------------- |
@@ -51,7 +48,7 @@ Tapping `New Purchase`, the user may initiate a purchase and start scanning prod
 
 ### Terminal App
 
-The customer app is a more pragmatic one, allowing at the home page the generation of new supermarket products, with name, image and price, and displaying the respective QR codes.
+The terminal app is a more pragmatic one, allowing at the home page the generation of new supermarket products, with name, image and price, and displaying the respective QR codes.
 
 |       |        |        |        |
 | -------------- | -------------- | -------------- | -------------- |
@@ -66,7 +63,7 @@ On the `Checkout` tab, the terminal is able to listen for a QR code or NFC purch
 ### Web Service
 To support the several operations of the application, we developed a `RESTful` service using the *Go* language and also a non-relational database using *MongoDB*.
 
-The server provides several endpoints that the application can use to add or retrieve information. This endpoints are divided by groups, each group with the right middlware to verify that the authentication used is valid to the correspondent request.
+The server provides several endpoints that the application can use to add or retrieve information. These endpoints are divided by groups, each group with the right middlware to verify that the authentication used is valid to the correspondent request.
 
 All the information needed for the application is stored into three database collections that can be represented by the following UML:
  
@@ -96,7 +93,7 @@ Coupons are a way to incentivize the user to keep using the store. They are gene
 ### Cryptography
 In addition to the HMAC encryption used in the JWT's, that already identify and encode the user ids and roles, 512-bit RSA keys were used for encrypting or signing messages, further preventing ill intended actors of interfering with normal operation.
 
-Product QR codes contain a message that is encrypted with the public key of the store. The store's private key is shared with the application uppon registration or login, so the application can decrypt the QR code and add the product to the cart. This is put in place to prevent the user from adding products that are not in the store, or that are not in the store's database, or that have conflicting information. As encrypting with a 512 bit key and PKCS1 v1.5 padding only allows for 53 bytes of data, we had to split the message in fields. Each product field contains a base64 encoded string with the encrypted field value. The message reads as follows:
+Product QR codes contain a message that is encrypted with the public key of the store. The store's private key is shared with the application upon registration or login, so the application can decrypt the QR code and add the product to the cart. This is put in place to prevent the user from adding products that are not in the store, or that are not in the store's database, or that have conflicting information. As encrypting with a 512 bit key and PKCS1 v1.5 padding only allows for 53 bytes of data, we had to split the message in fields. Each product field contains a base64 encoded string with the encrypted field value. The message reads as follows:
 
 ```json
 {
@@ -164,10 +161,16 @@ The products may be identified with an image, sent to the server as a byte paylo
 The admin products, client balance, receipts and coupons are saved in the local database and easily accessed even without an Internet connection. Of course, in that case, server-dependant features such as a checkout will yield a connection error.
 
 ### Internationalization
-Every string in the application, including programatic ones (such as dialog titles) are both in Portuguese and English, so that the application can be used in both Portuguese and British setups across the world.
+Every string in the application, including programatic ones (such as dialog titles) are both in Portuguese and English, so that the application can be used in both Portuguese and British setups across the world. Not only that but since we made it compatible with Android's App Languages feature, the user can also change the language just for our app directly from their system settings.
+
+### App Shortcuts
+Besides launching the app normally, the user also has two shortcuts to choose from which can be used straight from the system launcher by long pressing the app's icon. One to open the receipts tab and another to start a new purchase.
+
+### Attention to Detail
+We maintained a general attention to add simple features which add value to a user like a dark mode that automatically follows system settings, an animated splash screen when opening the app (notice the rotation in the e letter), a themed icon compatible with Android 13+, full compatibility with Android's predictive back gesture and textfields that rise with the keyboard so no important view (like the login button) is hidden by the input method.
 
 ## Performed Tests
-We have tested the app througly with manual acceptance tests and across several devices, with and without NFC (the main hardware differentiatior than influences our app's operation), as well as different Android API levels (26, 29, 30, 31, 32, 33, Android 14(Beta) ). This could be improved with unit testing and acceptance testing, in the future.
+We have tested the app thorougly with manual acceptance tests and across several devices, with and without NFC (the main hardware differentiator that influences our app's operation), as well as different Android API levels (26, 29, 30, 31, 32, 33, Android 14(Beta) ). This could be improved with unit testing and acceptance testing, in the future.
 
 ## References
 
