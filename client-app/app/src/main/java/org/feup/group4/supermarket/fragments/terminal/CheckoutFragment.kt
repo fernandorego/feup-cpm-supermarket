@@ -30,7 +30,7 @@ class CheckoutFragment : Fragment() {
 
         val qrCodeButton = view.findViewById<Button>(R.id.scan_qr_fab)
         qrCodeButton.setOnClickListener {
-            qrService.scanQRCode(::addProduct)
+            qrService.scanQRCode(::forwardPurchase)
         }
 
         val nfcButton = view.findViewById<Button>(R.id.nfc_fab)
@@ -44,13 +44,13 @@ class CheckoutFragment : Fragment() {
                 ).show()
                 return@setOnClickListener
             }
-            ReceiveNFCPurchaseDialogFragment.newInstance(::addProduct).show(
+            ReceiveNFCPurchaseDialogFragment.newInstance(::forwardPurchase).show(
                 requireFragmentManager(), "ReceiveNFCPurchaseDialogFragment"
             )
         }
     }
 
-    private fun addProduct(productString: String?) {
+    private fun forwardPurchase(productString: String?) {
         if (productString == null) {
             Toast.makeText(requireContext(), R.string.scan_qr_error, Toast.LENGTH_LONG).show()
             return

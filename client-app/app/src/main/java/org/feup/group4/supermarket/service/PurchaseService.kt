@@ -20,7 +20,7 @@ class PurchaseService(private val context: Context) {
             return Gson().toJson(
                 mapOf(
                     "user_uuid" to ClientActivity.user.uuid,
-                    "discount" to (purchase.discount?:false),
+                    "discount" to (purchase.discount ?: false),
                     "coupon" to purchase.coupon,
                     "cart" to cart,
                 )
@@ -31,8 +31,12 @@ class PurchaseService(private val context: Context) {
     fun getSignedPurchasePayload(purchase: Purchase): String {
         val cryptoService = CryptoService(context)
         val purchaseJson = getPurchaseJson(purchase)
-        val b64Message = Base64.encodeToString(purchaseJson.toByteArray(charset = Charsets.UTF_8), Base64.DEFAULT)
-        val signature = cryptoService.getMessageSignature(b64Message.toByteArray(charset = Charsets.UTF_8))
+        val b64Message = Base64.encodeToString(
+            purchaseJson.toByteArray(charset = Charsets.UTF_8),
+            Base64.DEFAULT
+        )
+        val signature =
+            cryptoService.getMessageSignature(b64Message.toByteArray(charset = Charsets.UTF_8))
         val b64Signature = Base64.encodeToString(signature, Base64.NO_WRAP)
 
         return Gson().toJson(
@@ -44,17 +48,23 @@ class PurchaseService(private val context: Context) {
     }
 
     fun forwardClientPurchase(messageWithSignature: String, callback: AfterRequest) {
-        val messageJSON = Gson().fromJson(messageWithSignature, Map::class.java)
-        if (messageJSON["b64MessageString"] == null || messageJSON["Signature"] == null) {
+        try {
+            val messageJSON = Gson().fromJson(messageWithSignature, Map::class.java)
+
+            if (messageJSON["b64MessageString"] == null || messageJSON["Signature"] == null) {
+                callback(400, context.getString(R.string.purchase_invalid_message))
+                return
+            }
+
+            HttpService(context, callback).post(
+                "/purchase",
+                Gson().toJson(mapOf("b64MessageString" to (messageJSON["b64MessageString"] as String))),
+                mapOf("Signature" to messageJSON["Signature"] as String)
+            )
+        } catch (e: Exception) {
             callback(400, context.getString(R.string.purchase_invalid_message))
             return
         }
-
-        HttpService(context, callback).post(
-            "/purchase",
-            Gson().toJson(mapOf("b64MessageString" to (messageJSON["b64MessageString"] as String))),
-            mapOf("Signature" to messageJSON["Signature"] as String)
-        )
     }
 
     fun getReceipts(callback: (List<Receipt>) -> Unit) {
@@ -72,6 +82,7 @@ class PurchaseService(private val context: Context) {
             val receipts = Gson().fromJson(body, Array<Receipt>::class.java).toList()
             callback(receipts)
         }
+
         val userUUID = ClientActivity.user.uuid
         val message = Gson().toJson(userUUID)
         val b64Message =
@@ -80,7 +91,9 @@ class PurchaseService(private val context: Context) {
             CryptoService(context).getMessageSignature(b64Message.toByteArray(charset = Charsets.UTF_8))
         val base64Signature = Base64.encodeToString(signature, Base64.NO_WRAP)
         HttpService(context, ::afterRequest)
-            .get("/purchases/$userUUID",
-                mapOf("Signature" to base64Signature, "Signed-Message" to b64Message))
+            .get(
+                "/purchases/$userUUID",
+                mapOf("Signature" to base64Signature, "Signed-Message" to b64Message)
+            )
     }
 }
