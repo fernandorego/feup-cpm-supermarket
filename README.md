@@ -35,7 +35,7 @@ We have developed two artifacts: an Android application and a web server to supp
 
 ### Customer App
 
-The customer app starts by greeting the user with their accumulated balance, available to be used in purchases, and display their earned coupons, also to be used in purchases. If they want to, they can review their transaction history, which includes paid price and product list, on the `Receipts` tab of the bottom navigation bar, this was made possible by creating a nested `RecyclerView`.
+The customer app starts by greeting the user with their accumulated balance, available to be used in purchases, and display their earned coupons, also to be used in purchases. If they want to, they can review their transaction history, which includes paid price and product list, on the `Receipts` tab of the bottom navigation bar. This was made possible by creating a nested `RecyclerView`.
 
 |       |        |
 | -------------- | -------------- |
