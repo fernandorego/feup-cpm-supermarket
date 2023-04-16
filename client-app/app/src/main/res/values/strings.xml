@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name" translatable="false">ACME Supermarket</string>
+    <string name="title_home">Start</string>
+    <string name="title_receipts">Receipts</string>
+    <string name="home_hello">"Hey %s"</string>
+    <string name="home_balance">Accumulated balance</string>
+    <string name="price_format" translatable="false">"%.2f€"</string>
+    <string name="home_coupons">Coupons</string>
+    <string name="home_fab">New Purchase</string>
+    <string name="onboarding_login">Login</string>
+    <string name="onboarding_registration">Don\'t have an account? <u>Register now</u></string>
+    <string name="onboarding_register">Register</string>
+    <string name="onboarding_name">Name</string>
+    <string name="onboarding_nickname">Nickname</string>
+    <string name="onboarding_password">Password</string>
+    <string name="onboarding_card">Payment Card</string>
+    <string name="onboarding_ccv" translatable="false">CVV</string>
+    <string name="onboarding_month" translatable="false">MM</string>
+    <string name="onboarding_year">YY</string>
+    <string name="receipts_hello">Previous Purchases</string>
+    <string name="coupons_expiration">Valid until:</string>
+    <string name="date_format" translatable="false">"%s %d"</string>
+    <string name="date_format_with_year" translatable="false" />
+    <string name="home_empty_recyclerview">Get a 15% discount coupon for every 100€ spent</string>
+    <string name="appbar_menu_account">Account</string>
+    <string name="title_products">Products</string>
+    <string name="title_checkout">Checkout</string>
+    <string name="products_hello">Products Catalog</string>
+    <string name="products_empty_recyclerview">Start generating products</string>
+    <string name="products_new_product">New product</string>
+    <string name="shopping_cart_subtotal">Subtotal</string>
+    <string name="shopping_cart_empty_cart">Your cart is empty. Start adding products.</string>
+    <string name="shopping_cart_checkout">Checkout</string>
+    <string name="shopping_cart_add">Add to cart</string>
+    <string name="item_units">unit(s)</string>
+    <string name="payment_card">Pay with card</string>
+    <string name="payment_balance">Use your balance</string>
+    <string name="payment_coupon">Apply coupon</string>
+    <string name="scan_qr_tip">Point the camera to the QR Code</string>
+    <string name="scan_qr_error">Error while scanning QR Code</string>
+    <string name="checkout_mode_home_background" translatable="false">Checkout Mode Home Background</string>
+    <string name="generate_products_home_background" translatable="false">Generate Products Home Background</string>
+    <string name="checkout_mode">Checkout Mode</string>
+    <string name="scan_qr_code">Scan QR</string>
+    <string name="approach_phone_nfc">Put your phone close to the terminal to complete your purchase</string>
+    <string name="use_nfc">Use NFC</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="product_name">Product name</string>
+    <string name="product_cost">Product cost</string>
+    <string name="invalid_product_fields">Invalid product fields</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="delete_product">Delete product</string>
+    <string name="delete_product_message">Are you sure you want to delete this product from the catalog?</string>
+    <string name="account_logout">Logout</string>
+    <string name="string_format" translatable="false">"%s"</string>
+    <string name="close">Close</string>
+    <string name="export">Export</string>
+    <string name="product_s_qr_code">Product\'s QR Code</string>
+    <string name="export_file_failed">Could not export file. Verify storage permission</string>
+    <string name="export_file_success">File exported successfully</string>
+    <string name="purchase_success_message">Purchase successful</string>
+    <string name="purchase_error_message">Purchase failed</string>
+    <string name="receipts_empty_recyclerview">No previous purchases. Start one now!</string>
+    <string name="checkout_complete_purchase">Complete your purchase below</string>
+    <string name="scanning_nfc_title">NFC Scan</string>
+    <string name="scanning_nfc_message_receiver">Looking for a client phone…</string>
+    <string name="scanning_nfc_message_sender">Looking for a terminal application…</string>
+    <string name="nfc_not_supported">Your phone does not support NFC</string>
+    <string name="payment_current_balance">Current balance:</string>
+    <string name="payment_current_coupons">Current coupons:</string>
+    <string name="payment_current_coupons_number" translatable="false">"%d"</string>
+    <string name="payment_proceed_nfc">Proceed (NFC)</string>
+    <string name="payment_proceed_qr">Proceed (QR)</string>
+    <string name="payment_no_coupons">No coupons found</string>
+    <string name="purchase_qr_code">Purchase QR Code</string>
+    <string name="purchase_invalid_message">Invalid purchase code</string>
+    <string name="purchase_may_close">After the terminal confirms the purchase, you may close this window.</string>
+    <string name="paid">Paid</string>
+    <string name="title_admin">Admin</string>
+    <string name="cart_product_format" translatable="false">"%dx %s"</string>
+</resources>

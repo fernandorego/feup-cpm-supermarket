@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shopping_cart"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/payment_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="30dp"
+        android:text="@string/price_format"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toTopOf="@+id/payment_current_balance_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/payment_current_balance_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/payment_current_balance"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/payment_balance"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/payment_current_balance_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/price_format"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/payment_current_balance_text"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/payment_balance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/payment_balance"
+        android:textSize="20sp"
+        app:backgroundTint="@color/dark_blue"
+        app:layout_constraintBottom_toTopOf="@+id/payment_coupon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/payment_total" />
+
+    <TextView
+        android:id="@+id/payment_current_coupons_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/payment_current_coupons"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/payment_coupon"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/payment_current_coupons_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/payment_current_coupons_number"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/payment_current_coupons_text"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/payment_coupon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/payment_coupon"
+        android:textSize="20sp"
+        app:backgroundTint="@color/dark_blue"
+        app:layout_constraintBottom_toTopOf="@id/payment_proceed_qr"
+        app:layout_constraintTop_toBottomOf="@id/payment_balance" />
+
+    <Button
+        android:id="@+id/payment_proceed_qr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/scan_qr_code"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:backgroundTint="@color/dark_blue"
+        app:icon="@drawable/qr_code_scanner"
+        app:iconTint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/payment_proceed_nfc"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/payment_proceed_nfc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/use_nfc"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:backgroundTint="@color/dark_blue"
+        app:icon="@drawable/nfc"
+        app:iconTint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/payment_proceed_qr" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

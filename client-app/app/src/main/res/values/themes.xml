@@ -1,0 +1,45 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.ACMESupermarket" parent="Theme.Material3.DayNight">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/dark_blue</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/light_blue</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <!-- Bottom Nav Bar-->
+        <item name="colorSurface">@color/dark_blue</item>
+        <item name="colorSecondaryContainer">@color/light_blue</item>
+        <item name="colorOnSecondaryContainer">@color/dark_blue</item>
+        <item name="colorOnSurface">@color/light_blue</item>
+        <item name="colorOnSurfaceVariant">@color/light_blue</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:navigationBarColor">@color/dark_blue</item>
+        <item name="actionBarStyle">@style/CustomAppBar</item>
+        <item name="actionBarTheme">@style/CustomAppBarTheme</item>
+        <item name="titleTextColor">@color/light_blue</item>
+    </style>
+    <!-- Base application theme for screens with no bottom nav bar or no solid blue background. -->
+    <style name="Theme.ACMESupermarketNoNavBar" parent="Theme.ACMESupermarket">
+        <item name="android:navigationBarColor">@color/background</item>
+    </style>
+    <!-- Splashscreen -->
+    <style name="Theme.ACMESupermarket.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/dark_blue</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splashscreen_animation</item>
+        <item name="android:windowSplashScreenBehavior" tools:targetApi="33">icon_preferred</item>
+        <item name="postSplashScreenTheme">@style/Theme.ACMESupermarket</item>
+    </style>
+    <!-- CustomAppBar -->
+    <style name="CustomAppBar" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@drawable/actionbar_background</item>
+        <item name="elevation">0dp</item>
+        <item name="displayOptions">showHome|useLogo</item>
+    </style>
+    <!-- CustomAppBar's Theme-->
+    <style name="CustomAppBarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/light_blue</item>
+    </style>
+</resources>
